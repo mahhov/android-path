@@ -21,9 +21,11 @@ class Map {
 	}
 	
 	void draw(Painter painter) {
-		for (int x = 0; x < Engine.VIEW_WIDTH; x++)
-			for (int y = 0; y < Engine.VIEW_HEIGHT; y++)
-				if (map[x + (int) scrollX][y + (int) scrollY][0] == 1)
-					World.drawBlock(painter, x, y, Color.GRAY);
+		int endX = (int) scrollX + Engine.VIEW_WIDTH + 1;
+		int endY = (int) scrollY + Engine.VIEW_HEIGHT + 1;
+		for (int x = (int) scrollX; x < endX; x++)
+			for (int y = (int) scrollY; y < endY; y++)
+				if (map[x][y][0] == 1)
+					World.drawBlock(painter, x - scrollX + .5, y - scrollY + .5, Color.GRAY);
 	}
 }
