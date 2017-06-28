@@ -1,4 +1,4 @@
-package manuk.snake.snakegame;
+package manuk.path.game;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

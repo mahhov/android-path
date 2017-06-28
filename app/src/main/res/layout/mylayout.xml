@@ -3,9 +3,9 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="#fff"
-             tools:context="manuk.snake.MyActivity">
+             tools:context="manuk.path.MyActivity">
 
-    <manuk.snake.MySurface
+    <manuk.path.MySurface
             android:id="@+id/surfaceView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

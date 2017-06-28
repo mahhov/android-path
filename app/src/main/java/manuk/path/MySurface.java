@@ -1,15 +1,14 @@
-package manuk.snake;
+package manuk.path;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import manuk.snake.snakegame.Controller;
-import manuk.snake.snakegame.SnakeGame;
+import manuk.path.game.Engine;
 
 public class MySurface extends SurfaceView implements SurfaceHolder.Callback {
-	SnakeGame snakeGame;
+	Engine engine;
 	
 	public MySurface(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -18,20 +17,17 @@ public class MySurface extends SurfaceView implements SurfaceHolder.Callback {
 	
 	public void surfaceCreated(SurfaceHolder surfaceHolder) {
 		Canvas canvas = surfaceHolder.lockCanvas();
-		int width = canvas.getWidth();
-		int height = canvas.getHeight();
-		Controller controller = new Controller(width, height);
-		setOnTouchListener(controller);
-		snakeGame = new SnakeGame(surfaceHolder, controller, width, height);
-		new Thread(snakeGame).start();
+		engine = new Engine(surfaceHolder, canvas.getWidth(), canvas.getHeight());
 		surfaceHolder.unlockCanvasAndPost(canvas);
+		setOnTouchListener(engine.getTouchListener());
+		new Thread(engine).start();
 	}
 	
 	public void surfaceChanged(SurfaceHolder surfaceHolder, int frmt, int w, int h) {
 	}
 	
 	public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-		if (snakeGame != null)
-			snakeGame.stop();
+		if (engine != null)
+			engine.stop();
 	}
 }
