@@ -32,4 +32,26 @@ class Util {
 			return a;
 		return b;
 	}
+	
+	static class Frames {
+		boolean running;
+		private long start, current;
+		private int fps;
+		private int frameCount;
+		
+		Frames() {
+			running = true;
+		}
+		
+		int getFPS() {
+			frameCount++;
+			current = System.currentTimeMillis();
+			if (current - start > 1000) {
+				start = current;
+				fps = frameCount;
+				frameCount = 0;
+			}
+			return fps;
+		}
+	}
 }

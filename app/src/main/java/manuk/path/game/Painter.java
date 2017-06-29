@@ -33,6 +33,10 @@ class Painter {
 		surfaceHolder.unlockCanvasAndPost(canvas);
 	}
 	
+	double[] convertFromAbsolute(double x, double y) {
+		return new double[] {(x - shiftX) / width + shiftX, (y - shiftY) / height};
+	}
+	
 	void drawRect(double x, double y, double width, double height, int color, boolean frame) {
 		paint.setColor(color);
 		if (frame)

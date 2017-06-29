@@ -1,5 +1,6 @@
 package manuk.path.game;
 
+import android.graphics.Color;
 import android.view.SurfaceHolder;
 import android.view.View;
 
@@ -8,8 +9,10 @@ public class Engine implements Runnable {
 	static final int VIEW_RATIO = 1;
 	static final int VIEW_WIDTH = 20, VIEW_HEIGHT = VIEW_WIDTH * VIEW_RATIO;
 	static final double BLOCK_WIDTH = 1. / VIEW_WIDTH, BLOCK_HEIGHT = 1. / VIEW_HEIGHT;
-	private boolean running = true;
+	
 	private SurfaceHolder surfaceHolder;
+	private Util.Frames frames;
+	
 	private Painter painter;
 	private Controller controller;
 	private World world;
@@ -37,7 +40,13 @@ public class Engine implements Runnable {
 	private void draw() {
 		painter.prep(surfaceHolder);
 		world.draw(painter);
+		drawFps();
 		painter.post();
+	}
+	
+	private void drawFps() {
+		double[] xy = painter.convertFromAbsolute(70, 50);
+		painter.drawText("fps: " + frames.getFPS(), xy[0], xy[1], Color.GREEN);
 	}
 	
 	private void sleep(long duration) {
@@ -49,8 +58,8 @@ public class Engine implements Runnable {
 	}
 	
 	public void run() {
-		running = true;
-		while (running) {
+		frames = new Util.Frames();
+		while (frames.running) {
 			if (!world.gameOver)
 				update();
 			else if (controller.isPress())
@@ -62,7 +71,7 @@ public class Engine implements Runnable {
 	}
 	
 	public void stop() {
-		running = false;
+		frames.running = false;
 	}
 }
 
