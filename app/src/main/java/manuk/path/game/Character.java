@@ -1,15 +1,16 @@
 package manuk.path.game;
 
 import android.graphics.Color;
+import manuk.path.game.mapgenerator.MapGenerator;
 
 class Character {
 	private double speed = .5;
 	double x, y;
 	private double goalX, goalY;
 	
-	Character() {
-		goalX = x = MapGenerator.startX;
-		goalY = y = MapGenerator.startY;
+	Character(MapGenerator mapGenerator) {
+		goalX = x = mapGenerator.startX;
+		goalY = y = mapGenerator.startY;
 	}
 	
 	void move(Controller controller, Map map) {

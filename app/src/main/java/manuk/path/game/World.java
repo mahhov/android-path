@@ -1,6 +1,8 @@
 package manuk.path.game;
 
 import android.graphics.Color;
+import manuk.path.game.mapgenerator.CavernMapGenerator;
+import manuk.path.game.mapgenerator.MapGenerator;
 
 class World {
 	boolean gameOver;
@@ -8,8 +10,10 @@ class World {
 	private Character character;
 	
 	World(int width, int length, int height) {
-		map = new Map(width, length, height);
-		character = new Character();
+		MapGenerator mapGenerator = new CavernMapGenerator();
+		mapGenerator.generate(width, length, height);
+		map = new Map(width, length, height, mapGenerator);
+		character = new Character(mapGenerator);
 	}
 	
 	void update(Controller controller) {

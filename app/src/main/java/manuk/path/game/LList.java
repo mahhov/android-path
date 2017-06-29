@@ -2,25 +2,25 @@ package manuk.path.game;
 
 import java.util.Iterator;
 
-class LList<T> implements Iterable<T> {
+public class LList<T> implements Iterable<T> {
 	private Node head, tail;
 	
-	LList() {
+	public LList() {
 		head = tail = new Node(null, null, null);
 	}
 	
-	void addHead(T elem) {
+	public void addHead(T elem) {
 		head = new Node(elem, head, null);
 		head.prev.next = head;
 	}
 	
-	T removeTail() {
+	public T removeTail() {
 		tail = tail.next;
 		tail.prev = null;
 		return tail.elem;
 	}
 	
-	boolean isEmpty() {
+	public boolean isEmpty() {
 		return tail == head;
 	}
 	

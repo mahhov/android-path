@@ -7,7 +7,7 @@ import android.view.View;
 public class Engine implements Runnable {
 	static final int MAP_WIDTH = 30, MAP_LENGTH = 30, MAP_HEIGHT = 3;
 	static final int VIEW_RATIO = 1;
-	static final int VIEW_WIDTH = 20, VIEW_HEIGHT = VIEW_WIDTH * VIEW_RATIO;
+	static final int VIEW_WIDTH = 30, VIEW_HEIGHT = VIEW_WIDTH * VIEW_RATIO;
 	static final double BLOCK_WIDTH = 1. / VIEW_WIDTH, BLOCK_HEIGHT = 1. / VIEW_HEIGHT;
 	
 	private SurfaceHolder surfaceHolder;
@@ -77,7 +77,6 @@ public class Engine implements Runnable {
 
 // todo: character movement collision slide
 // todo: move engine map constants to MapPainter
-// todo: control
-// todo: random map generation
+// todo: control 2 finger tab
+// todo: better random map generation
 // todo: fix side darwing of character
-// todo: shades to map drawing

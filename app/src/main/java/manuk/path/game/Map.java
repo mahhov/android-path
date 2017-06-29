@@ -1,6 +1,7 @@
 package manuk.path.game;
 
 import android.graphics.Color;
+import manuk.path.game.mapgenerator.MapGenerator;
 
 class Map {
 	private static final double SCROLL_WEIGHT = .2;
@@ -9,12 +10,11 @@ class Map {
 	private boolean[][] shadow;
 	double scrollX, scrollY;
 	
-	Map(int width, int length, int height) {
+	Map(int width, int length, int height, MapGenerator mapGenerator) {
 		this.width = width;
 		this.length = length;
 		this.height = height;
-		//		map = new int[width][length][height];
-		map = MapGenerator.GenerateCavernMap(width, length, height);
+		map = mapGenerator.map;
 		
 		this.shadow = new boolean[width][length];
 		boolean shadow;
