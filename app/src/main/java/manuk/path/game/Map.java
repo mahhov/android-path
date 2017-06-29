@@ -19,7 +19,7 @@ class Map {
 			for (int y = 0; y < length; y++) {
 				boolean shadow = false;
 				for (int z = height - 1; z >= 0; z--)
-					if (Math.random() > .95) {
+					if (Math.random() > .98) {
 						map[x][y][z] = 1;
 						shadow = true;
 					} else if (z == 0)
@@ -34,6 +34,10 @@ class Map {
 	
 	private boolean isEmpty(int x, int y, int z, int startX, int endX, int startY, int endY) {
 		return !(x >= 0 && x < width && y >= 0 && y < length && z >= 0 && z < height) || map[x][y][z] == 0;
+	}
+	
+	boolean isMoveable(int x, int y, int z) {
+		return x >= 0 && x < width && y >= 0 && y < length && z >= 0 && z < height && map[x][y][z] == 0;
 	}
 	
 	void draw() {

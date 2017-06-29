@@ -3,7 +3,7 @@ package manuk.path.game;
 import android.graphics.Color;
 
 class MapPainter {
-	private static final double Z_SHIFT_X = 1. / 3, Z_SHIFT_Y = 1. / 6;
+	private static final double Z_SHIFT_X = 1. / 5, Z_SHIFT_Y = Z_SHIFT_X / 2;
 	private static Painter painter;
 	
 	static void setPainter(Painter painter) {

@@ -18,8 +18,10 @@ class Character {
 			goalY = controller.touchY * Engine.VIEW_HEIGHT + map.scrollY;
 		}
 		double[] movement = Util.setMagnitudeMax(goalX - x, goalY - y, speed);
-		x += movement[0];
-		y += movement[1];
+		if (map.isMoveable((int) (x + movement[0]), (int) (y + movement[1]), 0)) {
+			x += movement[0];
+			y += movement[1];
+		}
 	}
 	
 	void draw(double scrollX, double scrollY) {
