@@ -12,18 +12,17 @@ class Character {
 		goalY = y = 5;
 	}
 	
-	void setMoveGoal(double toX, double toY) {
-		goalX = toX;
-		goalY = toY;
-	}
-	
-	void move() {
+	void move(Controller controller, Map map) {
+		if (controller.isDown()) {
+			goalX = controller.touchX * Engine.VIEW_WIDTH + map.scrollX;
+			goalY = controller.touchY * Engine.VIEW_HEIGHT + map.scrollY;
+		}
 		double[] movement = Util.setMagnitudeMax(goalX - x, goalY - y, speed);
 		x += movement[0];
 		y += movement[1];
 	}
 	
 	void draw(Painter painter, double scrollX, double scrollY) {
-		MapPainter.drawBlock(painter, x - scrollX, y - scrollY, 0, true, true, true, Color.BLUE);
+		MapPainter.drawBlock(painter, x - scrollX - .5, y - scrollY - .5, 0, true, true, true, Color.BLUE);
 	}
 }
