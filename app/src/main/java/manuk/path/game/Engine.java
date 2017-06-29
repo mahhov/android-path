@@ -4,7 +4,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 
 public class Engine implements Runnable {
-	static final int MAP_WIDTH = 100, MAP_LENGTH = 100, MAP_HEIGHT = 10;
+	static final int MAP_WIDTH = 30, MAP_LENGTH = 30, MAP_HEIGHT = 3;
 	static final int VIEW_RATIO = 1;
 	static final int VIEW_WIDTH = 20, VIEW_HEIGHT = VIEW_WIDTH * VIEW_RATIO;
 	static final double BLOCK_WIDTH = 1. / VIEW_WIDTH, BLOCK_HEIGHT = 1. / VIEW_HEIGHT;
@@ -17,7 +17,7 @@ public class Engine implements Runnable {
 	public Engine(SurfaceHolder surfaceHolder, int screenWidth, int screenHeight) {
 		this.surfaceHolder = surfaceHolder;
 		painter = new Painter(screenWidth, screenWidth * VIEW_RATIO, screenWidth, screenHeight);
-		MapPainter.setPainter(painter);
+		MapPainter.init(painter);
 		controller = new Controller(screenWidth, screenWidth * VIEW_RATIO, screenWidth, screenHeight);
 		createWorld();
 	}
@@ -57,7 +57,7 @@ public class Engine implements Runnable {
 				createWorld();
 			controller.ageTouch();
 			draw();
-			sleep(10);
+			sleep(5);
 		}
 	}
 	
