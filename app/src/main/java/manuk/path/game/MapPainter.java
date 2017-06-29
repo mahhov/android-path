@@ -18,9 +18,8 @@ class MapPainter {
 	}
 	
 	static void drawFlat(double x, double y, double z, int color) {
-		x = x / Engine.VIEW_WIDTH;
-		y = y / Engine.VIEW_HEIGHT;
-		painter.drawRect(x, y, Engine.BLOCK_WIDTH, Engine.BLOCK_HEIGHT, color);
+		bottomCoord = toPaintCoord(x, y, z, 1, 1);
+		painter.drawRect(bottomCoord[0], bottomCoord[1], bottomCoord[2], bottomCoord[3], color);
 	}
 	
 	static void drawBlock(double x, double y, double z, boolean[] side, int color) {

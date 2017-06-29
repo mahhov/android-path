@@ -46,23 +46,26 @@ class Map {
 		int startY = (int) scrollY;
 		int endX = startX + Engine.VIEW_WIDTH + 1;
 		int endY = startY + Engine.VIEW_HEIGHT + 1;
+		int midX = startX + Engine.VIEW_WIDTH / 2;
+		int midY = startY + Engine.VIEW_HEIGHT / 2;
+		
 		
 		for (int x = startX; x < endX; x++)
 			for (int y = (int) scrollY; y < endY; y++)
 				if (shadow[x][y])
-					MapPainter.drawFlat(x - scrollX, y - scrollY, 0, Color.LTGRAY);
+					MapPainter.drawFlat(x - scrollX, y - scrollY, 0, Color.GRAY);
 		
 		for (int z = 0; z < height; z++)
 			for (int x = startX; x < endX; x++)
 				for (int y = (int) scrollY; y < endY; y++)
 					if (map[x][y][z] == 1) {
-						side[MapPainter.LEFT] = isEmpty(x - 1, y, z, startX, endX, startY, endY);
-						side[MapPainter.RIGHT] = isEmpty(x + 1, y, z, startX, endX, startY, endY);
-						side[MapPainter.BACK] = isEmpty(x, y - 1, z, startX, endX, startY, endY);
-						side[MapPainter.FRONT] = isEmpty(x, y + 1, z, startX, endX, startY, endY);
+						side[MapPainter.LEFT] = x > midX && isEmpty(x - 1, y, z, startX, endX, startY, endY);
+						side[MapPainter.RIGHT] = x < midX && isEmpty(x + 1, y, z, startX, endX, startY, endY);
+						side[MapPainter.BACK] = y > midY && isEmpty(x, y - 1, z, startX, endX, startY, endY);
+						side[MapPainter.FRONT] = y < midY && isEmpty(x, y + 1, z, startX, endX, startY, endY);
 						side[MapPainter.TOP] = isEmpty(x, y, z + 1, startX, endX, startY, endY);
 						
-						MapPainter.drawBlock(x - scrollX, y - scrollY, z, side, Color.GRAY);
+						MapPainter.drawBlock(x - scrollX, y - scrollY, z, side, Color.LTGRAY);
 					}
 	}
 }
