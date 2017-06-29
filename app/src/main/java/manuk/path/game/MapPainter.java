@@ -3,55 +3,71 @@ package manuk.path.game;
 import android.graphics.Color;
 
 class MapPainter {
-	private static final double Z_SHIFT_X = 1. / 5, Z_SHIFT_Y = Z_SHIFT_X / 2;
 	private static Painter painter;
+	static final int LEFT = 0, RIGHT = 1, BACK = 2, FRONT = 3, BOTTOM = 4, TOP = 5;
+	private static final double VIEW_STRETCH_Z = Engine.BLOCK_WIDTH / 10;
+	
+	// local variables, defined here to avoid allocation
+	private static double[] bottomCoord, topCoord;
+	private static double leftBottomX, leftTopX, rightBottomX, rightTopX, backBottomY, backTopY, frontBottomY, frontTopY;
+	private static double[] leftX = null, rightX = null, sideX = null, backY = null, frontY = null, sideY = null, topX = null, topY = null; // todo: check if this is any benefit
+	private static double[] coord = new double[4];
 	
 	static void setPainter(Painter painter) {
 		MapPainter.painter = painter;
 	}
 	
 	static void drawFlat(double x, double y, double z, int color) {
-		x = (x - Z_SHIFT_X * z) / Engine.VIEW_WIDTH;
-		y = (y - Z_SHIFT_Y * z) / Engine.VIEW_HEIGHT;
+		x = x / Engine.VIEW_WIDTH;
+		y = y / Engine.VIEW_HEIGHT;
 		painter.drawRect(x, y, Engine.BLOCK_WIDTH, Engine.BLOCK_HEIGHT, color);
 	}
 	
-	static double topZ, leftBottomX, leftTopX, rightBottomX, rightTopX, backBottomY, backTopY, frontBottomY, frontTopY;
-	static double[] rightX = null, rightY = null, frontX = null, frontY = null, topX = null, topY = null, bottomX = null, bottomY = null;
-	
-	static void drawBlock(double x, double y, double z, boolean right, boolean front, boolean top, int color) {
-		topZ = z + 1;
+	static void drawBlock(double x, double y, double z, boolean[] side, int color) {
+		bottomCoord = toPaintCoord(x, y, z, 1, 1);
+		topCoord = toPaintCoord(x, y, z + 1, 1, 1);
 		
 		// x
-		leftBottomX = (x - Z_SHIFT_X * z) * Engine.BLOCK_WIDTH;
-		leftTopX = (x - Z_SHIFT_X * topZ) * Engine.BLOCK_WIDTH;
-		rightBottomX = leftBottomX + Engine.BLOCK_WIDTH;
-		rightTopX = leftTopX + Engine.BLOCK_WIDTH;
+		leftBottomX = bottomCoord[0];
+		leftTopX = topCoord[0];
+		rightBottomX = leftBottomX + bottomCoord[2];
+		rightTopX = leftTopX + topCoord[2];
 		
 		// y
-		backBottomY = (y - Z_SHIFT_Y * z) * Engine.BLOCK_WIDTH;
-		backTopY = (y - Z_SHIFT_Y * topZ) * Engine.BLOCK_WIDTH;
-		frontBottomY = backBottomY + Engine.BLOCK_WIDTH;
-		frontTopY = backTopY + Engine.BLOCK_WIDTH;
+		backBottomY = bottomCoord[1];
+		backTopY = topCoord[1];
+		frontBottomY = backBottomY + bottomCoord[3];
+		frontTopY = backTopY + topCoord[3];
 		
 		// fill
 		
-		// right face
-		if (right) {
+		if (side[LEFT]) {
+			leftX = new double[] {leftTopX, leftBottomX, leftBottomX, leftTopX};
+			sideY = new double[] {backTopY, backBottomY, frontBottomY, frontTopY};
+			painter.drawPolygon(leftX, sideY, color, false);
+		}
+		
+		if (side[RIGHT]) {
 			rightX = new double[] {rightTopX, rightBottomX, rightBottomX, rightTopX};
-			rightY = new double[] {backTopY, backBottomY, frontBottomY, frontTopY};
-			painter.drawPolygon(rightX, rightY, color, false);
+			if (!side[LEFT])
+				sideY = new double[] {backTopY, backBottomY, frontBottomY, frontTopY};
+			painter.drawPolygon(rightX, sideY, color, false);
 		}
 		
-		// front face
-		if (front) {
-			frontX = new double[] {leftTopX, rightTopX, rightBottomX, leftBottomX};
+		if (side[BACK]) {
+			sideX = new double[] {leftTopX, rightTopX, rightBottomX, leftBottomX};
+			backY = new double[] {backTopY, backTopY, backBottomY, backBottomY};
+			painter.drawPolygon(sideX, backY, color, false);
+		}
+		
+		if (side[FRONT]) {
+			if (!side[BACK])
+				sideX = new double[] {leftTopX, rightTopX, rightBottomX, leftBottomX};
 			frontY = new double[] {frontTopY, frontTopY, frontBottomY, frontBottomY};
-			painter.drawPolygon(frontX, frontY, color, false);
+			painter.drawPolygon(sideX, frontY, color, false);
 		}
 		
-		// top face
-		if (top) {
+		if (side[TOP]) {
 			topX = new double[] {leftTopX, rightTopX, rightTopX, leftTopX};
 			topY = new double[] {backTopY, backTopY, frontTopY, frontTopY};
 			painter.drawPolygon(topX, topY, color, false);
@@ -59,16 +75,30 @@ class MapPainter {
 		
 		// outline
 		
-		// right face
-		if (right)
-			painter.drawPolygon(rightX, rightY, Color.WHITE, true);
+		if (side[LEFT])
+			painter.drawPolygon(leftX, sideY, Color.WHITE, true);
 		
-		// front face
-		if (front)
-			painter.drawPolygon(frontX, frontY, Color.WHITE, true);
+		if (side[RIGHT])
+			painter.drawPolygon(rightX, sideY, Color.WHITE, true);
 		
-		// top face
-		if (top)
+		if (side[BACK])
+			painter.drawPolygon(sideX, backY, Color.WHITE, true);
+		
+		if (side[FRONT])
+			painter.drawPolygon(sideX, frontY, Color.WHITE, true);
+		
+		if (side[TOP])
 			painter.drawPolygon(topX, topY, Color.WHITE, true);
+	}
+	
+	private static double[] toPaintCoord(double x, double y, double z, double width, double height) {
+		coord = new double[4];
+		double stretchX = Engine.BLOCK_WIDTH + VIEW_STRETCH_Z * z;
+		double stretchY = Engine.BLOCK_HEIGHT + VIEW_STRETCH_Z * z;
+		coord[0] = (x - Engine.VIEW_WIDTH / 2.) * stretchX + .5;
+		coord[1] = (y - Engine.VIEW_HEIGHT / 2.) * stretchY + .5;
+		coord[2] = width * stretchX;
+		coord[3] = height * stretchY;
+		return coord;
 	}
 }

@@ -25,6 +25,7 @@ class Character {
 	}
 	
 	void draw(double scrollX, double scrollY) {
-		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, true, true, true, Color.BLUE);
+		boolean[] side = new boolean[] {true, true, true, true, true, true};
+		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, side, Color.BLUE);
 	}
 }
