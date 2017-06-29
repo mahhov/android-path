@@ -14,8 +14,8 @@ class World {
 	
 	void update(Controller controller) {
 		if (controller.isDown())
-			character.setMoveGoal(controller.touchX * Engine.VIEW_WIDTH, controller.touchY * Engine.VIEW_HEIGHT);
-			character.move();
+			character.setMoveGoal(controller.touchX * Engine.VIEW_WIDTH + map.scrollX, controller.touchY * Engine.VIEW_HEIGHT + map.scrollY);
+		character.move();
 		map.scroll(character.x, character.y);
 	}
 	
