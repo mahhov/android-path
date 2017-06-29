@@ -20,4 +20,16 @@ class Util {
 	static double minMax(double value, double min, double max) {
 		return value < min ? min : value > max ? max : value;
 	}
+	
+	static int min(int a, int b) {
+		if (a < b)
+			return a;
+		return b;
+	}
+	
+	static int max(int a, int b) {
+		if (a > b)
+			return a;
+		return b;
+	}
 }

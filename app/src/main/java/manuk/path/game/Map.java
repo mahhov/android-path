@@ -14,7 +14,7 @@ class Map {
 		this.length = length;
 		this.height = height;
 		//		map = new int[width][length][height];
-		map = MapGenerator.GenerateWalledMap(width, length, height);
+		map = MapGenerator.GenerateCavernMap(width, length, height);
 		
 		this.shadow = new boolean[width][length];
 		boolean shadow;

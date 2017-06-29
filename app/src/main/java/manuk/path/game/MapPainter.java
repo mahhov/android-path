@@ -5,7 +5,7 @@ import android.graphics.Color;
 class MapPainter {
 	private static Painter painter;
 	static final int LEFT = 0, RIGHT = 1, BACK = 2, FRONT = 3, BOTTOM = 4, TOP = 5;
-	private static final double VIEW_STRETCH_Z = Engine.BLOCK_WIDTH / 10;
+	private static final double VIEW_STRETCH_Z = Engine.BLOCK_WIDTH / 10 * 0;
 	
 	// local variables, defined here to avoid allocation
 	private static double[] bottomCoord, topCoord;

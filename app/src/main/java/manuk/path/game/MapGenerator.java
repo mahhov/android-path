@@ -85,6 +85,35 @@ class MapGenerator {
 		return map;
 	}
 	
+	static int[][][] GenerateCavernMap(int width, int length, int height) {
+		int[][][] map = new int[width][length][height];
+		int n = 5;
+		
+		for (int x = 0; x < width; x++)
+			for (int y = 0; y < length; y++)
+				if (randFlip())
+					map[x][y][0] = 1;
+		
+		for (int z = 0; z <= n; z++)
+			for (int x = 0; x < width; x++)
+				for (int y = 0; y < length; y++) {
+					int count = 0;
+					for (int xx = Util.max(x - 1, 0); xx <= Util.min(x + 1, width - 1); xx++)
+						for (int yy = Util.max(y - 1, 0); yy <= Util.min(y + 1, length - 1); yy++)
+							if (map[xx][yy][z] == 1)
+								count++;
+					if (count >= 5)
+						map[x][y][z + 1] = 1;
+				}
+		
+		int[][][] map2 = new int[width][length][height];
+		for (int x = 0; x < width; x++)
+			for (int y = 0; y < length; y++)
+				map2[x][y][0] = map[x][y][1];
+		
+		return map2;
+	}
+	
 	private static int randInt(int min, int max) {
 		return (int) (Math.random() * (max - min) + min);
 	}
