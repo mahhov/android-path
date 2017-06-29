@@ -70,3 +70,5 @@ public class Engine implements Runnable {
 // todo: move engine map constants to MapPainter
 // todo: control
 // todo: random map generation
+// todo: fix side darwing of character
+// todo: shades to map drawing
