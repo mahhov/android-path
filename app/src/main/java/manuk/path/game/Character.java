@@ -8,8 +8,8 @@ class Character {
 	private double goalX, goalY;
 	
 	Character() {
-		goalX = x = 5;
-		goalY = y = 5;
+		goalX = x = MapGenerator.startX;
+		goalY = y = MapGenerator.startY;
 	}
 	
 	void move(Controller controller, Map map) {

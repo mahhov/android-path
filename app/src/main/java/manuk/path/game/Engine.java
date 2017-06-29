@@ -6,7 +6,7 @@ import android.view.View;
 public class Engine implements Runnable {
 	static final int MAP_WIDTH = 100, MAP_LENGTH = 100, MAP_HEIGHT = 10;
 	static final int VIEW_RATIO = 1;
-	static final int VIEW_WIDTH = 100, VIEW_HEIGHT = VIEW_WIDTH * VIEW_RATIO;
+	static final int VIEW_WIDTH = 50, VIEW_HEIGHT = VIEW_WIDTH * VIEW_RATIO;
 	static final double BLOCK_WIDTH = 1. / VIEW_WIDTH, BLOCK_HEIGHT = 1. / VIEW_HEIGHT;
 	private boolean running = true;
 	private SurfaceHolder surfaceHolder;

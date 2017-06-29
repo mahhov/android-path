@@ -9,7 +9,7 @@ class LList<T> implements Iterable<T> {
 		head = tail = new Node(null, null, null);
 	}
 	
-	void add(T elem) {
+	void addHead(T elem) {
 		head = new Node(elem, head, null);
 		head.prev.next = head;
 	}
@@ -18,6 +18,10 @@ class LList<T> implements Iterable<T> {
 		tail = tail.next;
 		tail.prev = null;
 		return tail.elem;
+	}
+	
+	boolean isEmpty() {
+		return tail == head;
 	}
 	
 	public Iterator<T> iterator() {

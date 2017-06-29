@@ -8,8 +8,8 @@ class World {
 	private Character character;
 	
 	World(int width, int length, int height) {
-		character = new Character();
 		map = new Map(width, length, height);
+		character = new Character();
 	}
 	
 	void update(Controller controller) {
