@@ -14,7 +14,7 @@ class Map {
 		this.length = length;
 		this.height = height;
 		//		map = new int[width][length][height];
-		map = MapGenerator.GenerateRandomMap(width, length, height);
+		map = MapGenerator.GenerateWalledMap(width, length, height);
 		
 		this.shadow = new boolean[width][length];
 		boolean shadow;
@@ -47,8 +47,8 @@ class Map {
 		boolean side[] = new boolean[6];
 		int startX = (int) scrollX;
 		int startY = (int) scrollY;
-		int endX = startX + Engine.VIEW_WIDTH + 1;
-		int endY = startY + Engine.VIEW_HEIGHT + 1;
+		int endX = startX + Engine.VIEW_WIDTH + 0;
+		int endY = startY + Engine.VIEW_HEIGHT + 0;
 		int midX = startX + Engine.VIEW_WIDTH / 2;
 		int midY = startY + Engine.VIEW_HEIGHT / 2;
 		
