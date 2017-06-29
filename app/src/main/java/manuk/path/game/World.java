@@ -19,8 +19,8 @@ class World {
 	
 	void draw(Painter painter) {
 		painter.drawRect(0, 0, 1, 1, Color.WHITE);
-		map.draw(painter);
-		character.draw(painter, map.scrollX, map.scrollY);
+		map.draw();
+		character.draw(map.scrollX, map.scrollY);
 		
 		if (gameOver) {
 			painter.drawText("GAME OVER :(", .5, .5, Color.GREEN);

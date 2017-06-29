@@ -17,6 +17,7 @@ public class Engine implements Runnable {
 	public Engine(SurfaceHolder surfaceHolder, int screenWidth, int screenHeight) {
 		this.surfaceHolder = surfaceHolder;
 		painter = new Painter(screenWidth, screenWidth * VIEW_RATIO, screenWidth, screenHeight);
+		MapPainter.setPainter(painter);
 		controller = new Controller(screenWidth, screenWidth * VIEW_RATIO, screenWidth, screenHeight);
 		createWorld();
 	}

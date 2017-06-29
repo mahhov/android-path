@@ -4,8 +4,13 @@ import android.graphics.Color;
 
 class MapPainter {
 	private static final double Z_SHIFT_X = 1. / 3, Z_SHIFT_Y = 1. / 6;
+	private static Painter painter;
 	
-	static void drawFlat(Painter painter, double cx, double cy, double z, int color) {
+	static void setPainter(Painter painter) {
+		MapPainter.painter = painter;
+	}
+	
+	static void drawFlat(double cx, double cy, double z, int color) {
 		double x = (cx - Z_SHIFT_X * z) / Engine.VIEW_WIDTH - Engine.BLOCK_HEIGHT / 2;
 		double y = (cy - Z_SHIFT_Y * z) / Engine.VIEW_HEIGHT - Engine.BLOCK_WIDTH / 2;
 		painter.drawRect(cx, cy, Engine.BLOCK_WIDTH, Engine.BLOCK_HEIGHT, color);
@@ -14,7 +19,7 @@ class MapPainter {
 	static double topZ, leftBottomX, leftTopX, rightBottomX, rightTopX, backBottomY, backTopY, frontBottomY, frontTopY;
 	static double[] rightX = null, rightY = null, frontX = null, frontY = null, topX = null, topY = null, bottomX = null, bottomY = null;
 	
-	static void drawBlock(Painter painter, double x, double y, double z, boolean right, boolean front, boolean top, int color) {
+	static void drawBlock(double x, double y, double z, boolean right, boolean front, boolean top, int color) {
 		topZ = z + 1;
 		
 		// x

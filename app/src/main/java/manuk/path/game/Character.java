@@ -22,7 +22,7 @@ class Character {
 		y += movement[1];
 	}
 	
-	void draw(Painter painter, double scrollX, double scrollY) {
-		MapPainter.drawBlock(painter, x - scrollX - .5, y - scrollY - .5, 0, true, true, true, Color.BLUE);
+	void draw(double scrollX, double scrollY) {
+		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, true, true, true, Color.BLUE);
 	}
 }

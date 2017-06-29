@@ -15,7 +15,7 @@ class Map {
 		map = new int[width][length][height];
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < length; y++)
-				for (int z = 0; z < 1; z++)
+				for (int z = 0; z < height; z++)
 					if (Math.random() > .95)
 						map[x][y][z] = 1;
 	}
@@ -26,10 +26,10 @@ class Map {
 	}
 	
 	private boolean isEmpty(int x, int y, int z, int startX, int endX, int startY, int endY) {
-		return x >= 0 && x < width && y >= 0 && y < length && z >= 0 && z < height && map[x][y][z] == 0;
+		return !(x >= 0 && x < width && y >= 0 && y < length && z >= 0 && z < height) || map[x][y][z] == 0;
 	}
 	
-	void draw(Painter painter) {
+	void draw() {
 		boolean top, front, right;
 		
 		int startX = (int) scrollX;
@@ -45,7 +45,7 @@ class Map {
 						front = isEmpty(x, y + 1, z, startX, endX, startY, endY);
 						top = isEmpty(x, y, z + 1, startX, endX, startY, endY);
 						
-						MapPainter.drawBlock(painter, x - scrollX, y - scrollY, z, right, front, top, Color.GRAY);
+						MapPainter.drawBlock(x - scrollX, y - scrollY, z, right, front, top, Color.GRAY);
 					}
 	}
 }
