@@ -3,6 +3,7 @@ package manuk.path.game;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.view.SurfaceHolder;
 
 class Painter {
@@ -47,6 +48,23 @@ class Painter {
 	
 	void drawRect(double x, double y, double width, double height, int color) {
 		drawRect(x, y, width, height, color, false);
+	}
+	
+	void drawPolygon(double[] x, double[] y, int color, boolean frame) {
+		paint.setColor(color);
+		if (frame)
+			paint.setStyle(Paint.Style.STROKE);
+		else
+			paint.setStyle(Paint.Style.FILL);
+		
+		Path path = new Path();
+		float startX = (float) (shiftX + x[0] * this.width);
+		float startY = (float) (shiftY + y[0] * this.height);
+		path.moveTo(startX, startY);
+		for (int i = 1; i < x.length; i++)
+			path.lineTo((float) (shiftX + x[i] * this.width), (float) (shiftY + y[i] * this.height));
+		path.lineTo(startX, startY);
+		canvas.drawPath(path, paint);
 	}
 	
 	void drawText(String text, double x, double y, int color) {
