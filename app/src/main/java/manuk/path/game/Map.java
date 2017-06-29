@@ -13,17 +13,20 @@ class Map {
 		this.width = width;
 		this.length = length;
 		this.height = height;
-		map = new int[width][length][height];
+		//		map = new int[width][length][height];
+		map = MapGenerator.GenerateRandomMap(width, length, height);
+		
 		this.shadow = new boolean[width][length];
+		boolean shadow;
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < length; y++) {
-				boolean shadow = false;
-				for (int z = height - 1; z >= 0; z--)
-					if (Math.random() > .98) {
-						map[x][y][z] = 1;
+				shadow = false;
+				for (int z = height - 1; z > 0; z--)
+					if (map[x][y][z] == 1) {
 						shadow = true;
-					} else if (z == 0)
-						this.shadow[x][y] = shadow;
+						break;
+					}
+				this.shadow[x][y] = shadow;
 			}
 	}
 	

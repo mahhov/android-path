@@ -67,7 +67,6 @@ public class Engine implements Runnable {
 }
 
 // todo: character movement collision slide
-// todo: texture to drawing
 // todo: move engine map constants to MapPainter
-// todo: joystick movement control
+// todo: control
 // todo: random map generation
