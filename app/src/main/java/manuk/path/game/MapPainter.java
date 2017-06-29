@@ -10,10 +10,10 @@ class MapPainter {
 		MapPainter.painter = painter;
 	}
 	
-	static void drawFlat(double cx, double cy, double z, int color) {
-		double x = (cx - Z_SHIFT_X * z) / Engine.VIEW_WIDTH - Engine.BLOCK_HEIGHT / 2;
-		double y = (cy - Z_SHIFT_Y * z) / Engine.VIEW_HEIGHT - Engine.BLOCK_WIDTH / 2;
-		painter.drawRect(cx, cy, Engine.BLOCK_WIDTH, Engine.BLOCK_HEIGHT, color);
+	static void drawFlat(double x, double y, double z, int color) {
+		x = (x - Z_SHIFT_X * z) / Engine.VIEW_WIDTH;
+		y = (y - Z_SHIFT_Y * z) / Engine.VIEW_HEIGHT;
+		painter.drawRect(x, y, Engine.BLOCK_WIDTH, Engine.BLOCK_HEIGHT, color);
 	}
 	
 	static double topZ, leftBottomX, leftTopX, rightBottomX, rightTopX, backBottomY, backTopY, frontBottomY, frontTopY;

@@ -6,6 +6,7 @@ class Map {
 	private static final double SCROLL_WEIGHT = .2;
 	private final int width, length, height;
 	private int[][][] map;
+	private boolean[][] shadow;
 	double scrollX, scrollY;
 	
 	Map(int width, int length, int height) {
@@ -13,11 +14,17 @@ class Map {
 		this.length = length;
 		this.height = height;
 		map = new int[width][length][height];
+		this.shadow = new boolean[width][length];
 		for (int x = 0; x < width; x++)
-			for (int y = 0; y < length; y++)
-				for (int z = 0; z < height; z++)
-					if (Math.random() > .95)
+			for (int y = 0; y < length; y++) {
+				boolean shadow = false;
+				for (int z = height - 1; z >= 0; z--)
+					if (Math.random() > .95) {
 						map[x][y][z] = 1;
+						shadow = true;
+					} else if (z == 0)
+						this.shadow[x][y] = shadow;
+			}
 	}
 	
 	void scroll(double toX, double toY) {
@@ -31,11 +38,15 @@ class Map {
 	
 	void draw() {
 		boolean top, front, right;
-		
 		int startX = (int) scrollX;
 		int startY = (int) scrollY;
 		int endX = startX + Engine.VIEW_WIDTH + 1;
 		int endY = startY + Engine.VIEW_HEIGHT + 1;
+		
+		for (int x = startX; x < endX; x++)
+			for (int y = (int) scrollY; y < endY; y++)
+				if (shadow[x][y])
+					MapPainter.drawFlat(x - scrollX, y - scrollY, 0, Color.LTGRAY);
 		
 		for (int z = 0; z < height; z++)
 			for (int x = startX; x < endX; x++)
