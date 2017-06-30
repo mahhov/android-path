@@ -36,7 +36,7 @@ class MapPainter {
 		painter.drawRect(bottomCoord[0], bottomCoord[1], bottomCoord[2], bottomCoord[3], color);
 	}
 	
-	static void drawBlock(double x, double y, double z, boolean[] side, int color) {
+	static void drawBlock(double x, double y, double z, boolean[] side) {
 		bottomCoord = toPaintCoord(x, y, z, 1, 1);
 		topCoord = toPaintCoord(x, y, z + 1, 1, 1);
 		
@@ -85,23 +85,6 @@ class MapPainter {
 			topY = new double[] {backTopY, backTopY, frontTopY, frontTopY};
 			painter.drawPolygon(topX, topY, MAP_COLOR[TOP], false);
 		}
-		
-		// outline
-		
-		if (side[LEFT])
-			painter.drawPolygon(leftX, sideY, Color.WHITE, true);
-		
-		if (side[RIGHT])
-			painter.drawPolygon(rightX, sideY, Color.WHITE, true);
-		
-		if (side[BACK])
-			painter.drawPolygon(sideX, backY, Color.WHITE, true);
-		
-		if (side[FRONT])
-			painter.drawPolygon(sideX, frontY, Color.WHITE, true);
-		
-		if (side[TOP])
-			painter.drawPolygon(topX, topY, Color.WHITE, true);
 	}
 	
 	private static double[] toPaintCoord(double x, double y, double z, double width, double height) {

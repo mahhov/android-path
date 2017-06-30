@@ -1,6 +1,5 @@
 package manuk.path.game;
 
-import android.graphics.Color;
 import manuk.path.game.mapgenerator.MapGenerator;
 
 class Character {
@@ -27,6 +26,6 @@ class Character {
 	
 	void draw(double scrollX, double scrollY) {
 		boolean[] side = new boolean[] {true, true, true, true, true, true};
-		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, side, Color.BLUE);
+		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, side);
 	}
 }

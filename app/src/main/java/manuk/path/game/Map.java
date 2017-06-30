@@ -68,7 +68,7 @@ class Map {
 						side[MapPainter.FRONT] = y < midY && isEmpty(x, y + 1, z, startX, endX, startY, endY);
 						side[MapPainter.TOP] = isEmpty(x, y, z + 1, startX, endX, startY, endY);
 						
-						MapPainter.drawBlock(x - scrollX, y - scrollY, z, side, Color.LTGRAY);
+						MapPainter.drawBlock(x - scrollX, y - scrollY, z, side);
 					}
 	}
 }
