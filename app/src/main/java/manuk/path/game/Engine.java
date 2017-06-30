@@ -76,10 +76,10 @@ public class Engine implements Runnable {
 	}
 }
 
-// todo: character movement collision slide
 // todo: move engine map constants to MapPainter
 // todo: control 2 finger tab
 // todo: better random map generation
 // todo: fix side darwing of character
 // todo: lighting and shadow
 // todo: zoom in / out
+// smooth edge scrolling

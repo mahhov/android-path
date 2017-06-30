@@ -17,7 +17,7 @@ class MapPainter {
 	static void init(Painter painter) {
 		MapPainter.painter = painter;
 		int red = 6, green = 12, blue = 6;
-		int i = 1;
+		int i = 2;
 		MAP_COLOR[FRONT] = Color.rgb(red * i, green * i, blue * i);
 		i++;
 		MAP_COLOR[TOP] = Color.rgb(red * i, green * i, blue * i);
