@@ -1,7 +1,7 @@
 package manuk.path.game.mapgenerator;
 
 import manuk.path.game.util.LList;
-import manuk.path.game.util.Math;
+import manuk.path.game.util.Math3D;
 
 public class CavernMapGenerator extends MapGenerator {
 	
@@ -20,8 +20,8 @@ public class CavernMapGenerator extends MapGenerator {
 			for (int x = 0; x < width; x++)
 				for (int y = 0; y < length; y++) {
 					int count = 0;
-					for (int xx = Math.max(x - 1, 0); xx <= Math.min(x + 1, width - 1); xx++)
-						for (int yy = Math.max(y - 1, 0); yy <= Math.min(y + 1, length - 1); yy++)
+					for (int xx = Math3D.max(x - 1, 0); xx <= Math3D.min(x + 1, width - 1); xx++)
+						for (int yy = Math3D.max(y - 1, 0); yy <= Math3D.min(y + 1, length - 1); yy++)
 							if (mapTemp[xx][yy][z] == 1)
 								count++;
 					if (count >= 5)

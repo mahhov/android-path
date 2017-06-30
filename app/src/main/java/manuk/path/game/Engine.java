@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.view.SurfaceHolder;
 import android.view.View;
 import manuk.path.game.util.Frames;
-import manuk.path.game.util.Math;
 
 public class Engine implements Runnable {
 	static final int MAP_WIDTH = 100, MAP_LENGTH = MAP_WIDTH, MAP_HEIGHT = 3;

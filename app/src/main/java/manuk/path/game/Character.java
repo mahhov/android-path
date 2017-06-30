@@ -1,7 +1,7 @@
 package manuk.path.game;
 
 import manuk.path.game.mapgenerator.MapGenerator;
-import manuk.path.game.util.Math;
+import manuk.path.game.util.Math3D;
 
 class Character {
 	private double speed = .5;
@@ -18,11 +18,12 @@ class Character {
 			goalX = controller.touchX * Engine.VIEW_WIDTH + map.scrollX;
 			goalY = controller.touchY * Engine.VIEW_HEIGHT + map.scrollY;
 		}
-		double[] movement = Math.setMagnitudeMax(goalX - x, goalY - y, speed);
-		if (map.isMoveable((int) (x + movement[0]), (int) (y + movement[1]), 0)) {
-			x += movement[0];
-			y += movement[1];
-		}
+		
+		double deltaX = goalX - x, deltaY = goalY - y;
+		double dist = Math3D.min(speed, Math3D.magnitude(deltaX, deltaY));
+		double[] intersection = map.intersectionFinder.find(new double[] {x, y}, new double[] {deltaX, deltaY}, dist, true);
+		x = intersection[0];
+		y = intersection[1];
 	}
 	
 	void draw(double scrollX, double scrollY) {

@@ -2,14 +2,16 @@ package manuk.path.game;
 
 import android.graphics.Color;
 import manuk.path.game.mapgenerator.MapGenerator;
-import manuk.path.game.util.Math;
+import manuk.path.game.util.IntersectionFinder;
+import manuk.path.game.util.Math3D;
 
-class Map {
+public class Map {
 	private static final double SCROLL_WEIGHT = .2;
-	private final int width, length, height;
+	public final int width, length, height;
 	private int[][][] map;
 	private boolean[][] shadow;
 	double scrollX, scrollY;
+	IntersectionFinder intersectionFinder;
 	
 	Map(int width, int length, int height, MapGenerator mapGenerator) {
 		this.width = width;
@@ -29,27 +31,33 @@ class Map {
 					}
 				this.shadow[x][y] = shadow;
 			}
+		
+		intersectionFinder = new IntersectionFinder(this);
 	}
 	
 	void scroll(double toX, double toY) {
-		scrollX = Math.minMax(scrollX + (toX - Engine.VIEW_WIDTH / 2 - scrollX) * SCROLL_WEIGHT, 0, width - Engine.VIEW_WIDTH);
-		scrollY = Math.minMax(scrollY + (toY - Engine.VIEW_HEIGHT / 2 - scrollY) * SCROLL_WEIGHT, 0, length - Engine.VIEW_WIDTH);
+		scrollX = Math3D.minMax(scrollX + (toX - Engine.VIEW_WIDTH / 2 - scrollX) * SCROLL_WEIGHT, 0, width - Engine.VIEW_WIDTH);
+		scrollY = Math3D.minMax(scrollY + (toY - Engine.VIEW_HEIGHT / 2 - scrollY) * SCROLL_WEIGHT, 0, length - Engine.VIEW_WIDTH);
 	}
 	
-	private boolean isEmpty(int x, int y, int z, int startX, int endX, int startY, int endY) {
-		return !(x >= 0 && x < width && y >= 0 && y < length && z >= 0 && z < height) || map[x][y][z] == 0;
+	public boolean isInBounds(int x, int y, int z) {
+		return x >= 0 && x < width && y >= 0 && y < length && z >= 0 && z < height;
 	}
 	
-	boolean isMoveable(int x, int y, int z) {
-		return x >= 0 && x < width && y >= 0 && y < length && z >= 0 && z < height && map[x][y][z] == 0;
+	public boolean isEmpty(int x, int y, int z) {
+		return !isInBounds(x, y, z) || map[x][y][z] == 0;
+	}
+	
+	public boolean isMoveable(int x, int y, int z) {
+		return isInBounds(x, y, z) && map[x][y][z] == 0;
 	}
 	
 	void draw() {
 		boolean side[] = new boolean[6];
 		int startX = (int) scrollX;
 		int startY = (int) scrollY;
-		int endX = Math.min(startX + Engine.VIEW_WIDTH + 1, width);
-		int endY = Math.min(startY + Engine.VIEW_HEIGHT + 1, length);
+		int endX = Math3D.min(startX + Engine.VIEW_WIDTH + 1, width);
+		int endY = Math3D.min(startY + Engine.VIEW_HEIGHT + 1, length);
 		int midX = startX + Engine.VIEW_WIDTH / 2;
 		int midY = startY + Engine.VIEW_HEIGHT / 2;
 		
@@ -63,11 +71,11 @@ class Map {
 			for (int x = startX; x < endX; x++)
 				for (int y = (int) scrollY; y < endY; y++)
 					if (map[x][y][z] == 1) {
-						side[MapPainter.LEFT] = x > midX && isEmpty(x - 1, y, z, startX, endX, startY, endY);
-						side[MapPainter.RIGHT] = x < midX && isEmpty(x + 1, y, z, startX, endX, startY, endY);
-						side[MapPainter.BACK] = y > midY && isEmpty(x, y - 1, z, startX, endX, startY, endY);
-						side[MapPainter.FRONT] = y < midY && isEmpty(x, y + 1, z, startX, endX, startY, endY);
-						side[MapPainter.TOP] = isEmpty(x, y, z + 1, startX, endX, startY, endY);
+						side[MapPainter.LEFT] = x > midX && isEmpty(x - 1, y, z);
+						side[MapPainter.RIGHT] = x < midX && isEmpty(x + 1, y, z);
+						side[MapPainter.BACK] = y > midY && isEmpty(x, y - 1, z);
+						side[MapPainter.FRONT] = y < midY && isEmpty(x, y + 1, z);
+						side[MapPainter.TOP] = isEmpty(x, y, z + 1);
 						
 						MapPainter.drawBlock(x - scrollX, y - scrollY, z, side);
 					}
