@@ -3,6 +3,8 @@ package manuk.path.game;
 import android.graphics.Color;
 import android.view.SurfaceHolder;
 import android.view.View;
+import manuk.path.game.util.Frames;
+import manuk.path.game.util.Math;
 
 public class Engine implements Runnable {
 	static final int MAP_WIDTH = 100, MAP_LENGTH = MAP_WIDTH, MAP_HEIGHT = 3;
@@ -11,7 +13,7 @@ public class Engine implements Runnable {
 	static final double BLOCK_WIDTH = 1. / VIEW_WIDTH, BLOCK_HEIGHT = 1. / VIEW_HEIGHT;
 	
 	private SurfaceHolder surfaceHolder;
-	private Util.Frames frames;
+	private Frames frames;
 	
 	private Painter painter;
 	private Controller controller;
@@ -58,7 +60,7 @@ public class Engine implements Runnable {
 	}
 	
 	public void run() {
-		frames = new Util.Frames();
+		frames = new Frames();
 		while (frames.running) {
 			if (!world.gameOver)
 				update();

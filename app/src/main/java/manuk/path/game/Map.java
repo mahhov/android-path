@@ -2,6 +2,7 @@ package manuk.path.game;
 
 import android.graphics.Color;
 import manuk.path.game.mapgenerator.MapGenerator;
+import manuk.path.game.util.Math;
 
 class Map {
 	private static final double SCROLL_WEIGHT = .2;
@@ -31,8 +32,8 @@ class Map {
 	}
 	
 	void scroll(double toX, double toY) {
-		scrollX = Util.minMax(scrollX + (toX - Engine.VIEW_WIDTH / 2 - scrollX) * SCROLL_WEIGHT, 0, width - Engine.VIEW_WIDTH);
-		scrollY = Util.minMax(scrollY + (toY - Engine.VIEW_HEIGHT / 2 - scrollY) * SCROLL_WEIGHT, 0, length - Engine.VIEW_WIDTH);
+		scrollX = Math.minMax(scrollX + (toX - Engine.VIEW_WIDTH / 2 - scrollX) * SCROLL_WEIGHT, 0, width - Engine.VIEW_WIDTH);
+		scrollY = Math.minMax(scrollY + (toY - Engine.VIEW_HEIGHT / 2 - scrollY) * SCROLL_WEIGHT, 0, length - Engine.VIEW_WIDTH);
 	}
 	
 	private boolean isEmpty(int x, int y, int z, int startX, int endX, int startY, int endY) {
@@ -47,8 +48,8 @@ class Map {
 		boolean side[] = new boolean[6];
 		int startX = (int) scrollX;
 		int startY = (int) scrollY;
-		int endX = Util.min(startX + Engine.VIEW_WIDTH + 1, width);
-		int endY = Util.min(startY + Engine.VIEW_HEIGHT + 1, length);
+		int endX = Math.min(startX + Engine.VIEW_WIDTH + 1, width);
+		int endY = Math.min(startY + Engine.VIEW_HEIGHT + 1, length);
 		int midX = startX + Engine.VIEW_WIDTH / 2;
 		int midY = startY + Engine.VIEW_HEIGHT / 2;
 		

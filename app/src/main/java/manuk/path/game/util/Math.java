@@ -1,8 +1,8 @@
-package manuk.path.game;
+package manuk.path.game.util;
 
-public class Util {
+public class Math {
 	public static double magnitude(double x, double y) {
-		return Math.sqrt(x * x + y * y);
+		return java.lang.Math.sqrt(x * x + y * y);
 	}
 	
 	public static double[] setMagnitude(double x, double y, double mag) {
@@ -31,27 +31,5 @@ public class Util {
 		if (a > b)
 			return a;
 		return b;
-	}
-	
-	public static class Frames {
-		boolean running;
-		private long start, current;
-		private int fps;
-		private int frameCount;
-		
-		Frames() {
-			running = true;
-		}
-		
-		int getFPS() {
-			frameCount++;
-			current = System.currentTimeMillis();
-			if (current - start > 1000) {
-				start = current;
-				fps = frameCount;
-				frameCount = 0;
-			}
-			return fps;
-		}
 	}
 }

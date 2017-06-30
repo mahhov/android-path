@@ -1,4 +1,4 @@
-package manuk.path.game;
+package manuk.path.game.util;
 
 import java.util.Iterator;
 

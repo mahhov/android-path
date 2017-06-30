@@ -1,6 +1,7 @@
 package manuk.path.game;
 
 import manuk.path.game.mapgenerator.MapGenerator;
+import manuk.path.game.util.Math;
 
 class Character {
 	private double speed = .5;
@@ -17,7 +18,7 @@ class Character {
 			goalX = controller.touchX * Engine.VIEW_WIDTH + map.scrollX;
 			goalY = controller.touchY * Engine.VIEW_HEIGHT + map.scrollY;
 		}
-		double[] movement = Util.setMagnitudeMax(goalX - x, goalY - y, speed);
+		double[] movement = Math.setMagnitudeMax(goalX - x, goalY - y, speed);
 		if (map.isMoveable((int) (x + movement[0]), (int) (y + movement[1]), 0)) {
 			x += movement[0];
 			y += movement[1];
