@@ -1,5 +1,8 @@
 package manuk.path.game.util;
 
+import android.graphics.Color;
+import manuk.path.game.Painter;
+
 public class Frames {
 	public boolean running;
 	private long start, current;
@@ -19,5 +22,10 @@ public class Frames {
 			frameCount = 0;
 		}
 		return fps;
+	}
+	
+	public void draw(Painter painter) {
+		double[] xy = painter.convertFromAbsolute(70, 50);
+		painter.drawText("fps: " + getFPS(), xy[0], xy[1], Color.GREEN);
 	}
 }

@@ -59,7 +59,7 @@ public class Engine implements Runnable {
 	private void draw() {
 		painter.prep(surfaceHolder);
 		world.draw(painter);
-		drawFps();
+		frames.draw(painter);
 		painter.post();
 	}
 	

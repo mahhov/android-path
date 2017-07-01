@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.view.SurfaceHolder;
 
-class Painter {
+public class Painter {
 	private Paint paint;
 	private int width, height, shiftX, shiftY;
 	private SurfaceHolder surfaceHolder;
@@ -33,7 +33,7 @@ class Painter {
 		surfaceHolder.unlockCanvasAndPost(canvas);
 	}
 	
-	double[] convertFromAbsolute(double x, double y) {
+	public double[] convertFromAbsolute(double x, double y) {
 		return new double[] {(x - shiftX) / width + shiftX, (y - shiftY) / height};
 	}
 	
@@ -71,7 +71,7 @@ class Painter {
 		canvas.drawPath(path, paint);
 	}
 	
-	void drawText(String text, double x, double y, int color) {
+	public void drawText(String text, double x, double y, int color) {
 		paint.setColor(color);
 		float left = (float) (shiftX + x * this.width);
 		float top = (float) (shiftY + y * this.height);
