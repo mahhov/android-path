@@ -22,7 +22,6 @@ public class Engine implements Runnable {
 	}
 	
 	public void setupSurface(SurfaceView surfaceView, SurfaceHolder surfaceHolder) {
-		
 		createWorld();
 		
 		Canvas canvas = surfaceHolder.lockCanvas();
@@ -54,7 +53,7 @@ public class Engine implements Runnable {
 		world.draw(painter);
 		painter.post();
 		frames.draw(painter);
-		painter.end();;
+		painter.end();
 	}
 	
 	private void sleep(long duration) {

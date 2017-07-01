@@ -38,7 +38,7 @@ public class CavernMapGenerator extends MapGenerator {
 			return generate(width, length, height);
 		
 		// check if spawn has minimum flood space
-		int minSpace = width * length / 10;
+		int minSpace = width * length / 5;
 		LList<Pos> search = new LList<>();
 		search.addHead(new Pos(startX, startY));
 		mapTemp[startY][startY][n] = 2;
@@ -62,6 +62,8 @@ public class CavernMapGenerator extends MapGenerator {
 			}
 			minSpace--;
 		}
+		if (minSpace > 0) 
+			return generate(width, length, height);
 		
 		// transfer to final map
 		map = new int[width][length][height];
