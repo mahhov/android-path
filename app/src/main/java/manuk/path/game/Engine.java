@@ -52,8 +52,9 @@ public class Engine implements Runnable {
 	private void draw() {
 		painter.prep(surfaceHolder);
 		world.draw(painter);
-		frames.draw(painter);
 		painter.post();
+		frames.draw(painter);
+		painter.end();;
 	}
 	
 	private void sleep(long duration) {
@@ -81,8 +82,6 @@ public class Engine implements Runnable {
 		frames.running = false;
 	}
 }
-
-// todo: smooth edge scrolling
 
 // todo: control 2 finger tap
 // todo: better random map generation - bug with isolated mini areas

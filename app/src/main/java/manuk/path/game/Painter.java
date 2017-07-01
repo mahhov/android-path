@@ -8,6 +8,8 @@ import android.view.SurfaceHolder;
 import manuk.path.game.util.Measurements;
 
 public class Painter {
+	private static final int OUT_COLOR = Color.rgb(100, 100, 100);
+	
 	private Paint paint;
 	private SurfaceHolder surfaceHolder;
 	private Canvas canvas;
@@ -21,11 +23,16 @@ public class Painter {
 	void prep(SurfaceHolder surfaceHolder) {
 		this.surfaceHolder = surfaceHolder;
 		canvas = surfaceHolder.lockCanvas();
-		canvas.drawRGB(100, 100, 100);
+		canvas.drawColor(OUT_COLOR);
 		drawRect(0, 0, 1, 1, Color.BLACK);
 	}
 	
 	void post() {
+		drawRect(0, -1, 1, 1, OUT_COLOR);
+		drawRect(0, 1, 1, 1, OUT_COLOR);
+	}
+	
+	void end() {
 		surfaceHolder.unlockCanvasAndPost(canvas);
 	}
 	
