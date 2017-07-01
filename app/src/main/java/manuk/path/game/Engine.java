@@ -82,8 +82,6 @@ public class Engine implements Runnable {
 	}
 }
 
-// todo: fix moving to edge of map bug
-// todo: move engine map constants to MapPainter
 // todo: smooth edge scrolling
 
 // todo: control 2 finger tap

@@ -97,6 +97,10 @@ public class IntersectionFinder {
 		
 		intx = (int) nextx;
 		inty = (int) nexty;
+		if (nextx < 0)
+			intx--;
+		if (nexty < 0)
+			inty--;
 	}
 	
 	private boolean collideCheck() {
