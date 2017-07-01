@@ -4,10 +4,14 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import manuk.path.game.util.Math3D;
 
 public class Controller implements View.OnTouchListener {
 	static final int UP = 0, DOWN = 1, PRESS = 2, RELEASE = 3;
+	static final double SCALE_MIN = .4, SCALE_MAX = 1.8;
+	
 	public double touchX, touchY;
+	public double scale;
 	private int width, height, shiftX, shiftY;
 	private int touch;
 	private ScaleGestureDetector scaleGestureDetector;
@@ -17,6 +21,7 @@ public class Controller implements View.OnTouchListener {
 		this.height = height;
 		shiftX = (fullWidth - width) / 2;
 		shiftY = (fullHeight - height) / 2;
+		scale = 1;
 		scaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
 	}
 	
@@ -49,13 +54,9 @@ public class Controller implements View.OnTouchListener {
 		return true;
 	}
 	
-	private static class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-		
-		public double scale = 1;
-		
+	private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 		public boolean onScale(ScaleGestureDetector detector) {
-			scale *= detector.getScaleFactor();
-			System.out.println(scale + " .. " + detector.getScaleFactor());
+			scale = Math3D.minMax(scale / detector.getScaleFactor(), SCALE_MIN, SCALE_MAX);
 			return true;
 		}
 	}

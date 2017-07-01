@@ -10,8 +10,8 @@ import manuk.path.game.util.Frames;
 public class Engine implements Runnable {
 	static final int MAP_WIDTH = 100, MAP_LENGTH = MAP_WIDTH, MAP_HEIGHT = 3;
 	static final int VIEW_RATIO = 1;
-	static final int VIEW_WIDTH = 30, VIEW_HEIGHT = VIEW_WIDTH * VIEW_RATIO;
-	static final double BLOCK_WIDTH = 1. / VIEW_WIDTH, BLOCK_HEIGHT = 1. / VIEW_HEIGHT;
+	static int VIEW_WIDTH = 30, VIEW_HEIGHT = VIEW_WIDTH * VIEW_RATIO;
+	static double BLOCK_WIDTH = 1. / VIEW_WIDTH, BLOCK_HEIGHT = 1. / VIEW_HEIGHT;
 	
 	private SurfaceHolder surfaceHolder;
 	private Frames frames;
@@ -46,7 +46,14 @@ public class Engine implements Runnable {
 	}
 	
 	private void update() {
+		setScale(controller.scale);
 		world.update(controller);
+	}
+	
+	private void setScale(double scale) {
+		double temp = 30 * scale;
+		VIEW_WIDTH = VIEW_HEIGHT = (int) (temp);
+		BLOCK_WIDTH = BLOCK_HEIGHT = 1. / (temp);
 	}
 	
 	private void draw() {
@@ -87,11 +94,11 @@ public class Engine implements Runnable {
 	}
 }
 
+// todo: fix moving to edge of map bug
 // todo: move engine map constants to MapPainter
+// todo: smooth edge scrolling
+
 // todo: control 2 finger tap
-// todo: better random map generation
+// todo: better random map generation - bug with isolated mini areas
 // todo: fix side darwing of character
 // todo: lighting and shadow
-// todo: zoom in / out
-// todo: smooth edge scrolling
-// todo: fix moving to edge of map bug
