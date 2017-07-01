@@ -5,18 +5,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.view.SurfaceHolder;
+import manuk.path.game.util.Measurements;
 
 public class Painter {
 	private Paint paint;
-	private int width, height, shiftX, shiftY;
 	private SurfaceHolder surfaceHolder;
 	private Canvas canvas;
 	
-	Painter(int width, int height, int fullWidth, int fullHeight) {
-		this.width = width;
-		this.height = height;
-		shiftX = (fullWidth - width) / 2;
-		shiftY = (fullHeight - height) / 2;
+	Painter() {
 		paint = new Paint();
 		paint.setTextSize(40);
 		paint.setTextAlign(Paint.Align.CENTER);
@@ -34,7 +30,7 @@ public class Painter {
 	}
 	
 	public double[] convertFromAbsolute(double x, double y) {
-		return new double[] {(x - shiftX) / width + shiftX, (y - shiftY) / height};
+		return new double[] {(x - Measurements.SCREEN_SHIFT_X) / Measurements.SCREEN_WIDTH + Measurements.SCREEN_SHIFT_X, (y - Measurements.SCREEN_SHIFT_Y) / Measurements.SCREEN_HEIGHT};
 	}
 	
 	void drawRect(double x, double y, double width, double height, int color, boolean frame) {
@@ -43,10 +39,10 @@ public class Painter {
 			paint.setStyle(Paint.Style.STROKE);
 		else
 			paint.setStyle(Paint.Style.FILL);
-		float left = (float) (shiftX + x * this.width);
-		float top = (float) (shiftY + y * this.height);
-		float right = (float) (left + width * this.width);
-		float bottom = (float) (top + height * this.height);
+		float left = (float) (Measurements.SCREEN_SHIFT_X + x * Measurements.SCREEN_WIDTH);
+		float top = (float) (Measurements.SCREEN_SHIFT_Y + y * Measurements.SCREEN_HEIGHT);
+		float right = (float) (left + width * Measurements.SCREEN_WIDTH);
+		float bottom = (float) (top + height * Measurements.SCREEN_HEIGHT);
 		canvas.drawRect(left, top, right, bottom, paint);
 	}
 	
@@ -62,19 +58,19 @@ public class Painter {
 			paint.setStyle(Paint.Style.FILL);
 		
 		Path path = new Path();
-		float startX = (float) (shiftX + x[0] * this.width);
-		float startY = (float) (shiftY + y[0] * this.height);
+		float startX = (float) (Measurements.SCREEN_SHIFT_X + x[0] * Measurements.SCREEN_WIDTH);
+		float startY = (float) (Measurements.SCREEN_SHIFT_Y + y[0] * Measurements.SCREEN_HEIGHT);
 		path.moveTo(startX, startY);
 		for (int i = 1; i < x.length; i++)
-			path.lineTo((float) (shiftX + x[i] * this.width), (float) (shiftY + y[i] * this.height));
+			path.lineTo((float) (Measurements.SCREEN_SHIFT_X + x[i] * Measurements.SCREEN_WIDTH), (float) (Measurements.SCREEN_SHIFT_Y + y[i] * Measurements.SCREEN_HEIGHT));
 		path.lineTo(startX, startY);
 		canvas.drawPath(path, paint);
 	}
 	
 	public void drawText(String text, double x, double y, int color) {
 		paint.setColor(color);
-		float left = (float) (shiftX + x * this.width);
-		float top = (float) (shiftY + y * this.height);
+		float left = (float) (Measurements.SCREEN_SHIFT_X + x * Measurements.SCREEN_WIDTH);
+		float top = (float) (Measurements.SCREEN_SHIFT_Y + y * Measurements.SCREEN_HEIGHT);
 		canvas.drawText(text, left, top, paint);
 	}
 }

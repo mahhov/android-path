@@ -3,6 +3,7 @@ package manuk.path.game;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.mapgenerator.MapGenerator;
 import manuk.path.game.util.Math3D;
+import manuk.path.game.util.Measurements;
 
 class Character {
 	private double speed = .5;
@@ -16,8 +17,8 @@ class Character {
 	
 	void move(Controller controller, Map map) {
 		if (controller.isDown()) {
-			goalX = controller.touchX * Engine.VIEW_WIDTH + map.scrollX;
-			goalY = controller.touchY * Engine.VIEW_HEIGHT + map.scrollY;
+			goalX = controller.touchX * Measurements.SCALED_VIEW_WIDTH + map.scrollX;
+			goalY = controller.touchY * Measurements.SCALED_VIEW_HEIGHT + map.scrollY;
 		}
 		
 		double deltaX = goalX - x, deltaY = goalY - y;

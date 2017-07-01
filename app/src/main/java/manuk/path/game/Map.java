@@ -4,6 +4,7 @@ import android.graphics.Color;
 import manuk.path.game.mapgenerator.MapGenerator;
 import manuk.path.game.util.IntersectionFinder;
 import manuk.path.game.util.Math3D;
+import manuk.path.game.util.Measurements;
 
 public class Map {
 	private static final double SCROLL_WEIGHT = .2;
@@ -36,8 +37,8 @@ public class Map {
 	}
 	
 	void scroll(double toX, double toY) {
-		scrollX = Math3D.minMax(scrollX + (toX - Engine.VIEW_WIDTH / 2 - scrollX) * SCROLL_WEIGHT, 0, width - Engine.VIEW_WIDTH);
-		scrollY = Math3D.minMax(scrollY + (toY - Engine.VIEW_HEIGHT / 2 - scrollY) * SCROLL_WEIGHT, 0, length - Engine.VIEW_WIDTH);
+		scrollX = Math3D.minMax(scrollX + (toX - Measurements.SCALED_VIEW_WIDTH / 2 - scrollX) * SCROLL_WEIGHT, 0, width - Measurements.SCALED_VIEW_WIDTH);
+		scrollY = Math3D.minMax(scrollY + (toY - Measurements.SCALED_VIEW_HEIGHT / 2 - scrollY) * SCROLL_WEIGHT, 0, length - Measurements.SCALED_VIEW_WIDTH);
 	}
 	
 	public boolean isInBounds(int x, int y, int z) {
@@ -56,10 +57,10 @@ public class Map {
 		boolean side[] = new boolean[6];
 		int startX = (int) scrollX;
 		int startY = (int) scrollY;
-		int endX = Math3D.min(startX + Engine.VIEW_WIDTH + 1, width);
-		int endY = Math3D.min(startY + Engine.VIEW_HEIGHT + 1, length);
-		int midX = startX + Engine.VIEW_WIDTH / 2;
-		int midY = startY + Engine.VIEW_HEIGHT / 2;
+		int endX = Math3D.min(startX + Measurements.SCALED_VIEW_WIDTH + 1, width);
+		int endY = Math3D.min(startY + Measurements.SCALED_VIEW_HEIGHT + 1, length);
+		int midX = startX + Measurements.SCALED_VIEW_WIDTH / 2;
+		int midY = startY + Measurements.SCALED_VIEW_HEIGHT / 2;
 		
 		
 		for (int x = startX; x < endX; x++)

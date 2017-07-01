@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import manuk.path.game.util.Math3D;
+import manuk.path.game.util.Measurements;
 
 public class Controller implements View.OnTouchListener {
 	static final int UP = 0, DOWN = 1, PRESS = 2, RELEASE = 3;
@@ -12,15 +13,10 @@ public class Controller implements View.OnTouchListener {
 	
 	public double touchX, touchY;
 	public double scale;
-	private int width, height, shiftX, shiftY;
 	private int touch;
 	private ScaleGestureDetector scaleGestureDetector;
 	
-	public Controller(int width, int height, int fullWidth, int fullHeight, Context context) {
-		this.width = width;
-		this.height = height;
-		shiftX = (fullWidth - width) / 2;
-		shiftY = (fullHeight - height) / 2;
+	public Controller(Context context) {
 		scale = 1;
 		scaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
 	}
@@ -42,8 +38,8 @@ public class Controller implements View.OnTouchListener {
 	
 	public boolean onTouch(View v, MotionEvent event) {
 		scaleGestureDetector.onTouchEvent(event);
-		touchX = (event.getX() - shiftX) / width;
-		touchY = (event.getY() - shiftY) / height;
+		touchX = (event.getX() - Measurements.SCREEN_SHIFT_X) / Measurements.SCREEN_WIDTH;
+		touchY = (event.getY() - Measurements.SCREEN_SHIFT_Y) / Measurements.SCREEN_HEIGHT;
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 				touch = PRESS;

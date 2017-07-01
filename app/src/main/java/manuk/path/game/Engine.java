@@ -1,18 +1,15 @@
 package manuk.path.game;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.util.Frames;
+import manuk.path.game.util.Measurements;
+
+import static manuk.path.game.util.Measurements.*;
 
 public class Engine implements Runnable {
-	static final int MAP_WIDTH = 100, MAP_LENGTH = MAP_WIDTH, MAP_HEIGHT = 3;
-	static final int VIEW_RATIO = 1;
-	static int VIEW_WIDTH = 30, VIEW_HEIGHT = VIEW_WIDTH * VIEW_RATIO;
-	static double BLOCK_WIDTH = 1. / VIEW_WIDTH, BLOCK_HEIGHT = 1. / VIEW_HEIGHT;
-	
 	private SurfaceHolder surfaceHolder;
 	private Frames frames;
 	
@@ -25,6 +22,7 @@ public class Engine implements Runnable {
 	}
 	
 	public void setupSurface(SurfaceView surfaceView, SurfaceHolder surfaceHolder) {
+		
 		createWorld();
 		
 		Canvas canvas = surfaceHolder.lockCanvas();
@@ -32,12 +30,13 @@ public class Engine implements Runnable {
 		int screenHeight = canvas.getHeight();
 		surfaceHolder.unlockCanvasAndPost(canvas);
 		
+		Measurements.init(screenWidth, screenHeight);
 		this.surfaceHolder = surfaceHolder;
 		
-		painter = new Painter(screenWidth, screenWidth * VIEW_RATIO, screenWidth, screenHeight);
+		painter = new Painter();
 		MapPainter.init(painter);
 		
-		controller = new Controller(screenWidth, screenWidth * VIEW_RATIO, screenWidth, screenHeight, surfaceView.getContext());
+		controller = new Controller(surfaceView.getContext());
 		surfaceView.setOnTouchListener(controller);
 	}
 	
@@ -46,14 +45,8 @@ public class Engine implements Runnable {
 	}
 	
 	private void update() {
-		setScale(controller.scale);
+		Measurements.setScale(controller.scale);
 		world.update(controller);
-	}
-	
-	private void setScale(double scale) {
-		double temp = 30 * scale;
-		VIEW_WIDTH = VIEW_HEIGHT = (int) (temp);
-		BLOCK_WIDTH = BLOCK_HEIGHT = 1. / (temp);
 	}
 	
 	private void draw() {
@@ -61,11 +54,6 @@ public class Engine implements Runnable {
 		world.draw(painter);
 		frames.draw(painter);
 		painter.post();
-	}
-	
-	private void drawFps() {
-		double[] xy = painter.convertFromAbsolute(70, 50);
-		painter.drawText("fps: " + frames.getFPS(), xy[0], xy[1], Color.GREEN);
 	}
 	
 	private void sleep(long duration) {

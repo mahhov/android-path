@@ -1,12 +1,12 @@
 package manuk.path.game;
 
 import android.graphics.Color;
+import manuk.path.game.util.Measurements;
 
 class MapPainter {
 	private static Painter painter;
 	static final int LEFT = 0, RIGHT = 1, BACK = 2, FRONT = 3, BOTTOM = 4, TOP = 5;
 	static final int[] MAP_COLOR = new int[6];
-	private static final double VIEW_STRETCH_Z = Engine.BLOCK_WIDTH / 10;
 	
 	// local variables, defined here to avoid allocation
 	private static double[] bottomCoord, topCoord;
@@ -89,10 +89,10 @@ class MapPainter {
 	
 	private static double[] toPaintCoord(double x, double y, double z, double width, double height) {
 		coord = new double[4];
-		double stretchX = Engine.BLOCK_WIDTH + VIEW_STRETCH_Z * z;
-		double stretchY = Engine.BLOCK_HEIGHT + VIEW_STRETCH_Z * z;
-		coord[0] = (x - Engine.VIEW_WIDTH / 2.) * stretchX + .5;
-		coord[1] = (y - Engine.VIEW_HEIGHT / 2.) * stretchY + .5;
+		double stretchX = Measurements.SCALED_BLOCK_WIDTH + Measurements.VIEW_STRETCH_Z * z;
+		double stretchY = Measurements.SCALED_BLOCK_HEIGHT + Measurements.VIEW_STRETCH_Z * z;
+		coord[0] = (x - Measurements.SCALED_VIEW_WIDTH / 2.) * stretchX + .5;
+		coord[1] = (y - Measurements.SCALED_VIEW_HEIGHT / 2.) * stretchY + .5;
 		coord[2] = width * stretchX;
 		coord[3] = height * stretchY;
 		return coord;
