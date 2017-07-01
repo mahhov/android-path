@@ -1,16 +1,19 @@
 package manuk.path.game.mapgenerator;
 
+import java.util.Random;
+
 public abstract class MapGenerator {
+	private static Random random = new Random();
 	public int[][][] map;
 	public int startX, startY;
 	
 	public abstract int[][][] generate(int width, int length, int height);
 	
 	static int randInt(int min, int max) {
-		return (int) (Math.random() * (max - min) + min);
+		return random.nextInt(max - min) + min;
 	}
 	
 	static boolean randFlip() {
-		return Math.random() < .5;
+		return random.nextBoolean();
 	}
 }
