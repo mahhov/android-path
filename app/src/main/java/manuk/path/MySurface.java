@@ -1,7 +1,6 @@
 package manuk.path;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -13,13 +12,11 @@ public class MySurface extends SurfaceView implements SurfaceHolder.Callback {
 	public MySurface(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		getHolder().addCallback(this);
+		engine = new Engine();
 	}
 	
 	public void surfaceCreated(SurfaceHolder surfaceHolder) {
-		Canvas canvas = surfaceHolder.lockCanvas();
-		engine = new Engine(surfaceHolder, canvas.getWidth(), canvas.getHeight());
-		surfaceHolder.unlockCanvasAndPost(canvas);
-		setOnTouchListener(engine.getTouchListener());
+		engine.setupSurface(this, surfaceHolder);
 		new Thread(engine).start();
 	}
 	

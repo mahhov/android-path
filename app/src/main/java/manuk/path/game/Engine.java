@@ -1,8 +1,10 @@
 package manuk.path.game;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.SurfaceHolder;
-import android.view.View;
+import android.view.SurfaceView;
+import manuk.path.game.controller.Controller;
 import manuk.path.game.util.Frames;
 
 public class Engine implements Runnable {
@@ -18,20 +20,29 @@ public class Engine implements Runnable {
 	private Controller controller;
 	private World world;
 	
-	public Engine(SurfaceHolder surfaceHolder, int screenWidth, int screenHeight) {
+	public Engine() {
+		// createWorld();
+	}
+	
+	public void setupSurface(SurfaceView surfaceView, SurfaceHolder surfaceHolder) {
+		createWorld();
+		
+		Canvas canvas = surfaceHolder.lockCanvas();
+		int screenWidth = canvas.getWidth();
+		int screenHeight = canvas.getHeight();
+		surfaceHolder.unlockCanvasAndPost(canvas);
+		
 		this.surfaceHolder = surfaceHolder;
+		
 		painter = new Painter(screenWidth, screenWidth * VIEW_RATIO, screenWidth, screenHeight);
 		MapPainter.init(painter);
-		controller = new Controller(screenWidth, screenWidth * VIEW_RATIO, screenWidth, screenHeight);
-		createWorld();
+		
+		controller = new Controller(screenWidth, screenWidth * VIEW_RATIO, screenWidth, screenHeight, surfaceView.getContext());
+		surfaceView.setOnTouchListener(controller);
 	}
 	
 	private void createWorld() {
 		world = new World(MAP_WIDTH, MAP_LENGTH, MAP_HEIGHT);
-	}
-	
-	public View.OnTouchListener getTouchListener() {
-		return controller;
 	}
 	
 	private void update() {
@@ -77,9 +88,10 @@ public class Engine implements Runnable {
 }
 
 // todo: move engine map constants to MapPainter
-// todo: control 2 finger tab
+// todo: control 2 finger tap
 // todo: better random map generation
 // todo: fix side darwing of character
 // todo: lighting and shadow
 // todo: zoom in / out
-// smooth edge scrolling
+// todo: smooth edge scrolling
+// todo: fix moving to edge of map bug

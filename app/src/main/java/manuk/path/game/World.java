@@ -1,6 +1,7 @@
 package manuk.path.game;
 
 import android.graphics.Color;
+import manuk.path.game.controller.Controller;
 import manuk.path.game.mapgenerator.CavernMapGenerator;
 import manuk.path.game.mapgenerator.MapGenerator;
 

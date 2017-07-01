@@ -1,5 +1,6 @@
 package manuk.path.game;
 
+import manuk.path.game.controller.Controller;
 import manuk.path.game.mapgenerator.MapGenerator;
 import manuk.path.game.util.Math3D;
 
