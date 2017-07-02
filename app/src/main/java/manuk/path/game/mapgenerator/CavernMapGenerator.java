@@ -4,19 +4,35 @@ import manuk.path.game.util.LList;
 import manuk.path.game.util.Math3D;
 
 public class CavernMapGenerator extends MapGenerator {
+	private static final int PASSES = 5, MAX_START_TRY = 50, MIN_SPACE_FACTOR = 5;
+	int[][][] mapTemp;
+	int width, length, height;
 	
 	public int[][][] generate(int width, int length, int height) {
-		int n = 5;
-		int[][][] mapTemp = new int[width][length][n + 3];
+		this.width = width;
+		this.length = length;
+		this.height = height;
 		
-		// init rand fill
+		initRand();
+		smooth();
+		findStart();
+		if (!findStart() || !fillExternal())
+			return generate(width, length, height);
+		transferFinal();
+		
+		return map;
+	}
+	
+	private void initRand() {
+		mapTemp = new int[width][length][PASSES + 3];
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < length; y++)
 				if (randFlip())
 					mapTemp[x][y][0] = 1;
-		
-		// iterate on map
-		for (int z = 0; z < n; z++)
+	}
+	
+	private void smooth() {
+		for (int z = 0; z < PASSES; z++)
 			for (int x = 0; x < width; x++)
 				for (int y = 0; y < length; y++) {
 					int count = 0;
@@ -27,51 +43,50 @@ public class CavernMapGenerator extends MapGenerator {
 					if (count >= 5)
 						mapTemp[x][y][z + 1] = 1;
 				}
-		
-		// find free spawn spot
-		int maxStartTry = 50;
+	}
+	
+	private boolean findStart() {
+		int maxStartTry = MAX_START_TRY;
 		do {
 			startX = randInt(0, width);
 			startY = randInt(0, length);
-		} while (mapTemp[startX][startY][n] == 1 && maxStartTry-- > 0);
-		if (mapTemp[startX][startY][n] == 1)
-			return generate(width, length, height);
-		
-		// check if spawn has minimum flood space
-		int minSpace = width * length / 5;
+		} while (mapTemp[startX][startY][PASSES] == 1 && maxStartTry-- > 0);
+		return mapTemp[startX][startY][PASSES] == 0;
+	}
+	
+	private boolean fillExternal() {
+		int minSpace = width * length / MIN_SPACE_FACTOR;
 		LList<Pos> search = new LList<>();
 		search.addHead(new Pos(startX, startY));
-		mapTemp[startY][startY][n] = 2;
+		mapTemp[startY][startY][PASSES] = 2;
 		while (!search.isEmpty()) {
 			Pos xy = search.removeTail();
-			if (xy.x > 0 && mapTemp[xy.x - 1][xy.y][n] == 0) {
-				mapTemp[xy.x - 1][xy.y][n] = 2;
+			if (xy.x > 0 && mapTemp[xy.x - 1][xy.y][PASSES] == 0) {
+				mapTemp[xy.x - 1][xy.y][PASSES] = 2;
 				search.addHead(new Pos(xy.x - 1, xy.y));
 			}
-			if (xy.x < width - 1 && mapTemp[xy.x + 1][xy.y][n] == 0) {
-				mapTemp[xy.x + 1][xy.y][n] = 2;
+			if (xy.x < width - 1 && mapTemp[xy.x + 1][xy.y][PASSES] == 0) {
+				mapTemp[xy.x + 1][xy.y][PASSES] = 2;
 				search.addHead(new Pos(xy.x + 1, xy.y));
 			}
-			if (xy.y > 0 && mapTemp[xy.x][xy.y - 1][n] == 0) {
-				mapTemp[xy.x][xy.y - 1][n] = 2;
+			if (xy.y > 0 && mapTemp[xy.x][xy.y - 1][PASSES] == 0) {
+				mapTemp[xy.x][xy.y - 1][PASSES] = 2;
 				search.addHead(new Pos(xy.x, xy.y - 1));
 			}
-			if (xy.y < length - 1 && mapTemp[xy.x][xy.y + 1][n] == 0) {
-				mapTemp[xy.x][xy.y + 1][n] = 2;
+			if (xy.y < length - 1 && mapTemp[xy.x][xy.y + 1][PASSES] == 0) {
+				mapTemp[xy.x][xy.y + 1][PASSES] = 2;
 				search.addHead(new Pos(xy.x, xy.y + 1));
 			}
 			minSpace--;
 		}
-		if (minSpace > 0) 
-			return generate(width, length, height);
-		
-		// transfer to final map
+		return minSpace <= 0;
+	}
+	
+	private void transferFinal() {
 		map = new int[width][length][height];
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < length; y++)
-				map[x][y][0] = mapTemp[x][y][n] == 2 ? 0 : 1;
-		
-		return map;
+				map[x][y][0] = mapTemp[x][y][PASSES] == 2 ? 0 : 1;
 	}
 	
 	private static class Pos {
