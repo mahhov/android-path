@@ -40,7 +40,7 @@ public class Controller implements View.OnTouchListener {
 		scaleGestureDetector.onTouchEvent(event);
 		touchX = (event.getX() - Measurements.SCREEN_SHIFT_X) / Measurements.SCREEN_WIDTH;
 		touchY = (event.getY() - Measurements.SCREEN_SHIFT_Y) / Measurements.SCREEN_HEIGHT;
-		switch (event.getAction()) {
+		switch (event.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
 				touch = PRESS;
 				break;
