@@ -17,7 +17,6 @@ public class Painter {
 	public Painter() {
 		paint = new Paint();
 		paint.setTextSize(40);
-		paint.setTextAlign(Paint.Align.CENTER);
 	}
 	
 	public void prep(SurfaceHolder surfaceHolder) {
@@ -75,6 +74,15 @@ public class Painter {
 	}
 	
 	public void drawText(String text, double x, double y, int color) {
+		paint.setTextAlign(Paint.Align.LEFT);
+		paint.setColor(color);
+		float left = (float) (Measurements.SCREEN_SHIFT_X + x * Measurements.SCREEN_WIDTH);
+		float top = (float) (Measurements.SCREEN_SHIFT_Y + y * Measurements.SCREEN_HEIGHT);
+		canvas.drawText(text, left, top, paint);
+	}	
+	
+	public void drawCenteredText(String text, double x, double y, int color) {
+		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setColor(color);
 		float left = (float) (Measurements.SCREEN_SHIFT_X + x * Measurements.SCREEN_WIDTH);
 		float top = (float) (Measurements.SCREEN_SHIFT_Y + y * Measurements.SCREEN_HEIGHT);
