@@ -13,6 +13,10 @@ public class ClickablePaintElement extends PaintElement {
 		this.pressedColor = pressedColor;
 	}
 	
+	public boolean isPressed() {
+		return isPressed;
+	}
+	
 	public void handleInput(Controller controller) {
 		isPressed = false;
 		for (Touch touch : controller.touch)
