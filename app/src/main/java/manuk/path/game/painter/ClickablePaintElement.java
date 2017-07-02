@@ -1,7 +1,7 @@
 package manuk.path.game.painter;
 
-
 import manuk.path.game.controller.Controller;
+import manuk.path.game.controller.Controller.Touch;
 
 public class ClickablePaintElement extends PaintElement {
 	int pressedColor;
@@ -13,7 +13,13 @@ public class ClickablePaintElement extends PaintElement {
 	}
 	
 	public void handleInput(Controller controller) {
-		isPressed = controller.isDown() && controller.touchX > left && controller.touchX < left + width && controller.touchY > top && controller.touchY < top + height;
+		isPressed = false;
+		for (Touch touch : controller.touch)
+			if (touch.isDown() && touch.x > left && touch.x < left + width && touch.y > top && touch.y < top + height) {
+				isPressed = true;
+				touch.state = Touch.STATE_CONSUMED;
+				break;
+			}
 	}
 	
 	public void draw(Painter painter) {

@@ -17,10 +17,12 @@ class Character {
 	}
 	
 	void move(Controller controller, Map map) {
-		if (controller.isDown()) {
-			goalX = controller.touchX * Measurements.SCALED_VIEW_WIDTH + map.scrollX;
-			goalY = controller.touchY * Measurements.SCALED_VIEW_HEIGHT + map.scrollY;
-		}
+		for (Controller.Touch touch : controller.touch)
+			if (touch.isFresh()) {
+				goalX = touch.x * Measurements.SCALED_VIEW_WIDTH + map.scrollX;
+				goalY = touch.y * Measurements.SCALED_VIEW_HEIGHT + map.scrollY;
+				break;
+			}
 		
 		double deltaX = goalX - x, deltaY = goalY - y;
 		double dist = Math3D.min(speed, Math3D.magnitude(deltaX, deltaY));

@@ -45,6 +45,7 @@ public class Engine implements Runnable {
 		Measurements.setScale(controller.scale);
 		userInterface.handleInput(controller);
 		world.update(controller);
+		controller.refreshTouchStates();
 	}
 	
 	private void draw() {
@@ -69,9 +70,6 @@ public class Engine implements Runnable {
 		while (frames.running) {
 			if (!world.gameOver)
 				update();
-			else if (controller.isPress())
-				System.out.println("restart logic?"); // createWorld();
-			controller.ageTouch();
 			draw();
 			sleep(5);
 		}
@@ -82,6 +80,15 @@ public class Engine implements Runnable {
 	}
 }
 
-// todo: control 2 finger tap
 // todo: fix side darwing of character
 // todo: lighting and shadow
+
+// todo: projectiles
+// todo: enemies
+
+// todo: level up - 10 life, 10 mana
+// todo: stats: choose 4 of (life, life regen, mana, mana regen, evs, armour, shield, resists, attack/cast speed, attack/cast dmg, crit chance/dmg, status duration, aoe) 
+// todo: item types
+// todo: item enchanting and crafting costs
+// todo: damage types
+// todo: skill system

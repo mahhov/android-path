@@ -4,6 +4,7 @@ import android.graphics.Color;
 import manuk.path.game.painter.Painter;
 
 public class Frames {
+	public static String DEBUG = "";
 	public boolean running;
 	private long start, current;
 	private int fps;
@@ -29,6 +30,6 @@ public class Frames {
 		double[] size = painter.convertFromAbsolute(120, 30);
 		double[] padding = painter.convertFromAbsolute(10, 10);
 		painter.drawRect(xy[0] - padding[0], xy[1] - size[1] - padding[1], size[0] + padding[0] * 2, size[1] + padding[1] * 2, Color.BLACK);
-		painter.drawText("fps: " + getFPS(), xy[0], xy[1], Color.WHITE);
+		painter.drawText("fps: " + getFPS() + DEBUG, xy[0], xy[1], Color.WHITE);
 	}
 }
