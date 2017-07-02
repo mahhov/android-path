@@ -11,20 +11,23 @@ import manuk.path.game.util.LList;
 
 class World {
 	boolean gameOver;
+	private UserInterface userInterface;
 	private Map map;
 	private Player player;
 	private LList<Enemy> enemy;
 	
 	World(int width, int length, int height) {
+		userInterface = new UserInterface();
 		MapGenerator mapGenerator = new CavernMapGenerator();
 		mapGenerator.generate(width, length, height);
 		map = new Map(width, length, height, mapGenerator);
-		player = new Player(mapGenerator);
+		player = new Player(mapGenerator, userInterface.lifeBar);
 		enemy = new LList<>();
 		enemy.addHead(new Enemy(player.x, player.y));
 	}
 	
 	void update(Controller controller) {
+		userInterface.handleInput(controller);
 		player.update(controller, map);
 		map.scroll(player.x, player.y);
 		for (Enemy e : enemy)
@@ -37,7 +40,7 @@ class World {
 		player.draw(map.scrollX, map.scrollY);
 		for (Enemy e : enemy)
 			e.draw(map.scrollX, map.scrollY);
-		
+		userInterface.draw(painter);
 		if (gameOver) {
 			painter.drawText("GAME OVER :(", .5, .5, Color.GREEN);
 			painter.drawText("Tap to Restart", .5, .7, Color.GREEN);

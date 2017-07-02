@@ -1,7 +1,8 @@
-package manuk.path.game.painter;
+package manuk.path.game.painter.element;
 
 import android.graphics.Color;
 import manuk.path.game.controller.Controller;
+import manuk.path.game.painter.Painter;
 
 public class PaintElement {
 	static final int FRAME_COLOR = Color.GRAY, FRAME_SIZE = 5;

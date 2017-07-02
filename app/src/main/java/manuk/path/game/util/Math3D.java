@@ -39,6 +39,12 @@ public class Math3D {
 		return b;
 	}
 	
+	public static double max(double a, double b) {
+		if (a > b)
+			return a;
+		return b;
+	}
+	
 	public static boolean isZero(double value) {
 		return value < Math3D.EPSILON && value > -Math3D.EPSILON;
 	}

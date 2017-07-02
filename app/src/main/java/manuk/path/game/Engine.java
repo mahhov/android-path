@@ -18,11 +18,9 @@ public class Engine implements Runnable {
 	private Painter painter;
 	private Controller controller;
 	private World world;
-	private UserInterface userInterface;
 	
 	public Engine() {
 		world = new World(MAP_WIDTH, MAP_LENGTH, MAP_HEIGHT);
-		userInterface = new UserInterface();
 	}
 	
 	public void setupSurface(SurfaceView surfaceView, SurfaceHolder surfaceHolder) {
@@ -43,7 +41,6 @@ public class Engine implements Runnable {
 	
 	private void update() {
 		Measurements.setScale(controller.scale);
-		userInterface.handleInput(controller);
 		world.update(controller);
 		controller.refreshTouchStates();
 	}
@@ -51,7 +48,6 @@ public class Engine implements Runnable {
 	private void draw() {
 		painter.prep(surfaceHolder);
 		world.draw(painter);
-		userInterface.draw(painter);
 		painter.post();
 		frames.draw(painter);
 		painter.end();

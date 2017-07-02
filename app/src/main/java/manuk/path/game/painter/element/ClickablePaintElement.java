@@ -1,7 +1,8 @@
-package manuk.path.game.painter;
+package manuk.path.game.painter.element;
 
 import manuk.path.game.controller.Controller;
 import manuk.path.game.controller.Controller.Touch;
+import manuk.path.game.painter.Painter;
 
 public class ClickablePaintElement extends PaintElement {
 	int pressedColor;
