@@ -12,8 +12,8 @@ public class Map {
 	public final int width, length, height;
 	private int[][][] map;
 	private boolean[][] shadow;
-	double scrollX, scrollY;
-	IntersectionFinder intersectionFinder;
+	public double scrollX, scrollY;
+	public IntersectionFinder intersectionFinder;
 	
 	Map(int width, int length, int height, MapGenerator mapGenerator) {
 		this.width = width;

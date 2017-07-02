@@ -1,22 +1,23 @@
-package manuk.path.game;
+package manuk.path.game.character;
 
+import manuk.path.game.Map;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.mapgenerator.MapGenerator;
 import manuk.path.game.painter.MapPainter;
 import manuk.path.game.util.Math3D;
 import manuk.path.game.util.Measurements;
 
-class Character {
+public class Player {
 	private double speed = .5;
-	double x, y;
+	public double x, y;
 	private double goalX, goalY;
 	
-	Character(MapGenerator mapGenerator) {
+	public Player(MapGenerator mapGenerator) {
 		goalX = x = mapGenerator.startX;
 		goalY = y = mapGenerator.startY;
 	}
 	
-	void move(Controller controller, Map map) {
+	public void move(Controller controller, Map map) {
 		for (Controller.Touch touch : controller.touch)
 			if (touch.isFresh()) {
 				goalX = touch.x * Measurements.SCALED_VIEW_WIDTH + map.scrollX;
@@ -31,7 +32,7 @@ class Character {
 		y = intersection[1];
 	}
 	
-	void draw(double scrollX, double scrollY) {
+	public void draw(double scrollX, double scrollY) {
 		boolean[] side = new boolean[] {true, true, true, true, true, true};
 		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, side);
 	}
