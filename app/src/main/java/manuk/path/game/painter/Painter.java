@@ -1,4 +1,4 @@
-package manuk.path.game;
+package manuk.path.game.painter;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,25 +14,25 @@ public class Painter {
 	private SurfaceHolder surfaceHolder;
 	private Canvas canvas;
 	
-	Painter() {
+	public Painter() {
 		paint = new Paint();
 		paint.setTextSize(40);
 		paint.setTextAlign(Paint.Align.CENTER);
 	}
 	
-	void prep(SurfaceHolder surfaceHolder) {
+	public void prep(SurfaceHolder surfaceHolder) {
 		this.surfaceHolder = surfaceHolder;
 		canvas = surfaceHolder.lockCanvas();
 		canvas.drawColor(OUT_COLOR);
 		drawRect(0, 0, 1, 1, Color.BLACK);
 	}
 	
-	void post() {
+	public void post() {
 		drawRect(0, -1, 1, 1, OUT_COLOR);
 		drawRect(0, 1, 1, 1, OUT_COLOR);
 	}
 	
-	void end() {
+	public void end() {
 		surfaceHolder.unlockCanvasAndPost(canvas);
 	}
 	
@@ -40,7 +40,7 @@ public class Painter {
 		return new double[] {(x - Measurements.SCREEN_SHIFT_X) / Measurements.SCREEN_WIDTH + Measurements.SCREEN_SHIFT_X, (y - Measurements.SCREEN_SHIFT_Y) / Measurements.SCREEN_HEIGHT};
 	}
 	
-	void drawRect(double x, double y, double width, double height, int color, boolean frame) {
+	public void drawRect(double x, double y, double width, double height, int color, boolean frame) {
 		paint.setColor(color);
 		if (frame)
 			paint.setStyle(Paint.Style.STROKE);
@@ -53,11 +53,11 @@ public class Painter {
 		canvas.drawRect(left, top, right, bottom, paint);
 	}
 	
-	void drawRect(double x, double y, double width, double height, int color) {
+	public void drawRect(double x, double y, double width, double height, int color) {
 		drawRect(x, y, width, height, color, false);
 	}
 	
-	void drawPolygon(double[] x, double[] y, int color, boolean frame) {
+	public void drawPolygon(double[] x, double[] y, int color, boolean frame) {
 		paint.setColor(color);
 		if (frame)
 			paint.setStyle(Paint.Style.STROKE);

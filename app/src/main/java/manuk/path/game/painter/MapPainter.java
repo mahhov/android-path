@@ -1,12 +1,12 @@
-package manuk.path.game;
+package manuk.path.game.painter;
 
 import android.graphics.Color;
 import manuk.path.game.util.Measurements;
 
-class MapPainter {
+public class MapPainter {
 	private static Painter painter;
-	static final int LEFT = 0, RIGHT = 1, BACK = 2, FRONT = 3, BOTTOM = 4, TOP = 5;
-	static final int[] MAP_COLOR = new int[6];
+	public static final int LEFT = 0, RIGHT = 1, BACK = 2, FRONT = 3, BOTTOM = 4, TOP = 5;
+	private static final int[] MAP_COLOR = new int[6];
 	
 	// local variables, defined here to avoid allocation
 	private static double[] bottomCoord, topCoord;
@@ -14,7 +14,7 @@ class MapPainter {
 	private static double[] leftX = null, rightX = null, sideX = null, backY = null, frontY = null, sideY = null, topX = null, topY = null; // todo: check if this is any benefit
 	private static double[] coord = new double[4];
 	
-	static void init(Painter painter) {
+	public static void init(Painter painter) {
 		MapPainter.painter = painter;
 		int red = 6, green = 12, blue = 6;
 		int i = 2;
@@ -31,12 +31,12 @@ class MapPainter {
 		MAP_COLOR[BOTTOM] = Color.rgb(red * i, green * i, blue * i);
 	}
 	
-	static void drawFlat(double x, double y, double z, int color) {
+	public static void drawFlat(double x, double y, double z, int color) {
 		bottomCoord = toPaintCoord(x, y, z, 1, 1);
 		painter.drawRect(bottomCoord[0], bottomCoord[1], bottomCoord[2], bottomCoord[3], color);
 	}
 	
-	static void drawBlock(double x, double y, double z, boolean[] side) {
+	public static void drawBlock(double x, double y, double z, boolean[] side) {
 		bottomCoord = toPaintCoord(x, y, z, 1, 1);
 		topCoord = toPaintCoord(x, y, z + 1, 1, 1);
 		

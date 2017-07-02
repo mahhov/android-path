@@ -2,6 +2,7 @@ package manuk.path.game;
 
 import android.graphics.Color;
 import manuk.path.game.mapgenerator.MapGenerator;
+import manuk.path.game.painter.MapPainter;
 import manuk.path.game.util.IntersectionFinder;
 import manuk.path.game.util.Math3D;
 import manuk.path.game.util.Measurements;

@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import manuk.path.game.controller.Controller;
+import manuk.path.game.painter.MapPainter;
+import manuk.path.game.painter.Painter;
 import manuk.path.game.util.Frames;
 import manuk.path.game.util.Measurements;
 
@@ -83,6 +85,5 @@ public class Engine implements Runnable {
 }
 
 // todo: control 2 finger tap
-// todo: better random map generation - bug with isolated mini areas
 // todo: fix side darwing of character
 // todo: lighting and shadow

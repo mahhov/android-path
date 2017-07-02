@@ -1,7 +1,7 @@
 package manuk.path.game.util;
 
 import android.graphics.Color;
-import manuk.path.game.Painter;
+import manuk.path.game.painter.Painter;
 
 public class Frames {
 	public boolean running;

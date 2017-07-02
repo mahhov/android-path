@@ -4,6 +4,7 @@ import android.graphics.Color;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.mapgenerator.CavernMapGenerator;
 import manuk.path.game.mapgenerator.MapGenerator;
+import manuk.path.game.painter.Painter;
 
 class World {
 	boolean gameOver;
