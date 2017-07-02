@@ -20,6 +20,14 @@ public class LList<T> implements Iterable<T> {
 		return tail.elem;
 	}
 	
+	public T remove(Node node) {
+		if (node.next != null)
+			node.next.prev = node.prev;
+		if (node.prev != null)
+			node.prev.next = node.next;
+		return node.elem;
+	}
+	
 	public boolean isEmpty() {
 		return tail == head;
 	}

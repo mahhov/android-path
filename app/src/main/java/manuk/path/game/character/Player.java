@@ -3,37 +3,21 @@ package manuk.path.game.character;
 import manuk.path.game.Map;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.mapgenerator.MapGenerator;
-import manuk.path.game.painter.MapPainter;
-import manuk.path.game.util.Math3D;
 import manuk.path.game.util.Measurements;
 
-public class Player {
-	private double speed = .5;
-	public double x, y;
-	private double goalX, goalY;
-	
+public class Player extends Character {
 	public Player(MapGenerator mapGenerator) {
-		goalX = x = mapGenerator.startX;
-		goalY = y = mapGenerator.startY;
+		super(mapGenerator.startX, mapGenerator.startY);
+		speed = .5;
 	}
 	
-	public void move(Controller controller, Map map) {
+	public void update(Controller controller, Map map) {
 		for (Controller.Touch touch : controller.touch)
 			if (touch.isFresh()) {
 				goalX = touch.x * Measurements.SCALED_VIEW_WIDTH + map.scrollX;
 				goalY = touch.y * Measurements.SCALED_VIEW_HEIGHT + map.scrollY;
 				break;
 			}
-		
-		double deltaX = goalX - x, deltaY = goalY - y;
-		double dist = Math3D.min(speed, Math3D.magnitude(deltaX, deltaY));
-		double[] intersection = map.intersectionFinder.find(new double[] {x, y}, new double[] {deltaX, deltaY}, dist, true);
-		x = intersection[0];
-		y = intersection[1];
-	}
-	
-	public void draw(double scrollX, double scrollY) {
-		boolean[] side = new boolean[] {true, true, true, true, true, true};
-		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, side);
+		move(map.intersectionFinder);
 	}
 }
