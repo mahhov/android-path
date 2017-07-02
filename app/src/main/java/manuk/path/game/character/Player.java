@@ -8,27 +8,27 @@ import manuk.path.game.painter.element.ClickablePaintElement;
 import manuk.path.game.painter.element.PaintBar;
 import manuk.path.game.projectile.Projectile;
 import manuk.path.game.util.LList;
-import manuk.path.game.util.Math3D;
 import manuk.path.game.util.Measurements;
 
 public class Player extends Character {
-	private static final double MAX_LIFE = 100;
-	private double life;
 	private PaintBar lifeBar;
 	private ClickablePaintElement actionButton;
 	
 	public Player(MapGenerator mapGenerator, PaintBar lifeBar, ClickablePaintElement actionButton) {
-		super(mapGenerator.startX, mapGenerator.startY);
-		speed = .5;
-		life = MAX_LIFE;
+		super(mapGenerator.startX, mapGenerator.startY, .5, 10, 100);
 		this.lifeBar = lifeBar;
 		this.actionButton = actionButton;
 	}
 	
 	public void update(Controller controller, Map map, LList<Projectile> projectile) {
-		lifeBar.setValue(life / MAX_LIFE);
-		if (actionButton.isPressed)
+		if (updateAttack()) {
 			projectile.addHead(new Projectile(x, y, 1, 0, .1, Color.RED));
+			goalX = x;
+			goalY = y;
+		}
+		lifeBar.setValue(getLifePercent());
+		if (actionButton.isPressed)
+			attack();
 		for (Controller.Touch touch : controller.touch)
 			if (touch.isFresh()) {
 				goalX = touch.x * Measurements.SCALED_VIEW_WIDTH + map.scrollX;
@@ -36,9 +36,5 @@ public class Player extends Character {
 				break;
 			}
 		move(map.intersectionFinder);
-	}
-	
-	void takeDamage(double amount) {
-		life = Math3D.max(life - amount / 5, 0);
 	}
 }

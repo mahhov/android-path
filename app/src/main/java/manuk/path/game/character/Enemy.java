@@ -7,14 +7,15 @@ public class Enemy extends Character {
 	private static final double WANDER_THRESHOLD = .98, WANDER_DISTANCE = 5, ACTIVE_DISTANCE = 10, DAMAGE_RANGE = 2;
 	
 	public Enemy(double startX, double startY) {
-		super(startX, startY);
-		speed = .1;
+		super(startX, startY, .1, 10, 10);
 	}
 	
 	public void update(Player player, Map map) {
+		if (updateAttack())
+			player.takeDamage(1);
 		double distance = Math3D.magnitude(player.x - x, player.y - y);
 		if (distance < DAMAGE_RANGE) {
-			player.takeDamage(1);
+			attack();
 		} else if (distance < ACTIVE_DISTANCE) {
 			goalX = player.x;
 			goalY = player.y;

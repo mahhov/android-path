@@ -5,16 +5,48 @@ import manuk.path.game.util.IntersectionFinder;
 import manuk.path.game.util.Math3D;
 
 abstract class Character {
-	double speed;
 	public double x, y;
 	double goalX, goalY;
 	
-	public Character(double startX, double startY) {
+	private double speed;
+	private int attackSpeed, attackWait;
+	private boolean attacking;
+	private double maxLife, life;
+	
+	public Character(double startX, double startY, double speed, int attackSpeed, double maxLife) {
 		goalX = x = startX;
 		goalY = y = startY;
+		this.speed = speed;
+		this.attackSpeed = attackSpeed;
+		this.maxLife = life = maxLife;
+	}
+	
+	double getLifePercent() {
+		return life / maxLife;
+	}
+	
+	void takeDamage(double amount) {
+		life = Math3D.max(life - amount, 0);
+	}
+	
+	void attack() {
+		if (!attacking) {
+			attacking = true;
+			attackWait = attackSpeed;
+		}
+	}
+	
+	boolean updateAttack() {
+		if (attacking && attackWait-- == 0) {
+			attacking = false;
+			return true;
+		}
+		return false;
 	}
 	
 	void move(IntersectionFinder intersectionFinder) {
+		if (attacking)
+			return;
 		double deltaX = goalX - x, deltaY = goalY - y;
 		double dist = Math3D.min(speed, Math3D.magnitude(deltaX, deltaY));
 		double[] intersection = intersectionFinder.find(new double[] {x, y}, new double[] {deltaX, deltaY}, dist, true);
