@@ -9,7 +9,7 @@ import manuk.path.game.util.Measurements;
 
 public class Map {
 	private static final int[] COLOR = MapPainter.createColorShade(0, 100, 0);
-	private static final double SCROLL_WEIGHT = .2;
+	private static final double SCROLL_WEIGHT = .1;
 	public final int width, length, height;
 	private int[][][] map;
 	private boolean[][] shadow;

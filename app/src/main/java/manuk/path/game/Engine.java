@@ -40,7 +40,7 @@ public class Engine implements Runnable {
 	}
 	
 	private void update() {
-		Measurements.setScale(controller.scale);
+		//		Measurements.setScale(controller.scale);
 		world.update(controller);
 		controller.refreshTouchStates();
 	}
@@ -78,6 +78,8 @@ public class Engine implements Runnable {
 
 // todo: fix side darwing of character
 // todo: lighting and shadow
+// todo: textures
+// todo: map entities and collision
 // todo: basic combat
 
 // todo: level up - 10 life, 10 mana
@@ -86,3 +88,4 @@ public class Engine implements Runnable {
 // todo: item enchanting and crafting costs
 // todo: damage types
 // todo: skill system
+// todo: calculate VIEW_STRETCH_Z correctly

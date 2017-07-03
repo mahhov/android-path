@@ -17,7 +17,7 @@ public class Measurements {
 		VIEW_WIDTH = 30;
 		VIEW_HEIGHT = (int) (VIEW_WIDTH * VIEW_RATIO);
 		
-		setScale(1);
+		setScale(.5);
 		
 		SCREEN_WIDTH = fullWidth;
 		SCREEN_HEIGHT = (int) (fullWidth * VIEW_RATIO);
