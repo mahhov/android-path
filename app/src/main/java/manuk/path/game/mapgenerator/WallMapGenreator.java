@@ -2,8 +2,7 @@ package manuk.path.game.mapgenerator;
 
 public class WallMapGenreator extends MapGenerator {
 	public int[][][] generate(int width, int length, int height) {
-		spawnX = width / 2;
-		spawnY = length / 2;
+		spawn = new Pos(width / 2, length / 2);
 		map = new int[width][length][height];
 		int dist = 5;
 		int z = 1;

@@ -4,7 +4,7 @@ import manuk.path.game.util.LList;
 import manuk.path.game.util.Math3D;
 
 public class CavernMapGenerator extends MapGenerator {
-	private static final int PASSES = 5, MAX_SPAWN_TRY = 50, MIN_SPACE_FACTOR = 5;
+	private static final int PASSES = 5, MAX_SPAWN_TRY = 50, MIN_SPACE_FACTOR = 5, ENEMY_ATTEMPTS = 100;
 	int[][][] mapTemp;
 	int width, length, height;
 	
@@ -15,10 +15,11 @@ public class CavernMapGenerator extends MapGenerator {
 		
 		initRand();
 		smooth();
-		findSpawn();
-		if (!findSpawn() || !fillExternal())
+		spawn = findSpawn();
+		if (spawn == null || !fillExternal())
 			return generate(width, length, height);
 		transferFinal();
+		addEnemies();
 		
 		return map;
 	}
@@ -45,20 +46,23 @@ public class CavernMapGenerator extends MapGenerator {
 				}
 	}
 	
-	private boolean findSpawn() {
+	private Pos findSpawn() {
+		int x, y;
 		int maxSpawnTry = MAX_SPAWN_TRY;
 		do {
-			spawnX = randInt(0, width);
-			spawnY = randInt(0, length);
-		} while (mapTemp[spawnX][spawnY][PASSES] == 1 && maxSpawnTry-- > 0);
-		return mapTemp[spawnX][spawnY][PASSES] == 0;
+			x = randInt(0, width);
+			y = randInt(0, length);
+		} while (mapTemp[x][y][PASSES] == 1 && maxSpawnTry-- > 0);
+		if (mapTemp[x][y][PASSES] != 1)
+			return new Pos(x, y);
+		return null;
 	}
 	
 	private boolean fillExternal() {
 		int minSpace = width * length / MIN_SPACE_FACTOR;
 		LList<Pos> search = new LList<>();
-		search.addHead(new Pos(spawnX, spawnY));
-		mapTemp[spawnY][spawnY][PASSES] = 2;
+		search.addHead(new Pos(spawn.x, spawn.y));
+		mapTemp[spawn.x][spawn.y][PASSES] = 2;
 		while (!search.isEmpty()) {
 			Pos xy = search.removeTail();
 			if (xy.x > 0 && mapTemp[xy.x - 1][xy.y][PASSES] == 0) {
@@ -89,12 +93,11 @@ public class CavernMapGenerator extends MapGenerator {
 				map[x][y][0] = mapTemp[x][y][PASSES] == 2 ? 0 : 1;
 	}
 	
-	private static class Pos {
-		private int x, y;
-		
-		private Pos(int x, int y) {
-			this.x = x;
-			this.y = y;
+	private void addEnemies() {
+		for (int i = 0; i < ENEMY_ATTEMPTS; i++) {
+			Pos xy = findSpawn();
+			if (xy != null)
+				enemySpawn.addHead(new Pos3(xy.x, xy.y, 1));
 		}
 	}
 }

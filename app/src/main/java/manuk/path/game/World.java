@@ -6,6 +6,7 @@ import manuk.path.game.character.Player;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.mapgenerator.CavernMapGenerator;
 import manuk.path.game.mapgenerator.MapGenerator;
+import manuk.path.game.mapgenerator.MapGenerator.Pos3;
 import manuk.path.game.painter.Painter;
 import manuk.path.game.projectile.Projectile;
 import manuk.path.game.util.LList;
@@ -27,7 +28,8 @@ class World {
 		map = new Map(width, length, height, mapGenerator);
 		player = new Player(mapGenerator, userInterface.lifeBar, userInterface.actionButton);
 		enemy = new LList<>();
-		enemy.addHead(new Enemy(player.x, player.y));
+		for (Pos3 enemyPos : mapGenerator.enemySpawn)
+			enemy.addHead(new Enemy(enemyPos.x, enemyPos.y));
 		projectile = new LList<>();
 	}
 	
