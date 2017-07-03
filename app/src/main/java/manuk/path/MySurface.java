@@ -1,30 +1,33 @@
 package manuk.path;
 
 import android.content.Context;
-import android.util.AttributeSet;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import manuk.path.game.Engine;
+import android.opengl.GLSurfaceView;
+import android.view.MotionEvent;
+import manuk.path.game.controller.Controller;
+import manuk.path.game.render.MyRenderer;
 
-public class MySurface extends SurfaceView implements SurfaceHolder.Callback {
-	Engine engine;
+public class MySurface extends GLSurfaceView {
+	Controller controller;
 	
-	public MySurface(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		getHolder().addCallback(this);
-		engine = new Engine();
+	public MySurface(Context context, MyRenderer myRenderer) {
+		super(context);
+		try {
+			setEGLContextClientVersion(3);
+		} catch (Exception e) {
+			System.out.println("could not found opengl 3");
+			setEGLContextClientVersion(2);
+		}
+		setRenderer(myRenderer);
+		setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 	}
 	
-	public void surfaceCreated(SurfaceHolder surfaceHolder) {
-		engine.setupSurface(this, surfaceHolder);
-		new Thread(engine).start();
+	public void setController(Controller controller) {
+		this.controller = controller;
 	}
 	
-	public void surfaceChanged(SurfaceHolder surfaceHolder, int frmt, int w, int h) {
-	}
-	
-	public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-		if (engine != null)
-			engine.stop();
+	public boolean onTouchEvent(MotionEvent e) {
+		if (controller != null)
+			controller.onTouch(e);
+		return true;
 	}
 }

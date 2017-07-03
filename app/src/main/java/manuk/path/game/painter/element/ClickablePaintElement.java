@@ -28,7 +28,6 @@ public class ClickablePaintElement extends PaintElement {
 	}
 	
 	public void draw(Painter painter) {
-		painter.drawRect(left, top, width, height, isPressed ? pressedColor : color);
-		painter.drawRect(left, top, width, height, FRAME_COLOR, FRAME_SIZE);
+		painter.drawRect(left, top, width, height, isPressed ? pressedColor : color, FRAME_COLOR);
 	}
 }

@@ -1,56 +1,43 @@
 package manuk.path.game;
 
-import android.graphics.Canvas;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import manuk.path.MySurface;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.painter.MapPainter;
 import manuk.path.game.painter.Painter;
+import manuk.path.game.render.MyRenderer;
 import manuk.path.game.util.Frames;
 import manuk.path.game.util.Measurements;
 
 import static manuk.path.game.util.Measurements.*;
 
 public class Engine implements Runnable {
-	private SurfaceHolder surfaceHolder;
 	private Frames frames;
-	
 	private Painter painter;
 	private Controller controller;
 	private World world;
 	
 	public Engine() {
 		world = new World(MAP_WIDTH, MAP_LENGTH, MAP_HEIGHT);
+		controller = new Controller();
 	}
 	
-	public void setupSurface(SurfaceView surfaceView, SurfaceHolder surfaceHolder) {
-		Canvas canvas = surfaceHolder.lockCanvas();
-		int screenWidth = canvas.getWidth();
-		int screenHeight = canvas.getHeight();
-		surfaceHolder.unlockCanvasAndPost(canvas);
-		
+	public void setupRenderer(MySurface mySurface, MyRenderer myRenderer, int screenWidth, int screenHeight) {
 		Measurements.init(screenWidth, screenHeight);
-		this.surfaceHolder = surfaceHolder;
-		
-		painter = new Painter();
+		painter = new Painter(mySurface, myRenderer);
 		MapPainter.setPainter(painter);
-		
-		controller = new Controller(surfaceView.getContext());
-		surfaceView.setOnTouchListener(controller);
+		mySurface.setController(controller);
 	}
 	
 	private void update() {
-		//		Measurements.setScale(controller.scale);
 		world.update(controller);
 		controller.refreshTouchStates();
 	}
 	
 	private void draw() {
-		painter.prep(surfaceHolder);
+		painter.prep();
 		world.draw(painter);
-		painter.post();
 		frames.draw(painter);
-		painter.end();
+		painter.post();
 	}
 	
 	private void sleep(long duration) {
@@ -63,6 +50,8 @@ public class Engine implements Runnable {
 	
 	public void run() {
 		frames = new Frames();
+		while (painter == null)
+			sleep(500);
 		while (frames.running) {
 			if (!world.gameOver)
 				update();

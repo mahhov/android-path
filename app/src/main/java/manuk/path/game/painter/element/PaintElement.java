@@ -22,7 +22,6 @@ public class PaintElement {
 	}
 	
 	public void draw(Painter painter) {
-		painter.drawRect(left, top, width, height, color);
-		painter.drawRect(left, top, width, height, FRAME_COLOR, FRAME_SIZE);
+		painter.drawRect(left, top, width, height, color, FRAME_COLOR);
 	}
 }

@@ -15,8 +15,7 @@ public class PaintBar extends PaintElement {
 	}
 	
 	public void draw(Painter painter) {
-		painter.drawRect(left, top, width, height, FRAME_COLOR);
+		painter.drawRect(left, top, width, height, FRAME_COLOR, FRAME_COLOR);
 		painter.drawRect(left, top, width * value, height, color);
-		painter.drawRect(left, top, width, height, FRAME_COLOR, FRAME_SIZE);
 	}
 }

@@ -1,32 +1,19 @@
 package manuk.path.game.controller;
 
-import android.content.Context;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
-import android.view.View;
-import manuk.path.game.util.Math3D;
 import manuk.path.game.util.Measurements;
 
 import static manuk.path.game.controller.Controller.Touch.STATE_FRESH;
 
-public class Controller implements View.OnTouchListener {
-	static final double SCALE_MIN = .4, SCALE_MAX = 1.8;
-	
+public class Controller {
 	public Touch[] touch;
-	public double scale;
-	//	private ScaleGestureDetector scaleGestureDetector;
 	
-	public Controller(Context context) {
-		scale = 1;
-		//		scaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
+	public Controller() {
 		touch = new Touch[] {new Touch(), new Touch()};
 	}
 	
-	public boolean onTouch(View v, MotionEvent event) {
-		//		scaleGestureDetector.onTouchEvent(event);
-		
+	public void onTouch(MotionEvent event) {
 		int id;
-		
 		switch (event.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
 			case MotionEvent.ACTION_POINTER_DOWN:
@@ -54,20 +41,12 @@ public class Controller implements View.OnTouchListener {
 				}
 				break;
 		}
-		return true;
 	}
 	
 	public void refreshTouchStates() {
 		for (Touch t : touch)
 			if (t.isDown())
 				t.state = Touch.STATE_FRESH;
-	}
-	
-	private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-		public boolean onScale(ScaleGestureDetector detector) {
-			scale = Math3D.minMax(scale / detector.getScaleFactor(), SCALE_MIN, SCALE_MAX);
-			return true;
-		}
 	}
 	
 	public static class Touch {

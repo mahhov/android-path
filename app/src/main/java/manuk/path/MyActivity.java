@@ -1,37 +1,36 @@
 package manuk.path;
 
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import manuk.path.game.Engine;
 import manuk.path.game.render.MyRenderer;
 
 public class MyActivity extends AppCompatActivity {
-	private GLSurfaceView myGLSurfaceView;
+	private MyRenderer myRenderer;
+	private MySurface mySurface;
+	private Engine engine;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setupOpenGl();
-		setContentView(myGLSurfaceView);
+		myRenderer = new MyRenderer(this);
+		mySurface = new MySurface(this, myRenderer);
+		setContentView(mySurface);
+		engine = new Engine();
 	}
 	
-	private void setupOpenGl() {
-		myGLSurfaceView = new GLSurfaceView(this);
-		try {
-			myGLSurfaceView.setEGLContextClientVersion(3);
-		} catch (Exception e) {
-			System.out.println("could not found opengl 3");
-			myGLSurfaceView.setEGLContextClientVersion(2);
-		}
-		myGLSurfaceView.setRenderer(new MyRenderer());
+	public void newSurface(int width, int height) {
+		engine.setupRenderer(mySurface, myRenderer, width, height);
 	}
 	
 	protected void onResume() {
 		super.onResume();
-		myGLSurfaceView.onResume();
+		mySurface.onResume();
+		new Thread(engine).start();
 	}
 	
 	protected void onPause() {
 		super.onPause();
-		myGLSurfaceView.onPause();
+		mySurface.onPause();
+		engine.stop();
 	}
 }
