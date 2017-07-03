@@ -8,6 +8,7 @@ import manuk.path.game.util.Math3D;
 import manuk.path.game.util.Measurements;
 
 public class Map {
+	private static final int[] COLOR = MapPainter.createColorShade(0, 100, 0);
 	private static final double SCROLL_WEIGHT = .2;
 	public final int width, length, height;
 	private int[][][] map;
@@ -79,7 +80,7 @@ public class Map {
 						side[MapPainter.FRONT] = y < midY && isEmpty(x, y + 1, z);
 						side[MapPainter.TOP] = isEmpty(x, y, z + 1);
 						
-						MapPainter.drawBlock(x - scrollX, y - scrollY, z, 1, 1, 1, side, MapPainter.MAP_COLOR);
+						MapPainter.drawBlock(x - scrollX, y - scrollY, z, 1, 1, 1, side, COLOR);
 					}
 	}
 }

@@ -6,7 +6,7 @@ import manuk.path.game.util.Measurements;
 public class MapPainter {
 	private static Painter painter;
 	public static final int LEFT = 0, RIGHT = 1, BACK = 2, FRONT = 3, BOTTOM = 4, TOP = 5;
-	public static final int[] MAP_COLOR = new int[6];
+	private static final double[] LIGHT = new double[6];
 	
 	// local variables, defined here to avoid allocation
 	private static double[] bottomCoord, topCoord;
@@ -14,31 +14,22 @@ public class MapPainter {
 	private static double[] leftX = null, rightX = null, sideX = null, backY = null, frontY = null, sideY = null, topX = null, topY = null; // todo: check if this is any benefit
 	private static double[] coord = new double[4];
 	
-	public static void init(Painter painter) {
+	static {
+		LIGHT[FRONT] = .7;
+		LIGHT[TOP] = .9;
+		LIGHT[LEFT] = .6;
+		LIGHT[RIGHT] = .4;
+		LIGHT[BACK] = .3;
+		LIGHT[BOTTOM] = .1;
+	}
+	
+	public static void setPainter(Painter painter) {
 		MapPainter.painter = painter;
-		int red = 6, green = 12, blue = 6;
-		int i = 2;
-		MAP_COLOR[FRONT] = Color.rgb(red * i, green * i, blue * i);
-		i++;
-		MAP_COLOR[TOP] = Color.rgb(red * i, green * i, blue * i);
-		i++;
-		MAP_COLOR[LEFT] = Color.rgb(red * i, green * i, blue * i);
-		i++;
-		MAP_COLOR[RIGHT] = Color.rgb(red * i, green * i, blue * i);
-		i++;
-		MAP_COLOR[BACK] = Color.rgb(red * i, green * i, blue * i);
-		i++;
-		MAP_COLOR[BOTTOM] = Color.rgb(red * i, green * i, blue * i);
 	}
 	
 	public static void drawFlat(double x, double y, double z, int color) {
 		bottomCoord = toPaintCoord(x, y, z, 1, 1);
 		painter.drawRect(bottomCoord[0], bottomCoord[1], bottomCoord[2], bottomCoord[3], color);
-	}
-	
-	// todo: shades
-	public static void drawBlock(double x, double y, double z, double width, double length, double height, boolean[] side, int color) {
-		drawBlock(x, y, z, width, length, height, side, new int[] {color, color, color, color, color, color});
 	}
 	
 	public static void drawBlock(double x, double y, double z, double width, double length, double height, boolean[] side, int[] color) {
@@ -101,5 +92,16 @@ public class MapPainter {
 		coord[2] = width * stretchX;
 		coord[3] = length * stretchY;
 		return coord;
+	}
+	
+	public static int[] createColorShade(int color) {
+		return createColorShade((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff);
+	}
+	
+	public static int[] createColorShade(int red, int green, int blue) {
+		int[] shade = new int[LIGHT.length];
+		for (int i = 0; i < shade.length; i++)
+			shade[i] = Color.rgb((int) (red * LIGHT[i]), (int) (green * LIGHT[i]), (int) (blue * LIGHT[i]));
+		return shade;
 	}
 }

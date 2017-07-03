@@ -8,7 +8,7 @@ abstract class Character {
 	public double x, y;
 	double goalX, goalY;
 	
-	private int color;
+	private int[] color;
 	private double speed;
 	private int attackSpeed, attackWait;
 	private boolean attacking;
@@ -17,7 +17,7 @@ abstract class Character {
 	public Character(double spawnX, double spawnY, int color, double speed, int attackSpeed, double maxLife) {
 		goalX = x = spawnX;
 		goalY = y = spawnY;
-		this.color = color;
+		this.color = MapPainter.createColorShade(color);
 		this.speed = speed;
 		this.attackSpeed = attackSpeed;
 		this.maxLife = life = maxLife;

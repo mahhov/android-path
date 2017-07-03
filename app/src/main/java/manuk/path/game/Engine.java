@@ -33,7 +33,7 @@ public class Engine implements Runnable {
 		this.surfaceHolder = surfaceHolder;
 		
 		painter = new Painter();
-		MapPainter.init(painter);
+		MapPainter.setPainter(painter);
 		
 		controller = new Controller(surfaceView.getContext());
 		surfaceView.setOnTouchListener(controller);
