@@ -6,7 +6,7 @@ public abstract class MapGenerator {
 	private static long SEED = 29;
 	private static Random random = new Random(SEED);
 	public int[][][] map;
-	public int startX, startY;
+	public int spawnX, spawnY;
 	
 	public abstract int[][][] generate(int width, int length, int height);
 	

@@ -16,7 +16,7 @@ public class Player extends Character {
 	private ClickablePaintElement actionButton;
 	
 	public Player(MapGenerator mapGenerator, PaintBar lifeBar, ClickablePaintElement actionButton) {
-		super(mapGenerator.startX, mapGenerator.startY, .5, 10, 100);
+		super(mapGenerator.spawnX, mapGenerator.spawnY, .5, 10, 100);
 		this.lifeBar = lifeBar;
 		this.actionButton = actionButton;
 	}

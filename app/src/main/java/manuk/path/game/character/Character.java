@@ -13,9 +13,9 @@ abstract class Character {
 	private boolean attacking;
 	private double maxLife, life;
 	
-	public Character(double startX, double startY, double speed, int attackSpeed, double maxLife) {
-		goalX = x = startX;
-		goalY = y = startY;
+	public Character(double spawnX, double spawnY, double speed, int attackSpeed, double maxLife) {
+		goalX = x = spawnX;
+		goalY = y = spawnY;
 		this.speed = speed;
 		this.attackSpeed = attackSpeed;
 		this.maxLife = life = maxLife;

@@ -6,8 +6,8 @@ import manuk.path.game.util.Math3D;
 public class Enemy extends Character {
 	private static final double WANDER_THRESHOLD = .98, WANDER_DISTANCE = 5, ACTIVE_DISTANCE = 10, DAMAGE_RANGE = 2;
 	
-	public Enemy(double startX, double startY) {
-		super(startX, startY, .1, 10, 10);
+	public Enemy(double spawnX, double spawnY) {
+		super(spawnX, spawnY, .1, 10, 10);
 	}
 	
 	public void update(Player player, Map map) {

@@ -4,7 +4,7 @@ import manuk.path.game.util.LList;
 import manuk.path.game.util.Math3D;
 
 public class CavernMapGenerator extends MapGenerator {
-	private static final int PASSES = 5, MAX_START_TRY = 50, MIN_SPACE_FACTOR = 5;
+	private static final int PASSES = 5, MAX_SPAWN_TRY = 50, MIN_SPACE_FACTOR = 5;
 	int[][][] mapTemp;
 	int width, length, height;
 	
@@ -15,8 +15,8 @@ public class CavernMapGenerator extends MapGenerator {
 		
 		initRand();
 		smooth();
-		findStart();
-		if (!findStart() || !fillExternal())
+		findSpawn();
+		if (!findSpawn() || !fillExternal())
 			return generate(width, length, height);
 		transferFinal();
 		
@@ -45,20 +45,20 @@ public class CavernMapGenerator extends MapGenerator {
 				}
 	}
 	
-	private boolean findStart() {
-		int maxStartTry = MAX_START_TRY;
+	private boolean findSpawn() {
+		int maxSpawnTry = MAX_SPAWN_TRY;
 		do {
-			startX = randInt(0, width);
-			startY = randInt(0, length);
-		} while (mapTemp[startX][startY][PASSES] == 1 && maxStartTry-- > 0);
-		return mapTemp[startX][startY][PASSES] == 0;
+			spawnX = randInt(0, width);
+			spawnY = randInt(0, length);
+		} while (mapTemp[spawnX][spawnY][PASSES] == 1 && maxSpawnTry-- > 0);
+		return mapTemp[spawnX][spawnY][PASSES] == 0;
 	}
 	
 	private boolean fillExternal() {
 		int minSpace = width * length / MIN_SPACE_FACTOR;
 		LList<Pos> search = new LList<>();
-		search.addHead(new Pos(startX, startY));
-		mapTemp[startY][startY][PASSES] = 2;
+		search.addHead(new Pos(spawnX, spawnY));
+		mapTemp[spawnY][spawnY][PASSES] = 2;
 		while (!search.isEmpty()) {
 			Pos xy = search.removeTail();
 			if (xy.x > 0 && mapTemp[xy.x - 1][xy.y][PASSES] == 0) {
