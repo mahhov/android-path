@@ -15,10 +15,12 @@ public class Projectile {
 		this.color = color;
 	}
 	
-	public void update(IntersectionFinder intersectionFinder) {
+	// return true if need to be removed
+	public boolean update(IntersectionFinder intersectionFinder) {
 		double[] intersection = intersectionFinder.find(new double[] {x, y}, dir, speed, false);
 		x = intersection[0];
 		y = intersection[1];
+		return intersection[2] == 1;
 	}
 	
 	public void draw(double scrollX, double scrollY) {

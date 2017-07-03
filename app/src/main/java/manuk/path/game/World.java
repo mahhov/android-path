@@ -10,6 +10,8 @@ import manuk.path.game.painter.Painter;
 import manuk.path.game.projectile.Projectile;
 import manuk.path.game.util.LList;
 
+import java.util.Iterator;
+
 class World {
 	boolean gameOver;
 	private UserInterface userInterface;
@@ -35,8 +37,14 @@ class World {
 		map.scroll(player.x, player.y);
 		for (Enemy e : enemy)
 			e.update(player, map);
-		for (Projectile p : projectile)
-			p.update(map.intersectionFinder);
+		
+		Iterator<LList<Projectile>.Node> projectileIterator = projectile.nodeIterator();
+		LList<Projectile>.Node projectileNode;
+		while (projectileIterator.hasNext()) {
+			projectileNode = projectileIterator.next();
+			if (projectileNode.elem.update(map.intersectionFinder))
+				projectile.remove(projectileNode);
+		}
 	}
 	
 	void draw(Painter painter) {

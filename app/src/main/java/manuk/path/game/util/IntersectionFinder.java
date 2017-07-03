@@ -18,21 +18,22 @@ public class IntersectionFinder {
 		this.map = map;
 	}
 	
+	// return r[3]: 1 if collision, 0 if maxMove
 	public double[] find(double[] orig, double[] dir, double maxMove, boolean allowSlide) {
 		reset(orig, dir, maxMove, allowSlide);
 		if (isDirZeroNum == 2)
-			return orig;
+			return new double[] {orig[0], orig[1], 1};
 		while (true) {
 			computeNextMove();
 			if (moved + move > maxMove && limitDistance) {
 				moveBy(maxMove - moved);
-				return new double[] {nextx, nexty};
+				return new double[] {nextx, nexty, 0};
 			}
 			moveBy(move + Math3D.EPSILON);
 			if (!map.isMoveable(intx, inty, 0)) {
 				moveBy(move - Math3D.EPSILON);
 				if (collideCheck())
-					return new double[] {x, y};
+					return new double[] {x, y, 1};
 			}
 			nextIter();
 		}
