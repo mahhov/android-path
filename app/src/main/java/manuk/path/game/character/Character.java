@@ -60,6 +60,6 @@ abstract class Character {
 	
 	public void draw(double scrollX, double scrollY) {
 		boolean[] side = new boolean[] {true, true, true, true, true, true};
-		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, side, color);
+		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, 1, 1, .5, side, color);
 	}
 }

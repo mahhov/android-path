@@ -36,13 +36,14 @@ public class MapPainter {
 		painter.drawRect(bottomCoord[0], bottomCoord[1], bottomCoord[2], bottomCoord[3], color);
 	}
 	
-	public static void drawBlock(double x, double y, double z, boolean[] side, int color) {
-		drawBlock(x, y, z, side, new int[] {color, color, color, color, color, color});
+	// todo: shades
+	public static void drawBlock(double x, double y, double z, double width, double length, double height, boolean[] side, int color) {
+		drawBlock(x, y, z, width, length, height, side, new int[] {color, color, color, color, color, color});
 	}
 	
-	public static void drawBlock(double x, double y, double z, boolean[] side, int[] color) {
-		bottomCoord = toPaintCoord(x, y, z, 1, 1);
-		topCoord = toPaintCoord(x, y, z + 1, 1, 1);
+	public static void drawBlock(double x, double y, double z, double width, double length, double height, boolean[] side, int[] color) {
+		bottomCoord = toPaintCoord(x, y, z, width, length);
+		topCoord = toPaintCoord(x, y, z + height, width, length);
 		
 		// x
 		leftBottomX = bottomCoord[0];
@@ -91,14 +92,14 @@ public class MapPainter {
 		}
 	}
 	
-	private static double[] toPaintCoord(double x, double y, double z, double width, double height) {
+	private static double[] toPaintCoord(double x, double y, double z, double width, double length) {
 		coord = new double[4];
 		double stretchX = Measurements.SCALED_BLOCK_WIDTH + Measurements.VIEW_STRETCH_Z * z;
 		double stretchY = Measurements.SCALED_BLOCK_HEIGHT + Measurements.VIEW_STRETCH_Z * z;
 		coord[0] = (x - Measurements.SCALED_VIEW_WIDTH / 2.) * stretchX + .5;
 		coord[1] = (y - Measurements.SCALED_VIEW_HEIGHT / 2.) * stretchY + .5;
 		coord[2] = width * stretchX;
-		coord[3] = height * stretchY;
+		coord[3] = length * stretchY;
 		return coord;
 	}
 }
