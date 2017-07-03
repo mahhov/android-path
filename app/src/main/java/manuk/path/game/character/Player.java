@@ -11,6 +11,7 @@ import manuk.path.game.util.LList;
 import manuk.path.game.util.Measurements;
 
 public class Player extends Character {
+	private double attackX, attackY;
 	private PaintBar lifeBar;
 	private ClickablePaintElement actionButton;
 	
@@ -21,20 +22,32 @@ public class Player extends Character {
 	}
 	
 	public void update(Controller controller, Map map, LList<Projectile> projectile) {
+		double[] touchXY = getTouchXY(controller, map);
+		lifeBar.setValue(getLifePercent());
+		
 		if (updateAttack()) {
-			projectile.addHead(new Projectile(x, y, 1, 0, .1, Color.RED));
+			projectile.addHead(new Projectile(x, y, attackX - x, attackY - y, .1, Color.RED));
 			goalX = x;
 			goalY = y;
+		} else if (actionButton.isPressed && touchXY != null) {
+			if (attack()) {
+				attackX = touchXY[0];
+				attackY = touchXY[1];
+			}
+		} else if (touchXY != null) {
+			goalX = touchXY[0];
+			goalY = touchXY[1];
 		}
-		lifeBar.setValue(getLifePercent());
-		if (actionButton.isPressed)
-			attack();
+		move(map.intersectionFinder);
+	}
+	
+	private double[] getTouchXY(Controller controller, Map map) {
 		for (Controller.Touch touch : controller.touch)
 			if (touch.isFresh()) {
-				goalX = touch.x * Measurements.SCALED_VIEW_WIDTH + map.scrollX;
-				goalY = touch.y * Measurements.SCALED_VIEW_HEIGHT + map.scrollY;
-				break;
+				double x = touch.x * Measurements.SCALED_VIEW_WIDTH + map.scrollX;
+				double y = touch.y * Measurements.SCALED_VIEW_HEIGHT + map.scrollY;
+				return new double[] {x, y};
 			}
-		move(map.intersectionFinder);
+		return null;
 	}
 }

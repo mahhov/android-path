@@ -29,11 +29,13 @@ abstract class Character {
 		life = Math3D.max(life - amount, 0);
 	}
 	
-	void attack() {
+	boolean attack() {
 		if (!attacking) {
 			attacking = true;
 			attackWait = attackSpeed;
+			return true;
 		}
+		return false;
 	}
 	
 	boolean updateAttack() {
