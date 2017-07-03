@@ -1,5 +1,6 @@
 package manuk.path.game.projectile;
 
+import android.graphics.Color;
 import manuk.path.game.painter.MapPainter;
 import manuk.path.game.util.IntersectionFinder;
 
@@ -25,6 +26,6 @@ public class Projectile {
 	
 	public void draw(double scrollX, double scrollY) {
 		boolean[] side = new boolean[] {true, true, true, true, true, true};
-		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, side);
+		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, side, Color.RED);
 	}
 }
