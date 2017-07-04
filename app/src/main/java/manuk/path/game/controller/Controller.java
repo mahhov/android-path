@@ -29,7 +29,7 @@ public class Controller {
 			case MotionEvent.ACTION_POINTER_UP:
 				id = event.getPointerId(event.getActionIndex());
 				if (id < 2)
-					touch[id].state = Touch.STATE_NONE;
+					touch[id].released = true;
 				break;
 			case MotionEvent.ACTION_MOVE:
 				for (int i = 0; i < event.getPointerCount(); i++) {
@@ -45,7 +45,10 @@ public class Controller {
 	
 	public void refreshTouchStates() {
 		for (Touch t : touch)
-			if (t.isDown())
+			if (t.released) {
+				t.state = Touch.STATE_NONE;
+				t.released = false;
+			} else if (t.isDown())
 				t.state = Touch.STATE_FRESH;
 	}
 	
@@ -53,6 +56,7 @@ public class Controller {
 		static final int STATE_NONE = 0, STATE_FRESH = 1, STATE_CONSUMED = 2;
 		public double x, y;
 		private int state;
+		private boolean released;
 		
 		public boolean isDown() {
 			return state != STATE_NONE;
