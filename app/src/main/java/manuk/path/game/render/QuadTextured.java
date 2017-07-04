@@ -9,7 +9,7 @@ import java.nio.FloatBuffer;
 import static android.opengl.GLES20.GL_LINE_LOOP;
 import static android.opengl.GLES20.GL_TRIANGLE_FAN;
 
-public class Quad extends RenderElement {
+public class QuadTextured extends RenderElement {
 	private static final int COORDS_PER_VERTEX = 2;
 	private static final int VERTEX_COUNT = 4;
 	private static final int VERTEX_STRIDE = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
@@ -21,8 +21,10 @@ public class Quad extends RenderElement {
 	private static final String FRAGMENT_SHADER_CODE = "" +
 			"precision mediump float;" +
 			"uniform vec4 vColor;" +
+			"uniform sampler2D uTexture;" +
+			"varying vec2 vTexCoordinate;" +
 			"void main() {" +
-			"  gl_FragColor = vColor;" +
+			"  gl_FragColor = vColor * texture2D(uTexture, vTexCoordinate);" +
 			"}";
 	private static int program;
 	
@@ -31,7 +33,7 @@ public class Quad extends RenderElement {
 	private int mPositionHandle;
 	private int mColorHandle;
 	
-	public Quad(float[] coord, int color) {
+	public QuadTextured(float[] coord, int color) {
 		vertexBuffer = ByteBuffer.allocateDirect(coord.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
 		vertexBuffer.put(coord);
 		vertexBuffer.position(0);
@@ -40,7 +42,7 @@ public class Quad extends RenderElement {
 		mColorHandle = GLES20.glGetUniformLocation(program, "vColor");
 	}
 	
-	public Quad(float[] coord, int color, int frameColor) {
+	public QuadTextured(float[] coord, int color, int frameColor) {
 		this(coord, color);
 		this.frameColor = floatColor(frameColor);
 	}

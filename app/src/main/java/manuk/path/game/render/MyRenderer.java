@@ -32,6 +32,7 @@ public class MyRenderer implements GLSurfaceView.Renderer {
 		GLES20.glViewport(0, 0, width, height);
 		myActivity.newSurface(width, height);
 		Quad.init();
+		QuadTextured.init();
 	}
 	
 	public void onDrawFrame(GL10 gl) {
