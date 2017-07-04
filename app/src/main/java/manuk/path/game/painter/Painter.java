@@ -5,6 +5,7 @@ import manuk.path.MySurface;
 import manuk.path.game.render.MyRenderer;
 import manuk.path.game.render.Quad;
 import manuk.path.game.render.RenderElement;
+import manuk.path.game.render.texture.CharGlyphTextureGroup;
 import manuk.path.game.util.LList;
 import manuk.path.game.util.Measurements;
 
@@ -56,24 +57,12 @@ public class Painter {
 		drawList.addHead(new Quad(coord, color));
 	}
 	
-	public void drawText(String text, double x, double y, int color) {
-		//		if (canvas == null)
-		//			return;
-		//		paint.setTextAlign(Paint.Align.LEFT);
-		//		paint.setColor(color);
-		//		float left = (float) (Measurements.SCREEN_SHIFT_X + x * Measurements.SCREEN_WIDTH);
-		//		float top = (float) (Measurements.SCREEN_SHIFT_Y + y * Measurements.SCREEN_HEIGHT);
-		//		canvas.drawText(text, left, top, paint);
-	}
-	
-	public void drawCenteredText(String text, double x, double y, int color) {
-		//		if (canvas == null)
-		//			return;
-		//		paint.setTextAlign(Paint.Align.CENTER);
-		//		paint.setColor(color);
-		//		float left = (float) (Measurements.SCREEN_SHIFT_X + x * Measurements.SCREEN_WIDTH);
-		//		float top = (float) (Measurements.SCREEN_SHIFT_Y + y * Measurements.SCREEN_HEIGHT);
-		//		canvas.drawText(text, left, top, paint);
+	public void drawText(String text, double x, double y, float size) {
+		float[] coord = openglCoordXYWH(x, y, size / 2, size);
+		RenderElement[] r = CharGlyphTextureGroup.drawString(text, coord[0], coord[1], coord[2], coord[3]);
+		for (RenderElement elem : r)
+			if (elem != null)
+				drawList.addHead(elem);
 	}
 	
 	private static float[] openglCoordXYWH(double x, double y, double width, double height) {

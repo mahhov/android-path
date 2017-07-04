@@ -1,16 +1,22 @@
 package manuk.path.game.render.texture;
 
-class CharGlyphTextureGroup extends TextureGroup<CharGlyphTexture> {
-	CharGlyphTextureGroup() {
+import manuk.path.game.render.RenderElement;
+
+public class CharGlyphTextureGroup {
+	private static CharGlyphTexture[] texture;
+	
+	public static void init() {
 		texture = new CharGlyphTexture[127];
 		for (int i = 32; i < texture.length; i++)
 			texture[i] = new CharGlyphTexture((char) i + "");
 	}
 	
-	void drawString(String s, int y) {
+	public static RenderElement[] drawString(String s, float x, float y, float w, float h) {
+		RenderElement[] r = new RenderElement[s.length()];
 		char[] c = s.toCharArray();
-		for (int x = 0; x < c.length; x++)
-			if (c[x] >= 0 && c[x] < texture.length)
-				texture[c[x]].draw(x, y);
+		for (int i = 0; i < c.length; i++)
+			if (c[i] >= 0 && c[i] < texture.length)
+				r[i] = texture[c[i]].draw(x + w * i, y, w, h);
+		return r;
 	}
 }

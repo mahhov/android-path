@@ -58,9 +58,7 @@ class World {
 		for (Projectile p : projectile)
 			p.draw(map.scrollX, map.scrollY);
 		userInterface.draw(painter);
-		if (gameOver) {
-			painter.drawText("GAME OVER :(", .5, .5, Color.GREEN);
-			painter.drawText("Tap to Restart", .5, .7, Color.GREEN);
-		}
+		//		if (gameOver)
+		//			painter.drawText("GAME OVER :(", .5, .5, size);
 	}
 }	

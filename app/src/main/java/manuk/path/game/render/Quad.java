@@ -36,8 +36,6 @@ public class Quad extends RenderElement {
 		vertexBuffer.put(coord);
 		vertexBuffer.position(0);
 		this.color = floatColor(color);
-		mPositionHandle = GLES20.glGetAttribLocation(program, "vPosition");
-		mColorHandle = GLES20.glGetUniformLocation(program, "vColor");
 	}
 	
 	public Quad(float[] coord, int color, int frameColor) {
@@ -56,8 +54,10 @@ public class Quad extends RenderElement {
 	
 	void draw() {
 		GLES20.glUseProgram(program);
+		mPositionHandle = GLES20.glGetAttribLocation(program, "vPosition");
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
-		GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, VERTEX_STRIDE, vertexBuffer);
+		GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+		mColorHandle = GLES20.glGetUniformLocation(program, "vColor");
 		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 		GLES20.glDrawArrays(GL_TRIANGLE_FAN, 0, VERTEX_COUNT);
 		if (frameColor != null) {
@@ -66,5 +66,7 @@ public class Quad extends RenderElement {
 			GLES20.glDrawArrays(GL_LINE_LOOP, 0, VERTEX_COUNT);
 		}
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
+		
+//		System.out.println("SHOULD NOT EQUAL " + mPositionHandle + " " + mColorHandle);
 	}
 }

@@ -5,6 +5,7 @@ import manuk.path.game.controller.Controller;
 import manuk.path.game.painter.MapPainter;
 import manuk.path.game.painter.Painter;
 import manuk.path.game.render.MyRenderer;
+import manuk.path.game.render.texture.CharGlyphTextureGroup;
 import manuk.path.game.util.Frames;
 import manuk.path.game.util.Measurements;
 
@@ -23,6 +24,7 @@ public class Engine implements Runnable {
 	
 	public void setupRenderer(MySurface mySurface, MyRenderer myRenderer, int screenWidth, int screenHeight) {
 		Measurements.init(screenWidth, screenHeight);
+		CharGlyphTextureGroup.init();
 		painter = new Painter(mySurface, myRenderer);
 		MapPainter.setPainter(painter);
 		mySurface.setController(controller);
@@ -65,11 +67,14 @@ public class Engine implements Runnable {
 	}
 }
 
+// todo: text drawing
 // todo: fix side darwing of character
 // todo: lighting and shadow
 // todo: textures
 // todo: map entities and collision
 // todo: basic combat
+// todo: models
+// todo: better camera perspective
 
 // todo: level up - 10 life, 10 mana
 // todo: stats: choose 4 of (life, life regen, mana, mana regen, evs, armour, shield, resists, attack/cast speed, attack/cast dmg, crit chance/dmg, status duration, aoe) 
@@ -78,3 +83,4 @@ public class Engine implements Runnable {
 // todo: damage types
 // todo: skill system
 // todo: calculate VIEW_STRETCH_Z correctly
+// todoL shrines
