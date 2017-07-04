@@ -56,7 +56,6 @@ public class Map {
 	}
 	
 	void draw() {
-		boolean side[] = new boolean[6];
 		int startX = (int) scrollX;
 		int startY = (int) scrollY;
 		int endX = Math3D.min(startX + Measurements.SCALED_VIEW_WIDTH + 1, width);
@@ -70,17 +69,24 @@ public class Map {
 				if (shadow[x][y])
 					MapPainter.drawFlat(x - scrollX, y - scrollY, 0, Color.GRAY);
 		
-		for (int z = 0; z < height; z++)
-			for (int x = startX; x < endX; x++)
-				for (int y = (int) scrollY; y < endY; y++)
-					if (map[x][y][z] == 1) {
-						side[MapPainter.LEFT] = x > midX && isEmpty(x - 1, y, z);
-						side[MapPainter.RIGHT] = x < midX && isEmpty(x + 1, y, z);
-						side[MapPainter.BACK] = y > midY && isEmpty(x, y - 1, z);
-						side[MapPainter.FRONT] = y < midY && isEmpty(x, y + 1, z);
-						side[MapPainter.TOP] = isEmpty(x, y, z + 1);
-						
-						MapPainter.drawBlock(x - scrollX, y - scrollY, z, 1, 1, 1, side, COLOR);
-					}
+		for (int z = 0; z < height; z++) {
+			for (int y = (int) scrollY; y < midY; y++)
+				drawZY(startX, midX, endX, midY, y, z);
+			for (int y = endY - 1; y >= midY; y--)
+				drawZY(startX, midX, endX, midY, y, z);
+		}
+	}
+	
+	private void drawZY(int startX, int midX, int endX, int midY, int y, int z) {
+		boolean side[] = new boolean[6];
+		for (int x = startX; x < endX; x++)
+			if (map[x][y][z] == 1) {
+				side[MapPainter.LEFT] = x > midX && isEmpty(x - 1, y, z);
+				side[MapPainter.RIGHT] = x < midX && isEmpty(x + 1, y, z);
+				side[MapPainter.BACK] = y > midY && isEmpty(x, y - 1, z);
+				side[MapPainter.FRONT] = y < midY && isEmpty(x, y + 1, z);
+				side[MapPainter.TOP] = isEmpty(x, y, z + 1);
+				MapPainter.drawBlock(x - scrollX, y - scrollY, z, 1, 1, 1, side, COLOR);
+			}
 	}
 }
