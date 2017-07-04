@@ -4,6 +4,7 @@ import android.graphics.Color;
 import manuk.path.game.map.mapgenerator.MapGenerator;
 import manuk.path.game.painter.MapPainter;
 import manuk.path.game.util.IntersectionFinder;
+import manuk.path.game.util.LList;
 import manuk.path.game.util.Math3D;
 import manuk.path.game.util.Measurements;
 
@@ -13,8 +14,9 @@ public class Map {
 	public final int width, length, height;
 	private int[][][] map;
 	private boolean[][] shadow;
-//	private MapEntity[][] entity;
+	private LList<MapEntity>[][] entity;
 	public double scrollX, scrollY;
+	private Scroll scroll;
 	public IntersectionFinder intersectionFinder;
 	
 	public Map(int width, int length, int height, MapGenerator mapGenerator) {
@@ -36,12 +38,27 @@ public class Map {
 				this.shadow[x][y] = shadow;
 			}
 		
+		clearEntities();
+		scroll = new Scroll(width, length);
 		intersectionFinder = new IntersectionFinder(this);
+	}
+	
+	private void clearEntities() {
+		entity = new LList[width][length];
+		for (int x = 0; x < width; x++)
+			for (int y = 0; y < length; y++)
+				entity[x][y] = new LList<>();
+	}
+	
+	public void addEntity(int x, int y, MapEntity entity) {
+		if (scroll.inView(x, y))
+			this.entity[x][y].addHead(entity);
 	}
 	
 	public void scroll(double toX, double toY) {
 		scrollX = Math3D.minMax(scrollX + (toX - Measurements.SCALED_VIEW_WIDTH / 2 - scrollX) * SCROLL_WEIGHT, 0, width - Measurements.SCALED_VIEW_WIDTH);
 		scrollY = Math3D.minMax(scrollY + (toY - Measurements.SCALED_VIEW_HEIGHT / 2 - scrollY) * SCROLL_WEIGHT, 0, length - Measurements.SCALED_VIEW_WIDTH);
+		scroll.setScroll(scrollX, scrollY);
 	}
 	
 	public boolean isInBounds(int x, int y, int z) {
@@ -57,36 +74,34 @@ public class Map {
 	}
 	
 	public void draw() {
-		int startX = (int) scrollX;
-		int startY = (int) scrollY;
-		int endX = Math3D.min(startX + Measurements.SCALED_VIEW_WIDTH + 1, width);
-		int endY = Math3D.min(startY + Measurements.SCALED_VIEW_HEIGHT + 1, length);
-		int midX = startX + Measurements.SCALED_VIEW_WIDTH / 2;
-		int midY = startY + Measurements.SCALED_VIEW_HEIGHT / 2;
-		
-		for (int x = startX; x < endX; x++)
-			for (int y = (int) scrollY; y < endY; y++)
+		for (int x = scroll.startX; x < scroll.endX; x++)
+			for (int y = scroll.startY; y < scroll.endY; y++)
 				if (shadow[x][y])
 					MapPainter.drawFlat(x - scrollX, y - scrollY, 0, Color.GRAY);
 		
 		for (int z = 0; z < height; z++) {
-			for (int y = (int) scrollY; y < midY; y++)
-				drawZY(startX, midX, endX, midY, y, z);
-			for (int y = endY - 1; y >= midY; y--)
-				drawZY(startX, midX, endX, midY, y, z);
+			for (int y = scroll.startY; y < scroll.midY; y++)
+				drawZY(y, z);
+			for (int y = scroll.endY - 1; y >= scroll.midY; y--)
+				drawZY(y, z);
 		}
+		
+		clearEntities(); // todo: test if deleting aged entities instead of clearing would be faster
 	}
 	
-	private void drawZY(int startX, int midX, int endX, int midY, int y, int z) {
+	private void drawZY(int y, int z) {
 		boolean side[] = new boolean[6];
-		for (int x = startX; x < endX; x++)
+		for (int x = scroll.startX; x < scroll.endX; x++) {
 			if (map[x][y][z] == 1) {
-				side[MapPainter.LEFT] = x > midX && isEmpty(x - 1, y, z);
-				side[MapPainter.RIGHT] = x < midX && isEmpty(x + 1, y, z);
-				side[MapPainter.BACK] = y > midY && isEmpty(x, y - 1, z);
-				side[MapPainter.FRONT] = y < midY && isEmpty(x, y + 1, z);
+				side[MapPainter.LEFT] = x > scroll.midX && isEmpty(x - 1, y, z);
+				side[MapPainter.RIGHT] = x < scroll.midX && isEmpty(x + 1, y, z);
+				side[MapPainter.BACK] = y > scroll.midY && isEmpty(x, y - 1, z);
+				side[MapPainter.FRONT] = y < scroll.midY && isEmpty(x, y + 1, z);
 				side[MapPainter.TOP] = isEmpty(x, y, z + 1);
 				MapPainter.drawBlock(x - scrollX, y - scrollY, z, 1, 1, 1, side, COLOR);
 			}
+			for (MapEntity e : entity[x][y])
+				e.draw(scrollX, scrollY);
+		}
 	}
 }

@@ -53,9 +53,6 @@ class World {
 	void draw(Painter painter) {
 		painter.drawRect(0, 0, 1, 1, Color.WHITE);
 		map.draw();
-		player.draw(map.scrollX, map.scrollY);
-		for (Enemy e : enemy)
-			e.draw(map.scrollX, map.scrollY);
 		for (Projectile p : projectile)
 			p.draw(map.scrollX, map.scrollY);
 		userInterface.draw(painter);

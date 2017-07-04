@@ -1,8 +1,8 @@
 package manuk.path.game.character;
 
 import android.graphics.Color;
-import manuk.path.game.map.Map;
 import manuk.path.game.controller.Controller;
+import manuk.path.game.map.Map;
 import manuk.path.game.map.mapgenerator.MapGenerator;
 import manuk.path.game.painter.element.ClickablePaintElement;
 import manuk.path.game.painter.element.PaintBar;
@@ -38,7 +38,7 @@ public class Player extends Character {
 			goalX = touchXY[0];
 			goalY = touchXY[1];
 		}
-		move(map.intersectionFinder);
+		move(map);
 	}
 	
 	private double[] getTouchXY(Controller controller, Map map) {

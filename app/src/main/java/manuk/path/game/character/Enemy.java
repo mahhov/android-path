@@ -15,16 +15,15 @@ public class Enemy extends Character {
 		if (updateAttack())
 			player.takeDamage(1);
 		double distance = Math3D.magnitude(player.x - x, player.y - y);
-		if (distance < DAMAGE_RANGE) {
+		if (distance < DAMAGE_RANGE)
 			attack();
-		} else if (distance < ACTIVE_DISTANCE) {
+		else if (distance < ACTIVE_DISTANCE) {
 			goalX = player.x;
 			goalY = player.y;
-			move(map.intersectionFinder);
 		} else if (Math3D.random() > WANDER_THRESHOLD) {
 			goalX = x + Math3D.random(-WANDER_DISTANCE, WANDER_DISTANCE);
 			goalY = y + Math3D.random(-WANDER_DISTANCE, WANDER_DISTANCE);
-			move(map.intersectionFinder);
 		}
+		move(map);
 	}
 }

@@ -1,10 +1,11 @@
 package manuk.path.game.character;
 
+import manuk.path.game.map.Map;
+import manuk.path.game.map.MapEntity;
 import manuk.path.game.painter.MapPainter;
-import manuk.path.game.util.IntersectionFinder;
 import manuk.path.game.util.Math3D;
 
-abstract class Character {
+abstract class Character implements MapEntity {
 	public double x, y;
 	double goalX, goalY;
 	
@@ -14,7 +15,7 @@ abstract class Character {
 	private boolean attacking;
 	private double maxLife, life;
 	
-	public Character(double spawnX, double spawnY, int color, double speed, int attackSpeed, double maxLife) {
+	Character(double spawnX, double spawnY, int color, double speed, int attackSpeed, double maxLife) {
 		goalX = x = spawnX;
 		goalY = y = spawnY;
 		this.color = MapPainter.createColorShade(color);
@@ -48,14 +49,17 @@ abstract class Character {
 		return false;
 	}
 	
-	void move(IntersectionFinder intersectionFinder) {
-		if (attacking)
+	void move(Map map) {
+		if (attacking) {
+			map.addEntity((int) x, (int) y, this);
 			return;
+		}
 		double deltaX = goalX - x, deltaY = goalY - y;
 		double dist = Math3D.min(speed, Math3D.magnitude(deltaX, deltaY));
-		double[] intersection = intersectionFinder.find(new double[] {x, y}, new double[] {deltaX, deltaY}, dist, true);
+		double[] intersection = map.intersectionFinder.find(new double[] {x, y}, new double[] {deltaX, deltaY}, dist, true);
 		x = intersection[0];
 		y = intersection[1];
+		map.addEntity((int) x, (int) y, this);
 	}
 	
 	public void draw(double scrollX, double scrollY) {
