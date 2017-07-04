@@ -22,7 +22,7 @@ public class ClickablePaintElement extends PaintElement {
 		for (Touch touch : controller.touch)
 			if (touch.isDown() && touch.x > left && touch.x < left + width && touch.y > top && touch.y < top + height) {
 				isPressed = true;
-				touch.state = Touch.STATE_CONSUMED;
+				touch.consume();
 				break;
 			}
 	}

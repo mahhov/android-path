@@ -81,27 +81,32 @@ public class Map {
 		
 		for (int z = 0; z < height; z++) {
 			for (int y = scroll.startY; y < scroll.midY; y++)
-				drawZY(y, z);
+				drawYZ(y, z);
 			for (int y = scroll.endY - 1; y >= scroll.midY; y--)
-				drawZY(y, z);
+				drawYZ(y, z);
 		}
 		
 		clearEntities(); // todo: test if deleting aged entities instead of clearing would be faster
 	}
 	
-	private void drawZY(int y, int z) {
-		boolean side[] = new boolean[6];
-		for (int x = scroll.startX; x < scroll.endX; x++) {
-			if (map[x][y][z] == 1) {
-				side[MapPainter.LEFT] = x > scroll.midX && isEmpty(x - 1, y, z);
-				side[MapPainter.RIGHT] = x < scroll.midX && isEmpty(x + 1, y, z);
-				side[MapPainter.BACK] = y > scroll.midY && isEmpty(x, y - 1, z);
-				side[MapPainter.FRONT] = y < scroll.midY && isEmpty(x, y + 1, z);
-				side[MapPainter.TOP] = isEmpty(x, y, z + 1);
-				MapPainter.drawBlock(x - scrollX, y - scrollY, z, 1, 1, 1, side, COLOR);
-			}
-			for (MapEntity e : entity[x][y])
-				e.draw(scrollX, scrollY);
+	private void drawYZ(int y, int z) {
+		for (int x = scroll.startX; x < scroll.midX; x++)
+			drawXYZ(x, y, z);
+		for (int x = scroll.endX - 1; x >= scroll.midX; x--)
+			drawXYZ(x, y, z);
+	}
+	
+	private void drawXYZ(int x, int y, int z) {
+		for (MapEntity e : entity[x][y])
+			e.draw(scrollX, scrollY);
+		if (map[x][y][z] == 1) {
+			boolean side[] = new boolean[6];
+			side[MapPainter.LEFT] = x > scroll.midX && isEmpty(x - 1, y, z);
+			side[MapPainter.RIGHT] = x <= scroll.midX && isEmpty(x + 1, y, z);
+			side[MapPainter.BACK] = y > scroll.midY && isEmpty(x, y - 1, z);
+			side[MapPainter.FRONT] = y <= scroll.midY && isEmpty(x, y + 1, z);
+			side[MapPainter.TOP] = isEmpty(x, y, z + 1);
+			MapPainter.drawBlock(x - scrollX, y - scrollY, z, 1, 1, 5, side, COLOR);
 		}
 	}
 }

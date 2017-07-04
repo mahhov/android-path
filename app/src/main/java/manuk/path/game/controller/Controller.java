@@ -50,9 +50,9 @@ public class Controller {
 	}
 	
 	public static class Touch {
-		public static final int STATE_NONE = 0, STATE_FRESH = 1, STATE_CONSUMED = 2;
+		static final int STATE_NONE = 0, STATE_FRESH = 1, STATE_CONSUMED = 2;
 		public double x, y;
-		public int state;
+		private int state;
 		
 		public boolean isDown() {
 			return state != STATE_NONE;
@@ -60,6 +60,10 @@ public class Controller {
 		
 		public boolean isFresh() {
 			return state == STATE_FRESH;
+		}
+		
+		public void consume() {
+			state = Touch.STATE_CONSUMED;
 		}
 	}
 }
