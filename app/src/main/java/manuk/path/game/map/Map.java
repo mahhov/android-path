@@ -1,7 +1,7 @@
-package manuk.path.game;
+package manuk.path.game.map;
 
 import android.graphics.Color;
-import manuk.path.game.mapgenerator.MapGenerator;
+import manuk.path.game.map.mapgenerator.MapGenerator;
 import manuk.path.game.painter.MapPainter;
 import manuk.path.game.util.IntersectionFinder;
 import manuk.path.game.util.Math3D;
@@ -13,10 +13,11 @@ public class Map {
 	public final int width, length, height;
 	private int[][][] map;
 	private boolean[][] shadow;
+//	private MapEntity[][] entity;
 	public double scrollX, scrollY;
 	public IntersectionFinder intersectionFinder;
 	
-	Map(int width, int length, int height, MapGenerator mapGenerator) {
+	public Map(int width, int length, int height, MapGenerator mapGenerator) {
 		this.width = width;
 		this.length = length;
 		this.height = height;
@@ -38,7 +39,7 @@ public class Map {
 		intersectionFinder = new IntersectionFinder(this);
 	}
 	
-	void scroll(double toX, double toY) {
+	public void scroll(double toX, double toY) {
 		scrollX = Math3D.minMax(scrollX + (toX - Measurements.SCALED_VIEW_WIDTH / 2 - scrollX) * SCROLL_WEIGHT, 0, width - Measurements.SCALED_VIEW_WIDTH);
 		scrollY = Math3D.minMax(scrollY + (toY - Measurements.SCALED_VIEW_HEIGHT / 2 - scrollY) * SCROLL_WEIGHT, 0, length - Measurements.SCALED_VIEW_WIDTH);
 	}
@@ -55,14 +56,13 @@ public class Map {
 		return isInBounds(x, y, z) && map[x][y][z] == 0;
 	}
 	
-	void draw() {
+	public void draw() {
 		int startX = (int) scrollX;
 		int startY = (int) scrollY;
 		int endX = Math3D.min(startX + Measurements.SCALED_VIEW_WIDTH + 1, width);
 		int endY = Math3D.min(startY + Measurements.SCALED_VIEW_HEIGHT + 1, length);
 		int midX = startX + Measurements.SCALED_VIEW_WIDTH / 2;
 		int midY = startY + Measurements.SCALED_VIEW_HEIGHT / 2;
-		
 		
 		for (int x = startX; x < endX; x++)
 			for (int y = (int) scrollY; y < endY; y++)

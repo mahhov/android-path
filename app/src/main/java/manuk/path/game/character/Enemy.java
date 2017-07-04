@@ -1,7 +1,7 @@
 package manuk.path.game.character;
 
 import android.graphics.Color;
-import manuk.path.game.Map;
+import manuk.path.game.map.Map;
 import manuk.path.game.util.Math3D;
 
 public class Enemy extends Character {

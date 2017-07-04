@@ -1,4 +1,4 @@
-package manuk.path.game.mapgenerator;
+package manuk.path.game.map.mapgenerator;
 
 public class WallMapGenreator extends MapGenerator {
 	public int[][][] generate(int width, int length, int height) {

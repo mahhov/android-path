@@ -1,6 +1,6 @@
 package manuk.path.game.util;
 
-import manuk.path.game.Map;
+import manuk.path.game.map.Map;
 
 public class IntersectionFinder {
 	private Map map;

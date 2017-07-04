@@ -1,9 +1,9 @@
 package manuk.path.game.character;
 
 import android.graphics.Color;
-import manuk.path.game.Map;
+import manuk.path.game.map.Map;
 import manuk.path.game.controller.Controller;
-import manuk.path.game.mapgenerator.MapGenerator;
+import manuk.path.game.map.mapgenerator.MapGenerator;
 import manuk.path.game.painter.element.ClickablePaintElement;
 import manuk.path.game.painter.element.PaintBar;
 import manuk.path.game.projectile.Projectile;
