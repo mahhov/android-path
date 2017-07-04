@@ -10,9 +10,8 @@ import static android.opengl.GLES20.GL_LINE_LOOP;
 import static android.opengl.GLES20.GL_TRIANGLE_FAN;
 
 public class Quad extends RenderElement {
-	private static final int COORDS_PER_VERTEX = 2;
 	private static final int VERTEX_COUNT = 4;
-	private static final int VERTEX_STRIDE = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
+	private static final int COORDS_PER_VERTEX = 2;
 	private static final String VERTEX_SHADER_CODE = "" +
 			"attribute vec4 vPosition;" +
 			"void main() {" +
@@ -28,13 +27,10 @@ public class Quad extends RenderElement {
 	
 	private FloatBuffer vertexBuffer;
 	private float[] color, frameColor; // rgba
-	private int mPositionHandle;
-	private int mColorHandle;
 	
 	public Quad(float[] coord, int color) {
 		vertexBuffer = ByteBuffer.allocateDirect(coord.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
-		vertexBuffer.put(coord);
-		vertexBuffer.position(0);
+		vertexBuffer.put(coord).position(0);
 		this.color = floatColor(color);
 	}
 	
@@ -54,11 +50,17 @@ public class Quad extends RenderElement {
 	
 	void draw() {
 		GLES20.glUseProgram(program);
-		mPositionHandle = GLES20.glGetAttribLocation(program, "vPosition");
+		
+		// pos
+		int mPositionHandle = GLES20.glGetAttribLocation(program, "vPosition");
 		GLES20.glEnableVertexAttribArray(mPositionHandle);
 		GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, vertexBuffer);
-		mColorHandle = GLES20.glGetUniformLocation(program, "vColor");
+		
+		// color
+		int mColorHandle = GLES20.glGetUniformLocation(program, "vColor");
 		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+		
+		// draw
 		GLES20.glDrawArrays(GL_TRIANGLE_FAN, 0, VERTEX_COUNT);
 		if (frameColor != null) {
 			GLES20.glLineWidth(10);
@@ -66,7 +68,5 @@ public class Quad extends RenderElement {
 			GLES20.glDrawArrays(GL_LINE_LOOP, 0, VERTEX_COUNT);
 		}
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
-		
-//		System.out.println("SHOULD NOT EQUAL " + mPositionHandle + " " + mColorHandle);
 	}
 }

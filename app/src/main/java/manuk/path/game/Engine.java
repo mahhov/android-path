@@ -67,7 +67,6 @@ public class Engine implements Runnable {
 	}
 }
 
-// todo: text drawing
 // todo: fix side darwing of character
 // todo: lighting and shadow
 // todo: textures
@@ -83,4 +82,4 @@ public class Engine implements Runnable {
 // todo: damage types
 // todo: skill system
 // todo: calculate VIEW_STRETCH_Z correctly
-// todoL shrines
+// todo: shrines
