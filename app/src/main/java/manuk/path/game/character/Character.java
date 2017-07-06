@@ -5,7 +5,7 @@ import manuk.path.game.map.MapEntity;
 import manuk.path.game.painter.MapPainter;
 import manuk.path.game.util.Math3D;
 
-abstract class Character implements MapEntity {
+abstract class Character extends MapEntity {
 	public double x, y;
 	double goalX, goalY;
 	
@@ -15,7 +15,8 @@ abstract class Character implements MapEntity {
 	private boolean attacking;
 	private double maxLife, life;
 	
-	Character(double spawnX, double spawnY, int color, double speed, int attackSpeed, double maxLife) {
+	Character(int layer, double spawnX, double spawnY, int color, double speed, int attackSpeed, double maxLife) {
+		super(layer);
 		goalX = x = spawnX;
 		goalY = y = spawnY;
 		this.color = MapPainter.createColorShade(color);

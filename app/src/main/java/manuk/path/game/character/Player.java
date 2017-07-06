@@ -3,6 +3,7 @@ package manuk.path.game.character;
 import android.graphics.Color;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.map.Map;
+import manuk.path.game.map.MapEntity;
 import manuk.path.game.map.mapgenerator.MapGenerator;
 import manuk.path.game.painter.element.ClickablePaintElement;
 import manuk.path.game.painter.element.PaintBar;
@@ -16,7 +17,7 @@ public class Player extends Character {
 	private ClickablePaintElement actionButton;
 	
 	public Player(MapGenerator mapGenerator, PaintBar lifeBar, ClickablePaintElement actionButton) {
-		super(mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .5, 10, 100);
+		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .5, 10, 100);
 		this.lifeBar = lifeBar;
 		this.actionButton = actionButton;
 	}
@@ -26,7 +27,7 @@ public class Player extends Character {
 		lifeBar.setValue(getLifePercent());
 		
 		if (updateAttack()) {
-			projectile.addHead(new Projectile(x, y, attackX - x, attackY - y, .1, Color.RED));
+			projectile.addHead(new Projectile(MapEntity.ENTITY_LAYER_FRIENDLY_PROJECTILE, x, y, attackX - x, attackY - y, .1, Color.RED));
 			goalX = x;
 			goalY = y;
 		} else if (actionButton.isPressed && touchXY != null) {

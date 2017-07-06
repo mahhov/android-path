@@ -14,7 +14,7 @@ public class Map {
 	public final int width, length, height;
 	private int[][][] map;
 	private boolean[][] shadow;
-	private LList<MapEntity>[][] entity;
+	private LList<MapEntity>[][][] entity;
 	public double scrollX, scrollY;
 	private Scroll scroll;
 	public IntersectionFinder intersectionFinder;
@@ -44,15 +44,19 @@ public class Map {
 	}
 	
 	private void clearEntities() {
-		entity = new LList[width][length];
+		entity = new LList[width][length][MapEntity.ENTITY_LAYERS_COUNT];
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < length; y++)
-				entity[x][y] = new LList<>();
+				for (int layer = 0; layer < MapEntity.ENTITY_LAYERS_COUNT; layer++)
+					entity[x][y][layer] = new LList<>();
 	}
 	
 	public void addEntity(int x, int y, MapEntity entity) {
-		if (scroll.inView(x, y))
-			this.entity[x][y].addHead(entity);
+		if (entity.node != null)
+			this.entity[entity.mapX][entity.mapY][entity.layer].remove(entity.node);
+		entity.mapX = x;
+		entity.mapY = y;
+		entity.node = this.entity[x][y][entity.layer].addHead(entity);
 	}
 	
 	public void scroll(double toX, double toY) {
@@ -85,8 +89,6 @@ public class Map {
 			for (int y = scroll.endY - 1; y >= scroll.midY; y--)
 				drawYZ(y, z);
 		}
-		
-		clearEntities(); // todo: test if deleting aged entities instead of clearing would be faster
 	}
 	
 	private void drawYZ(int y, int z) {
@@ -97,8 +99,9 @@ public class Map {
 	}
 	
 	private void drawXYZ(int x, int y, int z) {
-		for (MapEntity e : entity[x][y])
-			e.draw(scrollX, scrollY);
+		for (int layer = 0; layer < MapEntity.ENTITY_LAYERS_COUNT; layer++)
+			for (MapEntity e : entity[x][y][layer])
+				e.draw(scrollX, scrollY);
 		if (map[x][y][z] == 1) {
 			boolean side[] = new boolean[6];
 			side[MapPainter.LEFT] = x > scroll.midX && isEmpty(x - 1, y, z);

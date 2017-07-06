@@ -45,7 +45,7 @@ class World {
 		LList<Projectile>.Node projectileNode;
 		while (projectileIterator.hasNext()) {
 			projectileNode = projectileIterator.next();
-			if (projectileNode.elem.update(map.intersectionFinder))
+			if (projectileNode.elem.update(map))
 				projectile.remove(projectileNode);
 		}
 	}
@@ -53,8 +53,6 @@ class World {
 	void draw(Painter painter) {
 		painter.drawRect(0, 0, 1, 1, Color.WHITE);
 		map.draw();
-		for (Projectile p : projectile)
-			p.draw(map.scrollX, map.scrollY);
 		userInterface.draw(painter);
 		//		if (gameOver)
 		//			painter.drawText("GAME OVER :(", .5, .5, size);

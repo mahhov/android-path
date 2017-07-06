@@ -2,13 +2,14 @@ package manuk.path.game.character;
 
 import android.graphics.Color;
 import manuk.path.game.map.Map;
+import manuk.path.game.map.MapEntity;
 import manuk.path.game.util.Math3D;
 
 public class Enemy extends Character {
 	private static final double WANDER_THRESHOLD = .98, WANDER_DISTANCE = 5, ACTIVE_DISTANCE = 10, DAMAGE_RANGE = 2;
 	
 	public Enemy(double spawnX, double spawnY) {
-		super(spawnX, spawnY, Color.RED, .1, 10, 10);
+		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, Color.RED, .1, 10, 10);
 	}
 	
 	public void update(Player player, Map map) {

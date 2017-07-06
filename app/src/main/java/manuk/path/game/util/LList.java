@@ -9,9 +9,10 @@ public class LList<T> implements Iterable<T> {
 		head = tail = new Node(null, null, null);
 	}
 	
-	public void addHead(T elem) {
+	public Node addHead(T elem) {
 		head = new Node(elem, head, null);
 		head.prev.next = head;
+		return head;
 	}
 	
 	public T removeTail() {

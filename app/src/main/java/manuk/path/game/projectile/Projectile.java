@@ -1,13 +1,15 @@
 package manuk.path.game.projectile;
 
+import manuk.path.game.map.Map;
+import manuk.path.game.map.MapEntity;
 import manuk.path.game.painter.MapPainter;
-import manuk.path.game.util.IntersectionFinder;
 
-public class Projectile {
+public class Projectile extends MapEntity {
 	private double x, y, dir[], speed;
 	private int[] color;
 	
-	public Projectile(double x, double y, double dirX, double dirY, double speed, int color) {
+	public Projectile(int layer, double x, double y, double dirX, double dirY, double speed, int color) {
+		super(layer);
 		this.x = x;
 		this.y = y;
 		dir = new double[] {dirX, dirY};
@@ -16,10 +18,11 @@ public class Projectile {
 	}
 	
 	// return true if need to be removed
-	public boolean update(IntersectionFinder intersectionFinder) {
-		double[] intersection = intersectionFinder.find(new double[] {x, y}, dir, speed, false);
+	public boolean update(Map map) {
+		double[] intersection = map.intersectionFinder.find(new double[] {x, y}, dir, speed, false);
 		x = intersection[0];
 		y = intersection[1];
+		map.addEntity((int) x, (int) y, this);
 		return intersection[2] == 1;
 	}
 	
