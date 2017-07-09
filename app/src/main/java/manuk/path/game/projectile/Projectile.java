@@ -19,10 +19,9 @@ public class Projectile extends MapEntity {
 	
 	// return true if need to be removed
 	public boolean update(Map map) {
-		double[] intersection = map.intersectionFinder.find(new double[] {x, y}, dir, speed, false);
+		double[] intersection = map.moveEntity(new double[] {x, y}, dir, speed, false, this);
 		x = intersection[0];
 		y = intersection[1];
-		map.addEntity((int) x, (int) y, this);
 		return intersection[2] == 1;
 	}
 	

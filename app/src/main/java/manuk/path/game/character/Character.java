@@ -51,16 +51,13 @@ abstract class Character extends MapEntity {
 	}
 	
 	void move(Map map) {
-		if (attacking) {
-			map.addEntity((int) x, (int) y, this);
+		if (attacking)
 			return;
-		}
 		double deltaX = goalX - x, deltaY = goalY - y;
 		double dist = Math3D.min(speed, Math3D.magnitude(deltaX, deltaY));
-		double[] intersection = map.intersectionFinder.find(new double[] {x, y}, new double[] {deltaX, deltaY}, dist, true);
+		double[] intersection = map.moveEntity(new double[] {x, y}, new double[] {deltaX, deltaY}, dist, true, this);
 		x = intersection[0];
 		y = intersection[1];
-		map.addEntity((int) x, (int) y, this);
 	}
 	
 	public void draw(double scrollX, double scrollY) {
