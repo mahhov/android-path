@@ -14,10 +14,10 @@ public class Map {
 	public final int width, length, height;
 	private int[][][] map;
 	private boolean[][] shadow;
-	private LList<MapEntity>[][][] entity;
+	public LList<MapEntity>[][][] entity; // todo: see if we can refactor intersectionFinder to make this private
 	public double scrollX, scrollY;
 	private Scroll scroll;
-	public IntersectionFinder intersectionFinder;
+	private IntersectionFinder intersectionFinder;
 	
 	public Map(int width, int length, int height, MapGenerator mapGenerator) {
 		this.width = width;
@@ -52,12 +52,12 @@ public class Map {
 	}
 	
 	public double[] moveEntity(double[] orig, double[] dir, double maxMove, boolean allowSlide, MapEntity entity) {
-		double[] intersection = intersectionFinder.find(orig, dir, maxMove, allowSlide, entity.layer);
+		double[] intersection = intersectionFinder.find(entity.id, orig, dir, maxMove, allowSlide, entity.layer, entity.size);
 		if (entity.node != null)
-			this.entity[entity.mapX][entity.mapY][entity.layer].remove(entity.node);
-		entity.mapX = (int) intersection[0];
-		entity.mapY = (int) intersection[1];
-		entity.node = this.entity[entity.mapX][entity.mapY][entity.layer].addHead(entity);
+			this.entity[(int) entity.mapX][(int) entity.mapY][entity.layer].remove(entity.node);
+		entity.mapX = intersection[0];
+		entity.mapY = intersection[1];
+		entity.node = this.entity[(int) entity.mapX][(int) entity.mapY][entity.layer].addHead(entity);
 		return intersection;
 	}
 	

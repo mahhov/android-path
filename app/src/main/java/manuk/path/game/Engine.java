@@ -74,6 +74,7 @@ public class Engine implements Runnable {
 // todo: basic combat
 // todo: models
 // todo: better camera perspective
+// todo: enemy path finding
 
 // todo: level up - 10 life, 10 mana
 // todo: stats: choose 4 of (life, life regen, mana, mana regen, evs, armour, shield, resists, attack/cast speed, attack/cast dmg, crit chance/dmg, status duration, aoe) 

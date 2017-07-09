@@ -9,7 +9,7 @@ public class Projectile extends MapEntity {
 	private int[] color;
 	
 	public Projectile(int layer, double x, double y, double dirX, double dirY, double speed, int color) {
-		super(layer);
+		super(layer, .5);
 		this.x = x;
 		this.y = y;
 		dir = new double[] {dirX, dirY};

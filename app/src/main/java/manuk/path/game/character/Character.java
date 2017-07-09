@@ -16,7 +16,7 @@ abstract class Character extends MapEntity {
 	private double maxLife, life;
 	
 	Character(int layer, double spawnX, double spawnY, int color, double speed, int attackSpeed, double maxLife) {
-		super(layer);
+		super(layer, .5);
 		goalX = x = spawnX;
 		goalY = y = spawnY;
 		this.color = MapPainter.createColorShade(color);
