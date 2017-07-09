@@ -52,7 +52,7 @@ public class Map {
 	}
 	
 	public double[] moveEntity(double[] orig, double[] dir, double maxMove, boolean allowSlide, MapEntity entity) {
-		double[] intersection = intersectionFinder.find(orig, dir, maxMove, allowSlide);
+		double[] intersection = intersectionFinder.find(orig, dir, maxMove, allowSlide, entity.layer);
 		if (entity.node != null)
 			this.entity[entity.mapX][entity.mapY][entity.layer].remove(entity.node);
 		entity.mapX = (int) intersection[0];
@@ -67,16 +67,28 @@ public class Map {
 		scroll.setScroll(scrollX, scrollY);
 	}
 	
-	public boolean isInBounds(int x, int y, int z) {
+	private boolean isInBounds(int x, int y, int z) {
 		return x >= 0 && x < width && y >= 0 && y < length && z >= 0 && z < height;
 	}
 	
-	public boolean isEmpty(int x, int y, int z) {
+	// true for out of bounds
+	private boolean isEmpty(int x, int y, int z) {
 		return !isInBounds(x, y, z) || map[x][y][z] == 0;
 	}
 	
+	// false for out of bounds
 	public boolean isMoveable(int x, int y, int z) {
 		return isInBounds(x, y, z) && map[x][y][z] == 0;
+	}
+	
+	// false for out of bounds
+	public boolean isMoveable(int x, int y, int z, int layer) {
+		if (!isMoveable(x, y, z))
+			return false;
+		for (int i = 0; i < MapEntity.ENTITY_LAYERS_COUNT; i++)
+			if (MapEntity.ENTITY_COLLISION[layer][i] && !entity[x][y][i].isEmpty())
+				return false;
+		return true;
 	}
 	
 	public void draw() {

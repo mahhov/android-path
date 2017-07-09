@@ -5,7 +5,7 @@ import manuk.path.game.map.Map;
 public class IntersectionFinder {
 	private Map map;
 	private boolean allowSlide, limitDistance;
-	private double x, y;
+	private double x, y, layer;
 	private double nextx, nexty;
 	private int intx, inty;
 	private double movex, movey, move, moved, maxMove;
@@ -19,8 +19,8 @@ public class IntersectionFinder {
 	}
 	
 	// return r[3]: 1 if collision, 0 if maxMove
-	public double[] find(double[] orig, double[] dir, double maxMove, boolean allowSlide) {
-		reset(orig, dir, maxMove, allowSlide);
+	public double[] find(double[] orig, double[] dir, double maxMove, boolean allowSlide, int layer) {
+		reset(orig, dir, maxMove, allowSlide, layer);
 		if (isDirZeroNum == 2)
 			return new double[] {orig[0], orig[1], 1};
 		while (true) {
@@ -30,7 +30,7 @@ public class IntersectionFinder {
 				return new double[] {nextx, nexty, 0};
 			}
 			moveBy(move + Math3D.EPSILON);
-			if (!map.isMoveable(intx, inty, 0)) {
+			if (!map.isMoveable(intx, inty, 0, layer)) {
 				moveBy(move - Math3D.EPSILON);
 				if (collideCheck())
 					return new double[] {x, y, 1};
@@ -39,9 +39,10 @@ public class IntersectionFinder {
 		}
 	}
 	
-	private void reset(double[] orig, double[] dir, double maxMove, boolean allowSlide) {
+	private void reset(double[] orig, double[] dir, double maxMove, boolean allowSlide, int layer) {
 		x = nextx = orig[0];
 		y = nexty = orig[1];
+		this.layer = layer;
 		intx = (int) x;
 		inty = (int) y;
 		moved = 0;
