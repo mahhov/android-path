@@ -74,7 +74,7 @@ public class Engine implements Runnable {
 // todo: models
 // todo: better camera perspective
 // todo: better enemy path finding
-
+// todo: particles
 // todo: level up - 10 life, 10 mana
 // todo: item types
 // todo: item enchanting and crafting costs

@@ -3,6 +3,7 @@ package manuk.path.game.character;
 import android.graphics.Color;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
+import manuk.path.game.util.IntersectionFinder;
 import manuk.path.game.util.Math3D;
 
 import static manuk.path.game.util.Math3D.setMagnitude;
@@ -37,8 +38,8 @@ public class Enemy extends Character {
 		}
 	}
 	
-	private void handleIntersection(double[] intersection) {
-		if (intersection != null && intersection[2] == 2 && intersection[5] == ENTITY_LAYER_HOSTILE_CHARACTER)
-			awayFromIntersection = setMagnitude(x - intersection[3], y - intersection[4], 1);
+	private void handleIntersection(IntersectionFinder.Intersection intersection) {
+		if (intersection != null && intersection.state == IntersectionFinder.Intersection.COLLISION_ENTITY && intersection.entityCollisionLayer == ENTITY_LAYER_HOSTILE_CHARACTER)
+			awayFromIntersection = setMagnitude(x - intersection.entityCollisionX, y - intersection.entityCollisionY, 1);
 	}
 }

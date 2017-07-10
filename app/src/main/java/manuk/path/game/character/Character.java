@@ -3,6 +3,7 @@ package manuk.path.game.character;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
 import manuk.path.game.painter.MapPainter;
+import manuk.path.game.util.IntersectionFinder;
 import manuk.path.game.util.Math3D;
 
 abstract class Character extends MapEntity {
@@ -51,19 +52,19 @@ abstract class Character extends MapEntity {
 		return false;
 	}
 	
-	double[] moveToGoal(Map map) {
+	IntersectionFinder.Intersection moveToGoal(Map map) {
 		moveDeltaX = goalX - x;
 		moveDeltaY = goalY - y;
 		return moveByDir(map);
 	}
 	
-	double[] moveByDir(Map map) {
+	IntersectionFinder.Intersection moveByDir(Map map) {
 		if (attacking)
 			return null;
 		double dist = Math3D.min(speed, Math3D.magnitude(moveDeltaX, moveDeltaY));
-		double[] intersection = map.moveEntity(new double[] {x, y}, new double[] {moveDeltaX, moveDeltaY}, dist, true, this);
-		x = intersection[0];
-		y = intersection[1];
+		IntersectionFinder.Intersection intersection = map.moveEntity(new double[] {x, y}, new double[] {moveDeltaX, moveDeltaY}, dist, true, this);
+		x = intersection.x;
+		y = intersection.y;
 		return intersection;
 	}
 	

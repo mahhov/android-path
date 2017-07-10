@@ -3,6 +3,7 @@ package manuk.path.game.projectile;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
 import manuk.path.game.painter.MapPainter;
+import manuk.path.game.util.IntersectionFinder;
 
 public class Projectile extends MapEntity {
 	private double x, y, dir[], speed;
@@ -19,10 +20,10 @@ public class Projectile extends MapEntity {
 	
 	// return true if need to be removed
 	public boolean update(Map map) {
-		double[] intersection = map.moveEntity(new double[] {x, y}, dir, speed, false, this);
-		x = intersection[0];
-		y = intersection[1];
-		if (intersection[2] != 0) {
+		IntersectionFinder.Intersection intersection = map.moveEntity(new double[] {x, y}, dir, speed, false, this);
+		x = intersection.x;
+		y = intersection.y;
+		if (intersection.state != IntersectionFinder.Intersection.COLLISION_NONE) {
 			map.removeEntity(this);
 			return true;
 		}

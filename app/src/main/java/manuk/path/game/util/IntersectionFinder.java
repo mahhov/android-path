@@ -16,7 +16,7 @@ public class IntersectionFinder {
 	private int layer;
 	private double size;
 	private int entityStartX, entityEndX, entityStartY, entityEndY;
-	public MapEntity entityCollide;
+	private MapEntity entityCollide;
 	private double entityDist;
 	private double entityCross, entityDot, entityPyth;
 	private double entityMove;
@@ -28,27 +28,26 @@ public class IntersectionFinder {
 		this.map = map;
 	}
 	
-	// return r[3]: 1 if map collision, 0 if maxMove, 2 if entity collision
-	public double[] find(long id, double[] orig, double[] dir, double maxMove, boolean allowSlide, int layer, double size) {
+	public Intersection find(long id, double[] orig, double[] dir, double maxMove, boolean allowSlide, int layer, double size) {
 		reset(id, orig, dir, maxMove, allowSlide, layer, size);
 		if (isDirZeroNum == 2)
-			return new double[] {orig[0], orig[1], 1};
+			return new Intersection(orig[0], orig[1], 1);
 		while (true) {
 			computeNextMove();
 			moveBy(move - Math3D.EPSILON);
 			entityCollideCheck();
 			if (moved + move > maxMove && limitDistance) {
 				moveBy(maxMove - moved);
-				return new double[] {nextx, nexty, 0};
+				return new Intersection(nextx, nexty, 0);
 			} else if (entityCollide != null) {
 				moveBy(move - Math3D.EPSILON);
-				return new double[] {nextx, nexty, 2, entityCollide.mapX, entityCollide.mapY, entityCollide.layer};
+				return new Intersection(nextx, nexty, entityCollide);
 			}
 			moveBy(move + Math3D.EPSILON);
 			if (!map.isMoveable(intx, inty, 0)) {
 				moveBy(move - Math3D.EPSILON);
 				if (collideCheck())
-					return new double[] {x, y, 1};
+					return new Intersection(x, y, 1);
 			}
 			nextIter();
 		}
@@ -173,5 +172,28 @@ public class IntersectionFinder {
 		moved += move;
 		x = nextx;
 		y = nexty;
+	}
+	
+	public static class Intersection {
+		public static final int COLLISION_NONE = 0, COLLISION_MAP = 1, COLLISION_ENTITY = 2;
+		public double x, y, entityCollisionX, entityCollisionY;
+		public int state, entityCollisionLayer;
+		public MapEntity entityCollide;
+		
+		private Intersection(double x, double y, int state) {
+			this.x = x;
+			this.y = y;
+			this.state = state;
+		}
+		
+		private Intersection(double x, double y, MapEntity entityCollided) {
+			this.x = x;
+			this.y = y;
+			this.state = COLLISION_ENTITY;
+			entityCollisionX = entityCollided.mapX;
+			entityCollisionY = entityCollided.mapY;
+			entityCollisionLayer = entityCollided.layer;
+			this.entityCollide = entityCollided;
+		}
 	}
 }
