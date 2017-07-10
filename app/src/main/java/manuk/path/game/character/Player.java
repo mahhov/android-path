@@ -39,7 +39,7 @@ public class Player extends Character {
 			goalX = touchXY[0];
 			goalY = touchXY[1];
 		}
-		move(map);
+		moveToGoal(map);
 	}
 	
 	private double[] getTouchXY(Controller controller, Map map) {

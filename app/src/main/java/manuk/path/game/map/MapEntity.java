@@ -25,7 +25,8 @@ public abstract class MapEntity {
 	public final long id;
 	public double mapX, mapY, size;
 	LList<MapEntity>.Node node;
-	int layer;
+	public int layer;
+	public int entityCollisionX, entityCollisionY;
 	
 	public MapEntity(int layer, double size) {
 		id = count++;

@@ -8,6 +8,7 @@ import manuk.path.game.util.Math3D;
 abstract class Character extends MapEntity {
 	public double x, y;
 	double goalX, goalY;
+	double moveDeltaX, moveDeltaY;
 	
 	private int[] color;
 	private double speed;
@@ -50,14 +51,20 @@ abstract class Character extends MapEntity {
 		return false;
 	}
 	
-	void move(Map map) {
+	double[] moveToGoal(Map map) {
+		moveDeltaX = goalX - x;
+		moveDeltaY = goalY - y;
+		return moveByDir(map);
+	}
+	
+	double[] moveByDir(Map map) {
 		if (attacking)
-			return;
-		double deltaX = goalX - x, deltaY = goalY - y;
-		double dist = Math3D.min(speed, Math3D.magnitude(deltaX, deltaY));
-		double[] intersection = map.moveEntity(new double[] {x, y}, new double[] {deltaX, deltaY}, dist, true, this);
+			return null;
+		double dist = Math3D.min(speed, Math3D.magnitude(moveDeltaX, moveDeltaY));
+		double[] intersection = map.moveEntity(new double[] {x, y}, new double[] {moveDeltaX, moveDeltaY}, dist, true, this);
 		x = intersection[0];
 		y = intersection[1];
+		return intersection;
 	}
 	
 	public void draw(double scrollX, double scrollY) {

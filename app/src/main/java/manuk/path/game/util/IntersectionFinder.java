@@ -16,7 +16,7 @@ public class IntersectionFinder {
 	private int layer;
 	private double size;
 	private int entityStartX, entityEndX, entityStartY, entityEndY;
-	private boolean entityCollide;
+	public MapEntity entityCollide;
 	private double entityDist;
 	private double entityCross, entityDot, entityPyth;
 	private double entityMove;
@@ -28,7 +28,7 @@ public class IntersectionFinder {
 		this.map = map;
 	}
 	
-	// return r[3]: 1 if collision, 0 if maxMove
+	// return r[3]: 1 if map collision, 0 if maxMove, 2 if entity collision
 	public double[] find(long id, double[] orig, double[] dir, double maxMove, boolean allowSlide, int layer, double size) {
 		reset(id, orig, dir, maxMove, allowSlide, layer, size);
 		if (isDirZeroNum == 2)
@@ -40,9 +40,9 @@ public class IntersectionFinder {
 			if (moved + move > maxMove && limitDistance) {
 				moveBy(maxMove - moved);
 				return new double[] {nextx, nexty, 0};
-			} else if (entityCollide) {
+			} else if (entityCollide != null) {
 				moveBy(move - Math3D.EPSILON);
-				return new double[] {nextx, nexty, 1};
+				return new double[] {nextx, nexty, 2, entityCollide.mapX, entityCollide.mapY, entityCollide.layer};
 			}
 			moveBy(move + Math3D.EPSILON);
 			if (!map.isMoveable(intx, inty, 0)) {
@@ -112,7 +112,7 @@ public class IntersectionFinder {
 	
 	private void entityCollideCheck() {
 		entityDist = MapEntity.MAX_ENTITY_SIZE + size + move;
-		entityCollide = false;
+		entityCollide = null;
 		entityStartX = (int) Math3D.max(nextx - entityDist, 0);
 		entityStartY = (int) Math3D.max(nexty - entityDist, 0);
 		entityEndX = (int) Math3D.min(nextx + entityDist, map.width - 1);
@@ -131,12 +131,12 @@ public class IntersectionFinder {
 								entityMove = entityDot - entityPyth;
 								if (entityMove < 0) { // if already inside
 									move = 0;
-									entityCollide = true;
+									entityCollide = entity;
 									return;
 								}
 								if (entityMove < move) { // if going to intersect
 									move = entityMove;
-									entityCollide = true;
+									entityCollide = entity;
 								}
 							}
 	}

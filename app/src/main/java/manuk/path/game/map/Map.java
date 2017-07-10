@@ -57,6 +57,8 @@ public class Map {
 			this.entity[(int) entity.mapX][(int) entity.mapY][entity.layer].remove(entity.node);
 		entity.mapX = intersection[0];
 		entity.mapY = intersection[1];
+		entity.entityCollisionX = 0;
+		entity.entityCollisionY = 0;
 		entity.node = this.entity[(int) entity.mapX][(int) entity.mapY][entity.layer].addHead(entity);
 		return intersection;
 	}
