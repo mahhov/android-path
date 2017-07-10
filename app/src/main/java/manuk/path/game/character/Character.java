@@ -15,7 +15,8 @@ abstract class Character extends MapEntity {
 	private double speed;
 	private int attackSpeed, attackWait;
 	private boolean attacking;
-	private double maxLife, life;
+	private double maxLife;
+	double life;
 	
 	Character(int layer, double spawnX, double spawnY, int color, double speed, int attackSpeed, double maxLife) {
 		super(layer, .5);
@@ -66,6 +67,10 @@ abstract class Character extends MapEntity {
 		x = intersection.x;
 		y = intersection.y;
 		return intersection;
+	}
+	
+	public void handleIntersection(double damageAmount) {
+		takeDamage(damageAmount);
 	}
 	
 	public void draw(double scrollX, double scrollY) {

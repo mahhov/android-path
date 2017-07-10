@@ -18,7 +18,8 @@ public class Enemy extends Character {
 		awayFromIntersection = new double[2];
 	}
 	
-	public void update(Player player, Map map) {
+	// return true if need to be removed
+	public boolean update(Player player, Map map) {
 		if (updateAttack())
 			player.takeDamage(1);
 		double distance = Math3D.magnitude(player.x - x, player.y - y);
@@ -36,6 +37,11 @@ public class Enemy extends Character {
 			goalY = y + Math3D.random(-WANDER_DISTANCE, WANDER_DISTANCE);
 			handleIntersection(moveToGoal(map));
 		}
+		if (life <= 0) {
+			map.removeEntity(this);
+			return true;
+		}
+		return false;
 	}
 	
 	private void handleIntersection(IntersectionFinder.Intersection intersection) {

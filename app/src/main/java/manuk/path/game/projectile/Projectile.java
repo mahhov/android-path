@@ -25,6 +25,8 @@ public class Projectile extends MapEntity {
 		y = intersection.y;
 		if (intersection.state != IntersectionFinder.Intersection.COLLISION_NONE) {
 			map.removeEntity(this);
+			if (intersection.state == IntersectionFinder.Intersection.COLLISION_ENTITY)
+				intersection.entityCollide.handleIntersection(5);
 			return true;
 		}
 		return false;

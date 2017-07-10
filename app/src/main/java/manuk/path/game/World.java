@@ -38,8 +38,14 @@ class World {
 		userInterface.handleInput(controller);
 		player.update(controller, map, projectile);
 		map.scroll(player.x, player.y);
-		for (Enemy e : enemy)
-			e.update(player, map);
+		
+		Iterator<LList<Enemy>.Node> enemyIterator = enemy.nodeIterator();
+		LList<Enemy>.Node enemyNode;
+		while (enemyIterator.hasNext()) {
+			enemyNode = enemyIterator.next();
+			if (enemyNode.elem.update(player, map))
+				enemy.remove(enemyNode);
+		}
 		
 		Iterator<LList<Projectile>.Node> projectileIterator = projectile.nodeIterator();
 		LList<Projectile>.Node projectileNode;
