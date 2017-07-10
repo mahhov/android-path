@@ -22,7 +22,11 @@ public class Projectile extends MapEntity {
 		double[] intersection = map.moveEntity(new double[] {x, y}, dir, speed, false, this);
 		x = intersection[0];
 		y = intersection[1];
-		return intersection[2] != 0;
+		if (intersection[2] != 0) {
+			map.removeEntity(this);
+			return true;
+		}
+		return false;
 	}
 	
 	public void draw(double scrollX, double scrollY) {

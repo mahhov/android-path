@@ -52,15 +52,19 @@ public class Map {
 	}
 	
 	public double[] moveEntity(double[] orig, double[] dir, double maxMove, boolean allowSlide, MapEntity entity) {
+		removeEntity(entity);
 		double[] intersection = intersectionFinder.find(entity.id, orig, dir, maxMove, allowSlide, entity.layer, entity.size);
-		if (entity.node != null)
-			this.entity[(int) entity.mapX][(int) entity.mapY][entity.layer].remove(entity.node);
 		entity.mapX = intersection[0];
 		entity.mapY = intersection[1];
 		entity.entityCollisionX = 0;
 		entity.entityCollisionY = 0;
 		entity.node = this.entity[(int) entity.mapX][(int) entity.mapY][entity.layer].addHead(entity);
 		return intersection;
+	}
+	
+	public void removeEntity(MapEntity entity) {
+		if (entity.node != null)
+			this.entity[(int) entity.mapX][(int) entity.mapY][entity.layer].remove(entity.node);
 	}
 	
 	public void scroll(double toX, double toY) {

@@ -67,20 +67,24 @@ public class Engine implements Runnable {
 	}
 }
 
+// todo: basic combat
 // todo: fix side darwing of character
 // todo: lighting and shadow
 // todo: textures
-// todo: map entities and collision
-// todo: basic combat
 // todo: models
 // todo: better camera perspective
-// todo: enemy path finding
+// todo: better enemy path finding
 
 // todo: level up - 10 life, 10 mana
-// todo: stats: choose 4 of (life, life regen, mana, mana regen, evs, armour, shield, resists, attack/cast speed, attack/cast dmg, crit chance/dmg, status duration, aoe) 
 // todo: item types
 // todo: item enchanting and crafting costs
 // todo: damage types
 // todo: skill system
 // todo: calculate VIEW_STRETCH_Z correctly
 // todo: shrines
+
+// todo: level tree
+// life (regen / total) / mana (regen / total) -> blood magic, mind over matter, 
+// armor / evs / es -> all others converted to 1
+// crit / attack speed -> crits increase attack speed, attacks increase crit chance, 
+
