@@ -58,7 +58,7 @@ public class Engine implements Runnable {
 			if (!world.gameOver)
 				update();
 			draw();
-			sleep(5);
+			frames.waitCurrentFrame();
 		}
 	}
 	
