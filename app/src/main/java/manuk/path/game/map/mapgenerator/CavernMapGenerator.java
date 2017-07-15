@@ -5,6 +5,8 @@ import manuk.path.game.util.Math3D;
 
 public class CavernMapGenerator extends MapGenerator {
 	private static final int PASSES = 5, MAX_SPAWN_TRY = 50, MIN_SPACE_FACTOR = 5, ENEMY_ATTEMPTS = 100;
+	private static final int SCALE = 3;
+	
 	int[][][] mapTemp;
 	int width, length, height;
 	
@@ -87,10 +89,13 @@ public class CavernMapGenerator extends MapGenerator {
 	}
 	
 	private void transferFinal() {
-		map = new int[width][length][height];
+		map = new int[width * SCALE][length * SCALE][height * SCALE];
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < length; y++)
-				map[x][y][0] = mapTemp[x][y][PASSES] == 2 ? 0 : 1;
+				for (int xx = 0; xx < SCALE; xx++)
+					for (int yy = 0; yy < SCALE; yy++)
+						map[x * SCALE + xx][y * SCALE + yy][0] = mapTemp[x][y][PASSES] == 2 ? 0 : 1;
+		
 	}
 	
 	private void addEnemies() {

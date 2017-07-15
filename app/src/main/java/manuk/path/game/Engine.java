@@ -83,4 +83,4 @@ public class Engine implements Runnable {
 // armor / evs / es -> all others converted to 1
 // crit / attack speed -> crits increase attack speed, attacks increase crit chance, 
 
-// joystick, map scale, room maps, 3 enemy types
+// room maps, 3 enemy types
