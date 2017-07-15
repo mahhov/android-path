@@ -13,8 +13,7 @@ abstract class Character extends MapEntity {
 	
 	private int[] color;
 	double moveSpeed;
-	private int attackTime, attackTimeCur;
-	private boolean attacking;
+	Counter attackTime;
 	private double maxLife, maxStamina;
 	double life, stamina;
 	private int staminaRegenDelay, staminaRegenDelayCur, staminaRegenRate;
@@ -25,7 +24,7 @@ abstract class Character extends MapEntity {
 		goalY = y = spawnY;
 		this.color = MapPainter.createColorShade(color);
 		this.moveSpeed = moveSpeed;
-		this.attackTime = attackTime;
+		this.attackTime = new Counter(attackTime);
 		this.maxLife = life = maxLife;
 		this.maxStamina = stamina = maxStamina;
 		this.staminaRegenRate = staminaRegenRate;
@@ -44,7 +43,7 @@ abstract class Character extends MapEntity {
 		return stamina / maxStamina;
 	}
 	
-	boolean useStamina(double amount) {
+	private boolean useStamina(double amount) {
 		if (stamina > amount) {
 			stamina -= amount;
 			staminaRegenDelayCur = staminaRegenDelay;
@@ -61,19 +60,11 @@ abstract class Character extends MapEntity {
 	}
 	
 	boolean beginAttack(int staminaCost) {
-		if (attacking || !useStamina(staminaCost))
-			return false;
-		attacking = true;
-		attackTimeCur = attackTime;
-		return true;
+		return !attackTime.active() && useStamina(staminaCost) && attackTime.begin();
 	}
 	
 	boolean updateAttack() {
-		if (attacking && attackTimeCur-- == 0) {
-			attacking = false;
-			return true;
-		}
-		return false;
+		return attackTime.update();
 	}
 	
 	IntersectionFinder.Intersection moveToGoal(Map map) {
@@ -83,7 +74,7 @@ abstract class Character extends MapEntity {
 	}
 	
 	IntersectionFinder.Intersection moveByDir(Map map) {
-		if (attacking)
+		if (attackTime.active())
 			return null;
 		double dist = Math3D.min(moveSpeed, Math3D.magnitude(moveDeltaX, moveDeltaY));
 		IntersectionFinder.Intersection intersection = map.moveEntity(new double[] {x, y}, new double[] {moveDeltaX, moveDeltaY}, dist, true, this);
@@ -93,7 +84,7 @@ abstract class Character extends MapEntity {
 	}
 	
 	IntersectionFinder.Intersection moveByDir(Map map, double moveSpeed, int entityLayer) {
-		if (attacking)
+		if (attackTime.active())
 			return null;
 		double dist = Math3D.min(moveSpeed, Math3D.magnitude(moveDeltaX, moveDeltaY));
 		IntersectionFinder.Intersection intersection = map.moveEntity(new double[] {x, y}, new double[] {moveDeltaX, moveDeltaY}, dist, true, entityLayer, this);
@@ -110,4 +101,29 @@ abstract class Character extends MapEntity {
 		boolean[] side = new boolean[] {true, true, true, true, true, true};
 		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, 1, 1, .5, side, color);
 	}
-}
+	
+	static class Counter {
+		int maxValue, value;
+		
+		Counter(int maxValue) {
+			this.maxValue = maxValue;
+		}
+		
+		boolean active() {
+			return value > 0;
+		}
+		
+		boolean begin() {
+			if (active())
+				return false;
+			value = maxValue;
+			return true;
+		}
+		
+		boolean update() {
+			if (active())
+				return --value == 0;
+			return false;
+		}
+	}
+}	

@@ -20,7 +20,8 @@ public class Player extends Character {
 	private PaintBar lifeBar, staminaBar, expBar;
 	private ClickablePaintElement actionButton;
 	private double exp;
-	private double dashSpeed = 10;
+	private double dashSpeed = 1;
+	private Counter dashTime;
 	
 	public Player(MapGenerator mapGenerator, Joystick joystick, PaintBar lifeBar, PaintBar staminaBar, PaintBar expBar, ClickablePaintElement actionButton) {
 		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .2, 10, 100, 100, 1, 30);
@@ -30,6 +31,7 @@ public class Player extends Character {
 		this.expBar = expBar;
 		this.actionButton = actionButton;
 		touchId = -1;
+		dashTime = new Counter(10);
 	}
 	
 	public void update(Controller controller, Map map, LList<Projectile> projectile) {
@@ -39,10 +41,15 @@ public class Player extends Character {
 		staminaBar.setValue(getStaminaPercent());
 		expBar.setValue(exp / 100);
 		
-		if (updateAttack()) {
+		if (dashTime.active()) {
+			dashTime.update();
 			moveDeltaX = attackDir[0];
 			moveDeltaY = attackDir[1];
-			moveByDir(map, dashSpeed,MapEntity.ENTITY_LAYER_TRANSPARENT);
+			moveByDir(map, dashSpeed, MapEntity.ENTITY_LAYER_TRANSPARENT);
+		} else if (updateAttack()) {
+			moveDeltaX = attackDir[0];
+			moveDeltaY = attackDir[1];
+			dashTime.begin();
 		} else if (actionButton.isPressed && (touchXY != null || joystick.isPressed)) {
 			if (beginAttack(30)) {
 				if (touchXY != null)
