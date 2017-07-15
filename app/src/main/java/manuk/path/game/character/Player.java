@@ -17,14 +17,15 @@ public class Player extends Character {
 	private int touchId;
 	private double attackDirX, attackDirY;
 	private Joystick joystick;
-	private PaintBar lifeBar, expBar;
+	private PaintBar lifeBar, staminaBar, expBar;
 	private ClickablePaintElement actionButton;
 	private double exp;
 	
-	public Player(MapGenerator mapGenerator, Joystick joystick, PaintBar lifeBar, PaintBar expBar, ClickablePaintElement actionButton) {
-		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .2, 10, 100);
+	public Player(MapGenerator mapGenerator, Joystick joystick, PaintBar lifeBar, PaintBar staminaBar, PaintBar expBar, ClickablePaintElement actionButton) {
+		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .2, 10, 100, 100, 1, 30);
 		this.joystick = joystick;
 		this.lifeBar = lifeBar;
+		this.staminaBar = staminaBar;
 		this.expBar = expBar;
 		this.actionButton = actionButton;
 		touchId = -1;
@@ -34,14 +35,15 @@ public class Player extends Character {
 		double[] touchXY = getTouchXY(controller, map);
 		
 		lifeBar.setValue(getLifePercent());
+		staminaBar.setValue(getStaminaPercent());
 		expBar.setValue(exp / 100);
 		
 		if (updateAttack()) {
-			projectile.addHead(new Projectile(MapEntity.ENTITY_LAYER_FRIENDLY_PROJECTILE, x, y, attackDirX, attackDirY, .1, Color.RED));
+			//			projectile.addHead(new Projectile(MapEntity.ENTITY_LAYER_FRIENDLY_PROJECTILE, x, y, attackDirX, attackDirY, .1, Color.RED));
 			goalX = x;
 			goalY = y;
 		} else if (actionButton.isPressed && (touchXY != null || joystick.isPressed)) {
-			if (attack()) {
+			if (beginAttack(30)) {
 				if (touchXY != null) {
 					attackDirX = touchXY[0] - x;
 					attackDirY = touchXY[1] - y;
@@ -55,10 +57,11 @@ public class Player extends Character {
 			goalY = touchXY[1];
 			moveToGoal(map);
 		} else if (joystick.isPressed) {
-			moveDeltaX = (joystick.touchX - .5) * speed;
-			moveDeltaY = (joystick.touchY - .5) * speed;
+			moveDeltaX = (joystick.touchX - .5) * moveSpeed;
+			moveDeltaY = (joystick.touchY - .5) * moveSpeed;
 			moveByDir(map);
 		}
+		staminaRegen();
 	}
 	
 	private double[] getTouchXY(Controller controller, Map map) {

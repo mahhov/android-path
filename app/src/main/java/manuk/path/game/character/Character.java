@@ -12,20 +12,24 @@ abstract class Character extends MapEntity {
 	double moveDeltaX, moveDeltaY;
 	
 	private int[] color;
-	double speed;
-	private int attackSpeed, attackWait;
+	double moveSpeed;
+	private int attackTime, attackTimeCur;
 	private boolean attacking;
-	private double maxLife;
-	double life;
+	private double maxLife, maxStamina;
+	double life, stamina;
+	private int staminaRegenDelay, staminaRegenDelayCur, staminaRegenRate;
 	
-	Character(int layer, double spawnX, double spawnY, int color, double speed, int attackSpeed, double maxLife) {
+	Character(int layer, double spawnX, double spawnY, int color, double moveSpeed, int attackTime, double maxLife, double maxStamina, int staminaRegenRate, int staminaRegenDelay) {
 		super(layer, .5);
 		goalX = x = spawnX;
 		goalY = y = spawnY;
 		this.color = MapPainter.createColorShade(color);
-		this.speed = speed;
-		this.attackSpeed = attackSpeed;
+		this.moveSpeed = moveSpeed;
+		this.attackTime = attackTime;
 		this.maxLife = life = maxLife;
+		this.maxStamina = stamina = maxStamina;
+		this.staminaRegenRate = staminaRegenRate;
+		this.staminaRegenDelay = staminaRegenDelay;
 	}
 	
 	double getLifePercent() {
@@ -36,17 +40,36 @@ abstract class Character extends MapEntity {
 		life = Math3D.max(life - amount, 0);
 	}
 	
-	boolean attack() {
-		if (!attacking) {
-			attacking = true;
-			attackWait = attackSpeed;
+	double getStaminaPercent() {
+		return stamina / maxStamina;
+	}
+	
+	boolean useStamina(double amount) {
+		if (stamina > amount) {
+			stamina -= amount;
+			staminaRegenDelayCur = staminaRegenDelay;
 			return true;
 		}
 		return false;
 	}
 	
+	void staminaRegen() {
+		if (staminaRegenDelayCur == 0)
+			stamina = Math3D.min(stamina + staminaRegenRate, maxStamina);
+		else
+			staminaRegenDelayCur--;
+	}
+	
+	boolean beginAttack(int staminaCost) {
+		if (attacking || !useStamina(staminaCost))
+			return false;
+		attacking = true;
+		attackTimeCur = attackTime;
+		return true;
+	}
+	
 	boolean updateAttack() {
-		if (attacking && attackWait-- == 0) {
+		if (attacking && attackTimeCur-- == 0) {
 			attacking = false;
 			return true;
 		}
@@ -62,14 +85,14 @@ abstract class Character extends MapEntity {
 	IntersectionFinder.Intersection moveByDir(Map map) {
 		if (attacking)
 			return null;
-		double dist = Math3D.min(speed, Math3D.magnitude(moveDeltaX, moveDeltaY));
+		double dist = Math3D.min(moveSpeed, Math3D.magnitude(moveDeltaX, moveDeltaY));
 		IntersectionFinder.Intersection intersection = map.moveEntity(new double[] {x, y}, new double[] {moveDeltaX, moveDeltaY}, dist, true, this);
 		x = intersection.x;
 		y = intersection.y;
 		return intersection;
 	}
 	
-	public void handleIntersection(double damageAmount) {
+	public void handleProjectileIntersection(double damageAmount) {
 		takeDamage(damageAmount);
 	}
 	

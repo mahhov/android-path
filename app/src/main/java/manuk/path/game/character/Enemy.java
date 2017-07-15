@@ -17,7 +17,7 @@ public class Enemy extends Character {
 	private double[] awayFromIntersection;
 	
 	public Enemy(double spawnX, double spawnY) {
-		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, Color.RED, .05, 100, 10);
+		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, Color.RED, .05, 100, 10, 0, 0, 0);
 		awayFromIntersection = new double[2];
 	}
 	
@@ -27,7 +27,7 @@ public class Enemy extends Character {
 			player.takeDamage(1);
 		double distance = Math3D.magnitude(player.x - x, player.y - y);
 		if (distance < DAMAGE_RANGE)
-			attack();
+			beginAttack(0);
 		else if (distance < ACTIVE_DISTANCE) {
 			double[] toPlayer = Math3D.setMagnitude(player.x - x, player.y - y, 1);
 			moveDeltaX = toPlayer[0] + awayFromIntersection[0];

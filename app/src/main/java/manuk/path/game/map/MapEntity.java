@@ -34,7 +34,7 @@ public abstract class MapEntity {
 		MAX_ENTITY_SIZE = Math3D.max(size, MAX_ENTITY_SIZE);
 	}
 	
-	public void handleIntersection(double damageAmount) {
+	public void handleProjectileIntersection(double damageAmount) {
 	}
 	
 	public abstract void draw(double scrollX, double scrollY);
