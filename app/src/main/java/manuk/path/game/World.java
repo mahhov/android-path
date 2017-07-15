@@ -6,9 +6,9 @@ import manuk.path.game.character.Player;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.item.Item;
 import manuk.path.game.map.Map;
-import manuk.path.game.map.mapgenerator.CavernMapGenerator;
 import manuk.path.game.map.mapgenerator.MapGenerator;
 import manuk.path.game.map.mapgenerator.MapGenerator.Pos3;
+import manuk.path.game.map.mapgenerator.RoomMapGenerator;
 import manuk.path.game.painter.Painter;
 import manuk.path.game.projectile.Projectile;
 import manuk.path.game.util.LList;
@@ -26,7 +26,7 @@ class World {
 	
 	World(int width, int length, int height) {
 		userInterface = new UserInterface();
-		MapGenerator mapGenerator = new CavernMapGenerator();
+		MapGenerator mapGenerator = new RoomMapGenerator();
 		mapGenerator.generate(width, length, height);
 		map = new Map(width, length, height, mapGenerator);
 		player = new Player(mapGenerator, userInterface.joystick, userInterface.lifeBar, userInterface.expBar, userInterface.actionButton);

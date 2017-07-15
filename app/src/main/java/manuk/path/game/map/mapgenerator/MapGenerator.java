@@ -11,12 +11,12 @@ public abstract class MapGenerator {
 	public Pos spawn;
 	public LList<Pos3> enemySpawn;
 	
-	public abstract int[][][] generate(int width, int length, int height);
-	
 	MapGenerator() {
 		random.setSeed(++SEED);
 		enemySpawn = new LList<>();
 	}
+
+	public abstract int[][][] generate(int width, int length, int height);
 	
 	static int randInt(int min, int max) {
 		return random.nextInt(max - min) + min;
@@ -24,6 +24,10 @@ public abstract class MapGenerator {
 	
 	static boolean randFlip() {
 		return random.nextBoolean();
+	}
+	
+	static boolean randFlip(double weight) {
+		return random.nextDouble() < weight;
 	}
 	
 	public static class Pos {
