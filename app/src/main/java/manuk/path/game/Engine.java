@@ -84,3 +84,4 @@ public class Engine implements Runnable {
 // crit / attack speed -> crits increase attack speed, attacks increase crit chance, 
 
 // room maps, 3 enemy types
+// refactor character counter with delay and step

@@ -106,7 +106,7 @@ public class Map {
 		if (!isMoveable(x, y, z))
 			return false;
 		for (int i = 0; i < MapEntity.ENTITY_LAYERS_COUNT; i++)
-			if (MapEntity.ENTITY_COLLISION[layer][i] && !entity[x][y][i].isEmpty())
+			if (MapEntity.ENTITY_COLLISION_BLOCK[layer][i] && !entity[x][y][i].isEmpty())
 				return false;
 		return true;
 	}

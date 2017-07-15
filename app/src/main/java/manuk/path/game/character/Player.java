@@ -9,6 +9,7 @@ import manuk.path.game.painter.element.ClickablePaintElement;
 import manuk.path.game.painter.element.Joystick;
 import manuk.path.game.painter.element.PaintBar;
 import manuk.path.game.projectile.Projectile;
+import manuk.path.game.util.IntersectionFinder;
 import manuk.path.game.util.LList;
 import manuk.path.game.util.Math3D;
 import manuk.path.game.util.Measurements;
@@ -22,6 +23,7 @@ public class Player extends Character {
 	private double exp;
 	private double dashSpeed = 1;
 	private Counter dashTime;
+	private long dashId;
 	
 	public Player(MapGenerator mapGenerator, Joystick joystick, PaintBar lifeBar, PaintBar staminaBar, PaintBar expBar, ClickablePaintElement actionButton) {
 		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .2, 10, 100, 100, 1, 30);
@@ -45,11 +47,14 @@ public class Player extends Character {
 			dashTime.update();
 			moveDeltaX = attackDir[0];
 			moveDeltaY = attackDir[1];
-			moveByDir(map, dashSpeed, MapEntity.ENTITY_LAYER_TRANSPARENT);
+			IntersectionFinder.Intersection intersection = moveByDir(map, dashSpeed, MapEntity.ENTITY_LAYER_TRANSPARENT_FRIENDLY_CHARACTER);
+			for (MapEntity trackedEntity : intersection.trackedCollisions)
+				trackedEntity.handleIntersection(dashId, 5);
 		} else if (updateAttack()) {
 			moveDeltaX = attackDir[0];
 			moveDeltaY = attackDir[1];
 			dashTime.begin();
+			dashId++;
 		} else if (actionButton.isPressed && (touchXY != null || joystick.isPressed)) {
 			if (beginAttack(30)) {
 				if (touchXY != null)

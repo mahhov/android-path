@@ -11,6 +11,7 @@ abstract class Character extends MapEntity {
 	double goalX, goalY;
 	double moveDeltaX, moveDeltaY;
 	
+	private long intersectionId;
 	private int[] color;
 	double moveSpeed;
 	Counter attackTime;
@@ -93,8 +94,11 @@ abstract class Character extends MapEntity {
 		return intersection;
 	}
 	
-	public void handleProjectileIntersection(double damageAmount) {
-		takeDamage(damageAmount);
+	public void handleIntersection(long intersectionId, double damageAmount) {
+		if (intersectionId != this.intersectionId) {
+			this.intersectionId = intersectionId;
+			takeDamage(damageAmount);
+		}
 	}
 	
 	public void draw(double scrollX, double scrollY) {

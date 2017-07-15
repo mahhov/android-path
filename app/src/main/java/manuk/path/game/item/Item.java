@@ -10,7 +10,7 @@ public class Item extends MapEntity {
 	private int[] color;
 	
 	public Item(double x, double y) {
-		super(ENTITY_DROPPED_ITEM, 0);
+		super(ENTITY_LAYER_DROPPED_ITEM, 0);
 		this.x = x;
 		this.y = y;
 		color = MapPainter.createColorShade(Color.YELLOW);

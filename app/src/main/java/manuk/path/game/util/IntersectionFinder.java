@@ -17,6 +17,7 @@ public class IntersectionFinder {
 	private double size;
 	private int entityStartX, entityEndX, entityStartY, entityEndY;
 	private MapEntity entityCollide;
+	private LList<MapEntity> trackedCollisions;
 	private double entityDist;
 	private double entityCross, entityDot, entityPyth;
 	private double entityMove;
@@ -31,23 +32,23 @@ public class IntersectionFinder {
 	public Intersection find(long id, double[] orig, double[] dir, double maxMove, boolean allowSlide, int layer, double size) {
 		reset(id, orig, dir, maxMove, allowSlide, layer, size);
 		if (isDirZeroNum == 2)
-			return new Intersection(orig[0], orig[1], 1);
+			return new Intersection(orig[0], orig[1], 1, trackedCollisions);
 		while (true) {
 			computeNextMove();
 			moveBy(move - Math3D.EPSILON);
 			entityCollideCheck();
 			if (moved + move > maxMove && limitDistance) {
 				moveBy(maxMove - moved);
-				return new Intersection(nextx, nexty, 0);
+				return new Intersection(nextx, nexty, 0, trackedCollisions);
 			} else if (entityCollide != null) {
 				moveBy(move - Math3D.EPSILON);
-				return new Intersection(nextx, nexty, entityCollide);
+				return new Intersection(nextx, nexty, entityCollide, trackedCollisions);
 			}
 			moveBy(move + Math3D.EPSILON);
 			if (!map.isMoveable(intx, inty, 0)) {
 				moveBy(move - Math3D.EPSILON);
 				if (collideCheck())
-					return new Intersection(x, y, 1);
+					return new Intersection(x, y, 1, trackedCollisions);
 			}
 			nextIter();
 		}
@@ -78,6 +79,7 @@ public class IntersectionFinder {
 			dir[1] = 0;
 			isDirZeroNum++;
 		}
+		trackedCollisions = new LList<>();
 	}
 	
 	private void computeNextMove() {
@@ -117,7 +119,7 @@ public class IntersectionFinder {
 		entityEndX = (int) Math3D.min(nextx + entityDist, map.width - 1);
 		entityEndY = (int) Math3D.min(nexty + entityDist, map.length - 1);
 		for (ll = 0; ll < MapEntity.ENTITY_LAYERS_COUNT; ll++)
-			if (MapEntity.ENTITY_COLLISION[layer][ll])
+			if (MapEntity.ENTITY_COLLISION_BLOCK[layer][ll]) {
 				for (xx = entityStartX; xx <= entityEndX; xx++)
 					for (yy = entityStartY; yy <= entityEndY; yy++)
 						for (MapEntity entity : map.entity[xx][yy][ll])
@@ -137,6 +139,20 @@ public class IntersectionFinder {
 									move = entityMove;
 									entityCollide = entity;
 								}
+							}
+			} else if (MapEntity.ENTITY_COLLISION_TRACK[layer][ll])
+				for (xx = entityStartX; xx <= entityEndX; xx++)
+					for (yy = entityStartY; yy <= entityEndY; yy++)
+						for (MapEntity entity : map.entity[xx][yy][ll])
+							if (entity.id != id && entity.size + size + move > Math3D.magnitude(nextx - entity.mapX, nexty - entity.mapY)) { // if possible intersection
+								entityCross = Math3D.cross(x - entity.mapX, y - entity.mapY, dir[0], dir[1]);
+								entityDot = Math3D.dot(entity.mapX - x, entity.mapY - y, dir[0], dir[1]);
+								entityPyth = Math3D.pythagorean(entity.size + size, entityCross);
+								if (entityDot < 0) // if moving away
+									break;
+								entityMove = entityDot - entityPyth;
+								if (entityMove < 0 || entityMove < move)  // if already inside or going to intersect
+									trackedCollisions.addHead(entity);
 							}
 	}
 	
@@ -179,21 +195,24 @@ public class IntersectionFinder {
 		public double x, y, entityCollisionX, entityCollisionY;
 		public int state, entityCollisionLayer;
 		public MapEntity entityCollide;
+		public LList<MapEntity> trackedCollisions;
 		
-		private Intersection(double x, double y, int state) {
+		private Intersection(double x, double y, int state, LList<MapEntity> trackedCollisions) {
 			this.x = x;
 			this.y = y;
 			this.state = state;
+			this.trackedCollisions = trackedCollisions;
 		}
 		
-		private Intersection(double x, double y, MapEntity entityCollided) {
+		private Intersection(double x, double y, MapEntity entityCollided, LList<MapEntity> trackedCollisions) {
 			this.x = x;
 			this.y = y;
-			this.state = COLLISION_ENTITY;
+			state = COLLISION_ENTITY;
 			entityCollisionX = entityCollided.mapX;
 			entityCollisionY = entityCollided.mapY;
 			entityCollisionLayer = entityCollided.layer;
 			this.entityCollide = entityCollided;
+			this.trackedCollisions = trackedCollisions;
 		}
 	}
 }

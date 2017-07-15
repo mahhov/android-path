@@ -34,11 +34,11 @@ public class Enemy extends Character {
 			moveDeltaY = toPlayer[1] + awayFromIntersection[1];
 			awayFromIntersection[0] *= PATH_FIND_FRICTION;
 			awayFromIntersection[1] *= PATH_FIND_FRICTION;
-			handleProjectileIntersection(moveByDir(map));
+			handleEnemyIntersection(moveByDir(map));
 		} else if (Math3D.random() > WANDER_THRESHOLD) {
 			goalX = x + Math3D.random(-WANDER_DISTANCE, WANDER_DISTANCE);
 			goalY = y + Math3D.random(-WANDER_DISTANCE, WANDER_DISTANCE);
-			handleProjectileIntersection(moveToGoal(map));
+			handleEnemyIntersection(moveToGoal(map));
 		}
 		if (life <= 0) {
 			map.removeEntity(this);
@@ -50,7 +50,7 @@ public class Enemy extends Character {
 		return false;
 	}
 	
-	private void handleProjectileIntersection(IntersectionFinder.Intersection intersection) {
+	private void handleEnemyIntersection(IntersectionFinder.Intersection intersection) {
 		if (intersection != null && intersection.state == IntersectionFinder.Intersection.COLLISION_ENTITY && intersection.entityCollisionLayer == ENTITY_LAYER_HOSTILE_CHARACTER)
 			awayFromIntersection = setMagnitude(x - intersection.entityCollisionX, y - intersection.entityCollisionY, 1);
 	}
