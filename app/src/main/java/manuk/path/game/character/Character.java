@@ -92,6 +92,16 @@ abstract class Character extends MapEntity {
 		return intersection;
 	}
 	
+	IntersectionFinder.Intersection moveByDir(Map map, double moveSpeed, int entityLayer) {
+		if (attacking)
+			return null;
+		double dist = Math3D.min(moveSpeed, Math3D.magnitude(moveDeltaX, moveDeltaY));
+		IntersectionFinder.Intersection intersection = map.moveEntity(new double[] {x, y}, new double[] {moveDeltaX, moveDeltaY}, dist, true, entityLayer, this);
+		x = intersection.x;
+		y = intersection.y;
+		return intersection;
+	}
+	
 	public void handleProjectileIntersection(double damageAmount) {
 		takeDamage(damageAmount);
 	}

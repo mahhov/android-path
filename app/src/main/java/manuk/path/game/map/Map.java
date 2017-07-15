@@ -67,6 +67,15 @@ public class Map {
 		return intersection;
 	}
 	
+	public IntersectionFinder.Intersection moveEntity(double[] orig, double[] dir, double maxMove, boolean allowSlide, int entityLayer, MapEntity entity) {
+		removeEntity(entity);
+		IntersectionFinder.Intersection intersection = intersectionFinder.find(entity.id, orig, dir, maxMove, allowSlide, entityLayer, entity.size);
+		entity.mapX = intersection.x;
+		entity.mapY = intersection.y;
+		entity.node = this.entity[(int) entity.mapX][(int) entity.mapY][entity.layer].addHead(entity);
+		return intersection;
+	}
+	
 	public void removeEntity(MapEntity entity) {
 		if (entity.node != null)
 			this.entity[(int) entity.mapX][(int) entity.mapY][entity.layer].remove(entity.node);

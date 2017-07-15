@@ -15,11 +15,12 @@ import manuk.path.game.util.Measurements;
 
 public class Player extends Character {
 	private int touchId;
-	private double attackDirX, attackDirY;
+	private double[] attackDir;
 	private Joystick joystick;
 	private PaintBar lifeBar, staminaBar, expBar;
 	private ClickablePaintElement actionButton;
 	private double exp;
+	private double dashSpeed = 10;
 	
 	public Player(MapGenerator mapGenerator, Joystick joystick, PaintBar lifeBar, PaintBar staminaBar, PaintBar expBar, ClickablePaintElement actionButton) {
 		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .2, 10, 100, 100, 1, 30);
@@ -39,18 +40,15 @@ public class Player extends Character {
 		expBar.setValue(exp / 100);
 		
 		if (updateAttack()) {
-			//			projectile.addHead(new Projectile(MapEntity.ENTITY_LAYER_FRIENDLY_PROJECTILE, x, y, attackDirX, attackDirY, .1, Color.RED));
-			goalX = x;
-			goalY = y;
+			moveDeltaX = attackDir[0];
+			moveDeltaY = attackDir[1];
+			moveByDir(map, dashSpeed,MapEntity.ENTITY_LAYER_TRANSPARENT);
 		} else if (actionButton.isPressed && (touchXY != null || joystick.isPressed)) {
 			if (beginAttack(30)) {
-				if (touchXY != null) {
-					attackDirX = touchXY[0] - x;
-					attackDirY = touchXY[1] - y;
-				} else {
-					attackDirX = joystick.touchX - .5;
-					attackDirY = joystick.touchY - .5;
-				}
+				if (touchXY != null)
+					attackDir = Math3D.setMagnitude(touchXY[0] - x, touchXY[1] - y, dashSpeed);
+				else
+					attackDir = Math3D.setMagnitude(joystick.touchX - .5, joystick.touchY - .5, dashSpeed);
 			}
 		} else if (touchXY != null) {
 			goalX = touchXY[0];
