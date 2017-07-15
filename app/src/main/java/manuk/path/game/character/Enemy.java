@@ -17,7 +17,7 @@ public class Enemy extends Character {
 	private double[] awayFromIntersection;
 	
 	public Enemy(double spawnX, double spawnY) {
-		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, Color.RED, .1, 10, 10);
+		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, Color.RED, .05, 100, 10);
 		awayFromIntersection = new double[2];
 	}
 	
@@ -44,6 +44,7 @@ public class Enemy extends Character {
 			map.removeEntity(this);
 			if (Math3D.random() < ITEM_DROP_RATE)
 				item.addHead(new Item(x, y));
+			player.gainExp(5);
 			return true;
 		}
 		return false;

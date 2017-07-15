@@ -10,13 +10,14 @@ import manuk.path.game.util.LList;
 
 class UserInterface {
 	private LList<PaintElement> elements;
-	PaintBar lifeBar, manaBar;
+	PaintBar lifeBar, manaBar, expBar;
 	ClickablePaintElement actionButton;
 	
 	UserInterface() {
 		elements = new LList<>();
-		elements.addHead(lifeBar = new PaintBar(.05, .02, .43, .02, Color.RED));
-		elements.addHead(manaBar = new PaintBar(.52, .02, .43, .02, Color.BLUE));
+		elements.addHead(lifeBar = new PaintBar(.05, .01, .43, .02, Color.RED));
+		elements.addHead(manaBar = new PaintBar(.52, .01, .43, .02, Color.BLUE));
+		elements.addHead(expBar = new PaintBar(.05, .04, .90, .01, Color.GREEN));
 		elements.addHead(actionButton = new ClickablePaintElement(.47, .85, .06, .1, Color.WHITE, Color.GRAY));
 	}
 	

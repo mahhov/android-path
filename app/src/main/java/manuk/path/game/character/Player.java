@@ -9,22 +9,26 @@ import manuk.path.game.painter.element.ClickablePaintElement;
 import manuk.path.game.painter.element.PaintBar;
 import manuk.path.game.projectile.Projectile;
 import manuk.path.game.util.LList;
+import manuk.path.game.util.Math3D;
 import manuk.path.game.util.Measurements;
 
 public class Player extends Character {
 	private double attackX, attackY;
-	private PaintBar lifeBar;
+	private PaintBar lifeBar, expBar;
 	private ClickablePaintElement actionButton;
+	private double exp;
 	
-	public Player(MapGenerator mapGenerator, PaintBar lifeBar, ClickablePaintElement actionButton) {
-		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .5, 10, 100);
+	public Player(MapGenerator mapGenerator, PaintBar lifeBar, PaintBar expBar, ClickablePaintElement actionButton) {
+		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .2, 10, 100);
 		this.lifeBar = lifeBar;
+		this.expBar = expBar;
 		this.actionButton = actionButton;
 	}
 	
 	public void update(Controller controller, Map map, LList<Projectile> projectile) {
 		double[] touchXY = getTouchXY(controller, map);
 		lifeBar.setValue(getLifePercent());
+		expBar.setValue(exp / 100);
 		
 		if (updateAttack()) {
 			projectile.addHead(new Projectile(MapEntity.ENTITY_LAYER_FRIENDLY_PROJECTILE, x, y, attackX - x, attackY - y, .1, Color.RED));
@@ -50,5 +54,9 @@ public class Player extends Character {
 				return new double[] {x, y};
 			}
 		return null;
+	}
+	
+	void gainExp(double amount) {
+		exp = Math3D.min(exp + amount, 100);
 	}
 }
