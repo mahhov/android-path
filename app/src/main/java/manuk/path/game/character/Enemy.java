@@ -1,9 +1,11 @@
 package manuk.path.game.character;
 
 import android.graphics.Color;
+import manuk.path.game.item.Item;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
 import manuk.path.game.util.IntersectionFinder;
+import manuk.path.game.util.LList;
 import manuk.path.game.util.Math3D;
 
 import static manuk.path.game.util.Math3D.setMagnitude;
@@ -11,6 +13,7 @@ import static manuk.path.game.util.Math3D.setMagnitude;
 public class Enemy extends Character {
 	private static final double WANDER_THRESHOLD = .98, WANDER_DISTANCE = 5, ACTIVE_DISTANCE = 10, DAMAGE_RANGE = 2;
 	private static final double PATH_FIND_FRICTION = .8;
+	private static final double ITEM_DROP_RATE = .2;
 	private double[] awayFromIntersection;
 	
 	public Enemy(double spawnX, double spawnY) {
@@ -19,7 +22,7 @@ public class Enemy extends Character {
 	}
 	
 	// return true if need to be removed
-	public boolean update(Player player, Map map) {
+	public boolean update(Player player, Map map, LList<Item> item) {
 		if (updateAttack())
 			player.takeDamage(1);
 		double distance = Math3D.magnitude(player.x - x, player.y - y);
@@ -31,20 +34,22 @@ public class Enemy extends Character {
 			moveDeltaY = toPlayer[1] + awayFromIntersection[1];
 			awayFromIntersection[0] *= PATH_FIND_FRICTION;
 			awayFromIntersection[1] *= PATH_FIND_FRICTION;
-			handleIntersection(moveByDir(map));
+			handleProjectileIntersection(moveByDir(map));
 		} else if (Math3D.random() > WANDER_THRESHOLD) {
 			goalX = x + Math3D.random(-WANDER_DISTANCE, WANDER_DISTANCE);
 			goalY = y + Math3D.random(-WANDER_DISTANCE, WANDER_DISTANCE);
-			handleIntersection(moveToGoal(map));
+			handleProjectileIntersection(moveToGoal(map));
 		}
 		if (life <= 0) {
 			map.removeEntity(this);
+			if (Math3D.random() < ITEM_DROP_RATE)
+				item.addHead(new Item(x, y));
 			return true;
 		}
 		return false;
 	}
 	
-	private void handleIntersection(IntersectionFinder.Intersection intersection) {
+	private void handleProjectileIntersection(IntersectionFinder.Intersection intersection) {
 		if (intersection != null && intersection.state == IntersectionFinder.Intersection.COLLISION_ENTITY && intersection.entityCollisionLayer == ENTITY_LAYER_HOSTILE_CHARACTER)
 			awayFromIntersection = setMagnitude(x - intersection.entityCollisionX, y - intersection.entityCollisionY, 1);
 	}

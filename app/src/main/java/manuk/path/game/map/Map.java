@@ -51,6 +51,13 @@ public class Map {
 					entity[x][y][layer] = new LList<>();
 	}
 	
+	public void moveEntity(double[] pos, MapEntity entity) {
+		removeEntity(entity);
+		entity.mapX = pos[0];
+		entity.mapY = pos[1];
+		entity.node = this.entity[(int) entity.mapX][(int) entity.mapY][entity.layer].addHead(entity);
+	}
+	
 	public IntersectionFinder.Intersection moveEntity(double[] orig, double[] dir, double maxMove, boolean allowSlide, MapEntity entity) {
 		removeEntity(entity);
 		IntersectionFinder.Intersection intersection = intersectionFinder.find(entity.id, orig, dir, maxMove, allowSlide, entity.layer, entity.size);

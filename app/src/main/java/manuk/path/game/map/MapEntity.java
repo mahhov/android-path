@@ -5,8 +5,8 @@ import manuk.path.game.util.Math3D;
 
 public abstract class MapEntity {
 	private static long count = 0;
-	public static final int ENTITY_LAYERS_COUNT = 4;
-	protected static final int ENTITY_LAYER_FRIENDLY_PROJECTILE = 0, ENTITY_LAYER_HOSTILE_PROJECTILE = 1, ENTITY_LAYER_FRIENDLY_CHARACTER = 2, ENTITY_LAYER_HOSTILE_CHARACTER = 3;
+	public static final int ENTITY_LAYERS_COUNT = 5;
+	protected static final int ENTITY_LAYER_FRIENDLY_PROJECTILE = 0, ENTITY_LAYER_HOSTILE_PROJECTILE = 1, ENTITY_LAYER_FRIENDLY_CHARACTER = 2, ENTITY_LAYER_HOSTILE_CHARACTER = 3, ENTITY_DROPPED_ITEM = 4;
 	public static final boolean[][] ENTITY_COLLISION;
 	public static double MAX_ENTITY_SIZE = 0;
 	
@@ -24,7 +24,7 @@ public abstract class MapEntity {
 	
 	public final long id;
 	public double mapX, mapY, size;
-	LList<MapEntity>.Node node;
+	public LList<MapEntity>.Node node;
 	public int layer;
 	
 	public MapEntity(int layer, double size) {

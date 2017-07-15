@@ -4,6 +4,7 @@ import android.graphics.Color;
 import manuk.path.game.character.Enemy;
 import manuk.path.game.character.Player;
 import manuk.path.game.controller.Controller;
+import manuk.path.game.item.Item;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.mapgenerator.CavernMapGenerator;
 import manuk.path.game.map.mapgenerator.MapGenerator;
@@ -21,6 +22,7 @@ class World {
 	private Player player;
 	private LList<Enemy> enemy;
 	private LList<Projectile> projectile;
+	private LList<Item> item;
 	
 	World(int width, int length, int height) {
 		userInterface = new UserInterface();
@@ -32,6 +34,7 @@ class World {
 		for (Pos3 enemyPos : mapGenerator.enemySpawn)
 			enemy.addHead(new Enemy(enemyPos.x, enemyPos.y));
 		projectile = new LList<>();
+		item = new LList<>();
 	}
 	
 	void update(Controller controller) {
@@ -43,7 +46,7 @@ class World {
 		LList<Enemy>.Node enemyNode;
 		while (enemyIterator.hasNext()) {
 			enemyNode = enemyIterator.next();
-			if (enemyNode.elem.update(player, map))
+			if (enemyNode.elem.update(player, map, item))
 				enemy.remove(enemyNode);
 		}
 		
@@ -53,6 +56,14 @@ class World {
 			projectileNode = projectileIterator.next();
 			if (projectileNode.elem.update(map))
 				projectile.remove(projectileNode);
+		}
+		
+		Iterator<LList<Item>.Node> itemIterator = item.nodeIterator();
+		LList<Item>.Node itemNode;
+		while (itemIterator.hasNext()) {
+			itemNode = itemIterator.next();
+			if (itemNode.elem.update(map))
+				item.remove(itemNode);
 		}
 	}
 	
