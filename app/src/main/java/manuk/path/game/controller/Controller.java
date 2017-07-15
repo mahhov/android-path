@@ -43,20 +43,39 @@ public class Controller {
 		}
 	}
 	
-	public void refreshTouchStates() {
+	public Touch getTouch(int touchId, double left, double top, double right, double bottom) {
+		if (touchId != -1 && touch[touchId].isDown())
+			return touch[touchId];
+		
 		for (Touch t : touch)
-			if (t.released) {
-				t.state = Touch.STATE_NONE;
-				t.released = false;
-			} else if (t.isDown())
-				t.state = Touch.STATE_FRESH;
+			if (t.isDown() && t.isFresh() && t.x > left && t.x < right && t.y > top && t.y < bottom)
+				return t;
+		
+		return null;
+	}
+	
+	public Touch getTouch(int touchId) {
+		if (touchId != -1 && touch[touchId].isDown())
+			return touch[touchId];
+		
+		for (Touch t : touch)
+			if (t.isDown() && t.isFresh())
+				return t;
+		
+		return null;
 	}
 	
 	public static class Touch {
 		static final int STATE_NONE = 0, STATE_FRESH = 1, STATE_CONSUMED = 2;
+		private static int count = 0;
+		private int id;
 		public double x, y;
 		private int state;
 		private boolean released;
+		
+		private Touch() {
+			id = count++;
+		}
 		
 		public boolean isDown() {
 			return state != STATE_NONE;
@@ -66,8 +85,13 @@ public class Controller {
 			return state == STATE_FRESH;
 		}
 		
-		public void consume() {
-			state = Touch.STATE_CONSUMED;
+		public int consume() {
+			if (released) {
+				state = Touch.STATE_NONE;
+				released = false;
+			} else
+				state = Touch.STATE_CONSUMED;
+			return id;
 		}
 	}
 }

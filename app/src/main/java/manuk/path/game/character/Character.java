@@ -12,7 +12,7 @@ abstract class Character extends MapEntity {
 	double moveDeltaX, moveDeltaY;
 	
 	private int[] color;
-	private double speed;
+	double speed;
 	private int attackSpeed, attackWait;
 	private boolean attacking;
 	private double maxLife;

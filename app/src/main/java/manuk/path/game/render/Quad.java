@@ -34,6 +34,15 @@ public class Quad extends RenderElement {
 		this.color = floatColor(color);
 	}
 	
+	public Quad(float[] coord, int color, boolean frame) {
+		vertexBuffer = ByteBuffer.allocateDirect(coord.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+		vertexBuffer.put(coord).position(0);
+		if (frame)
+			frameColor = floatColor(color);
+		else
+			this.color = floatColor(color);
+	}
+	
 	public Quad(float[] coord, int color, int frameColor) {
 		this(coord, color);
 		this.frameColor = floatColor(frameColor);
@@ -58,10 +67,14 @@ public class Quad extends RenderElement {
 		
 		// color
 		int mColorHandle = GLES20.glGetUniformLocation(program, "vColor");
-		GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 		
-		// draw
-		GLES20.glDrawArrays(GL_TRIANGLE_FAN, 0, VERTEX_COUNT);
+		// draw area
+		if (color != null) {
+			GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+			GLES20.glDrawArrays(GL_TRIANGLE_FAN, 0, VERTEX_COUNT);
+		}
+		
+		// draw frame
 		if (frameColor != null) {
 			GLES20.glLineWidth(10);
 			GLES20.glUniform4fv(mColorHandle, 1, frameColor, 0);

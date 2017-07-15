@@ -30,11 +30,6 @@ public class Engine implements Runnable {
 		mySurface.setController(controller);
 	}
 	
-	private void update() {
-		world.update(controller);
-		controller.refreshTouchStates();
-	}
-	
 	private void draw() {
 		painter.prep();
 		world.draw(painter);
@@ -56,7 +51,7 @@ public class Engine implements Runnable {
 			sleep(500);
 		while (frames.running) {
 			if (!world.gameOver)
-				update();
+				world.update(controller);
 			draw();
 			frames.waitCurrentFrame();
 		}
@@ -88,3 +83,4 @@ public class Engine implements Runnable {
 // armor / evs / es -> all others converted to 1
 // crit / attack speed -> crits increase attack speed, attacks increase crit chance, 
 
+// joystick, map scale, room maps, 3 enemy types

@@ -29,7 +29,7 @@ class World {
 		MapGenerator mapGenerator = new CavernMapGenerator();
 		mapGenerator.generate(width, length, height);
 		map = new Map(width, length, height, mapGenerator);
-		player = new Player(mapGenerator, userInterface.lifeBar, userInterface.expBar, userInterface.actionButton);
+		player = new Player(mapGenerator, userInterface.joystick, userInterface.lifeBar, userInterface.expBar, userInterface.actionButton);
 		enemy = new LList<>();
 		for (Pos3 enemyPos : mapGenerator.enemySpawn)
 			enemy.addHead(new Enemy(enemyPos.x, enemyPos.y));

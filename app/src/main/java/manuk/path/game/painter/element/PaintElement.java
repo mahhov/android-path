@@ -18,7 +18,8 @@ public class PaintElement {
 		this.color = color;
 	}
 	
-	public void handleInput(Controller controller) {
+	public Controller.Touch handleInput(Controller controller) {
+		return null;
 	}
 	
 	public void draw(Painter painter) {

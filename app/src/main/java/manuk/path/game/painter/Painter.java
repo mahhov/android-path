@@ -52,6 +52,15 @@ public class Painter {
 				coord[0] + coord[2], coord[1]}, color));
 	}
 	
+	public void drawRectFrame(double x, double y, double width, double height, int color) {
+		float[] coord = openglCoordXYWH(x, y, width, height);
+		drawList.addHead(new Quad(new float[] {
+				coord[0], coord[1],
+				coord[0], coord[1] + coord[3],
+				coord[0] + coord[2], coord[1] + coord[3],
+				coord[0] + coord[2], coord[1]}, color, true));
+	}
+	
 	public void drawPolygon(double[] x, double[] y, int color) {
 		float[] coord = openglCoordXY(x, y);
 		drawList.addHead(new Quad(coord, color));
