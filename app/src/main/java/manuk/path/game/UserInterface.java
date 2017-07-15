@@ -9,11 +9,11 @@ import manuk.path.game.painter.element.PaintBar;
 import manuk.path.game.painter.element.PaintElement;
 import manuk.path.game.util.LList;
 
-class UserInterface {
+public class UserInterface {
 	private LList<PaintElement> elements;
-	Joystick joystick;
-	PaintBar lifeBar, staminaBar, expBar;
-	ClickablePaintElement actionButton;
+	public Joystick joystick;
+	public PaintBar lifeBar, staminaBar, expBar;
+	public ClickablePaintElement dashButton, sprintButton;
 	
 	UserInterface() {
 		elements = new LList<>();
@@ -21,7 +21,8 @@ class UserInterface {
 		elements.addHead(lifeBar = new PaintBar(.05, .01, .43, .02, Color.RED));
 		elements.addHead(staminaBar = new PaintBar(.52, .01, .43, .02, Color.BLUE));
 		elements.addHead(expBar = new PaintBar(.05, .04, .90, .01, Color.GREEN));
-		elements.addHead(actionButton = new ClickablePaintElement(.455, .8, .09, .15, Color.WHITE, Color.GRAY));
+		elements.addHead(dashButton = new ClickablePaintElement(.65, .8, .09, .15, Color.WHITE, Color.GRAY));
+		elements.addHead(sprintButton = new ClickablePaintElement(.8, .8, .09, .15, Color.WHITE, Color.GRAY));
 	}
 	
 	void handleInput(Controller controller) {

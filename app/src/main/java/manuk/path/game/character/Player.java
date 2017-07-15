@@ -1,6 +1,7 @@
 package manuk.path.game.character;
 
 import android.graphics.Color;
+import manuk.path.game.UserInterface;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
@@ -19,19 +20,20 @@ public class Player extends Character {
 	private double[] attackDir;
 	private Joystick joystick;
 	private PaintBar lifeBar, staminaBar, expBar;
-	private ClickablePaintElement actionButton;
+	private ClickablePaintElement dashButton, sprintButton;
 	private double exp;
 	private double dashSpeed = 1;
 	private Counter dashTime;
 	private long dashId;
 	
-	public Player(MapGenerator mapGenerator, Joystick joystick, PaintBar lifeBar, PaintBar staminaBar, PaintBar expBar, ClickablePaintElement actionButton) {
+	public Player(MapGenerator mapGenerator, UserInterface userInterface) {
 		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .2, 10, 100, 100, 1, 30);
-		this.joystick = joystick;
-		this.lifeBar = lifeBar;
-		this.staminaBar = staminaBar;
-		this.expBar = expBar;
-		this.actionButton = actionButton;
+		joystick = userInterface.joystick;
+		lifeBar = userInterface.lifeBar;
+		staminaBar = userInterface.staminaBar;
+		expBar = userInterface.expBar;
+		dashButton = userInterface.dashButton;
+		sprintButton = userInterface.sprintButton;
 		touchId = -1;
 		dashTime = new Counter(10);
 	}
@@ -55,21 +57,24 @@ public class Player extends Character {
 			moveDeltaY = attackDir[1];
 			dashTime.begin();
 			dashId++;
-		} else if (actionButton.isPressed && (touchXY != null || joystick.isPressed)) {
+		} else if (dashButton.isPressed && (touchXY != null || joystick.isPressed)) {
 			if (beginAttack(30)) {
 				if (touchXY != null)
 					attackDir = Math3D.setMagnitude(touchXY[0] - x, touchXY[1] - y, dashSpeed);
 				else
 					attackDir = Math3D.setMagnitude(joystick.touchX - .5, joystick.touchY - .5, dashSpeed);
 			}
-		} else if (touchXY != null) {
-			goalX = touchXY[0];
-			goalY = touchXY[1];
-			moveToGoal(map);
 		} else if (joystick.isPressed) {
 			moveDeltaX = (joystick.touchX - .5) * moveSpeed;
 			moveDeltaY = (joystick.touchY - .5) * moveSpeed;
-			moveByDir(map);
+			double moveSpeed = this.moveSpeed;
+			if (sprintButton.isPressed && useStamina(.3)) {
+				moveSpeed *= 2;
+				double[] moveDeltaXY = Math3D.setMagnitude(moveDeltaX, moveDeltaY, 1);
+				moveDeltaX = moveDeltaXY[0];
+				moveDeltaY = moveDeltaXY[1];
+			}
+			moveByDir(map, moveSpeed, layer);
 		}
 		staminaRegen();
 	}
