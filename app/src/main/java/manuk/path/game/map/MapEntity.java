@@ -49,7 +49,7 @@ public abstract class MapEntity {
 		}
 	}
 	
-	void onIntersection(double damageAmount) {
+	public void onIntersection(double damageAmount) {
 	}
 	
 	public abstract void draw(double scrollX, double scrollY);
