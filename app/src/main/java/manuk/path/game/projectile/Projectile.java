@@ -6,15 +6,16 @@ import manuk.path.game.painter.MapPainter;
 import manuk.path.game.util.IntersectionFinder;
 
 public class Projectile extends MapEntity {
-	private double x, y, dir[], speed;
+	private double x, y, dir[], speed, damage;
 	private int[] color;
 	
-	public Projectile(int layer, double x, double y, double dirX, double dirY, double speed, int color) {
+	public Projectile(int layer, double x, double y, double dirX, double dirY, double speed, double damage, int color) {
 		super(layer, .5);
 		this.x = x;
 		this.y = y;
 		dir = new double[] {dirX, dirY};
 		this.speed = speed;
+		this.damage = damage;
 		this.color = MapPainter.createColorShade(color);
 	}
 	
@@ -26,7 +27,7 @@ public class Projectile extends MapEntity {
 		if (intersection.state != IntersectionFinder.Intersection.COLLISION_NONE) {
 			map.removeEntity(this);
 			if (intersection.state == IntersectionFinder.Intersection.COLLISION_ENTITY)
-				intersection.entityCollide.handleIntersection(getIntersectorId(), 5);
+				intersection.entityCollide.handleIntersection(getIntersectorId(), damage);
 			return true;
 		}
 		return false;
