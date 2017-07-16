@@ -18,7 +18,7 @@ public class ProjectileEnemy extends Enemy {
 	private double[] awayFromIntersection;
 	
 	public ProjectileEnemy(double spawnX, double spawnY) {
-		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, Color.RED, .05, 10, 10, 0, 0, 0);
+		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, Color.rgb(150, 0, 150), .05, 10, 10, 0, 0, 0);
 		awayFromIntersection = new double[2];
 	}
 	
