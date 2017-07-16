@@ -110,4 +110,9 @@ public class Player extends Character {
 	public void giveLife(int amount) {
 		takeHeal(amount);
 	}
+	
+	void takeDamage(double amount) {
+		if (!dashTime.active())
+			super.takeDamage(amount);
+	}
 }
