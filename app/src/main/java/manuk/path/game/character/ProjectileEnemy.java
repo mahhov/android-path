@@ -24,8 +24,11 @@ public class ProjectileEnemy extends Enemy {
 	
 	// return true if need to be removed
 	public boolean update(Player player, Map map, LList<Projectile> projectile, LList<Item> item) {
-		if (updateAttack())
-			player.takeDamage(1);
+		if (updateAttack()) {
+			double[] toPlayer = Math3D.setMagnitude(player.x - x, player.y - y, 1);
+			projectile.addHead(new Projectile(MapEntity.ENTITY_LAYER_HOSTILE_PROJECTILE, x, y, toPlayer[0], toPlayer[1], .1, Color.RED));
+		}
+		
 		double distance = Math3D.magnitude(player.x - x, player.y - y);
 		if (distance < DAMAGE_RANGE)
 			beginAttack(0);

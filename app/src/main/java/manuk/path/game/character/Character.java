@@ -131,9 +131,7 @@ abstract class Character extends MapEntity {
 		}
 		
 		boolean update() {
-			if (active())
-				return --value == 0;
-			return false;
+			return active() && --value == 0;
 		}
 	}
 }	

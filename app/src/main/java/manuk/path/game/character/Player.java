@@ -49,12 +49,12 @@ public class Player extends Character {
 			dashTime.update();
 			moveDeltaX = attackDir[0];
 			moveDeltaY = attackDir[1];
-			doIntersections(moveByDir(map, dashSpeed, MapEntity.ENTITY_LAYER_TRANSPARENT_FRIENDLY_CHARACTER), 5);
+			doIntersections(moveByDir(map, dashSpeed, MapEntity.ENTITY_LAYER_TRANSPARENT_FRIENDLY_CHARACTER), dashId, 5);
 		} else if (updateAttack()) {
 			moveDeltaX = attackDir[0];
 			moveDeltaY = attackDir[1];
 			dashTime.begin();
-			dashId++;
+			dashId = getIntersectorId();
 		} else if ((touchXYDouble != null && touchXYDouble[2] == 1) || (dashButton.isPressed && (touchXYDouble != null || joystick.isPressed))) {
 			if (beginAttack(30)) {
 				if (touchXYDouble != null)
@@ -72,14 +72,14 @@ public class Player extends Character {
 				moveDeltaX = moveDeltaXY[0];
 				moveDeltaY = moveDeltaXY[1];
 			}
-			doIntersections(moveByDir(map, moveSpeed, layer), 0);
+			doIntersections(moveByDir(map, moveSpeed, layer), getIntersectorId(), 0);
 		} else if (touchXYDouble != null) {
 			goalX = touchXYDouble[0];
 			goalY = touchXYDouble[1];
 			double moveSpeed = this.moveSpeed;
 			if (sprintButton.isPressed && useStamina(.3))
 				moveSpeed *= 2;
-			doIntersections(moveToGoal(map, moveSpeed, layer), 0);
+			doIntersections(moveToGoal(map, moveSpeed, layer), getIntersectorId(), 0);
 		}
 		staminaRegen();
 	}
@@ -97,10 +97,10 @@ public class Player extends Character {
 		return new double[] {x, y, isDouble};
 	}
 	
-	private void doIntersections(IntersectionFinder.Intersection intersection, int damage) {
+	private void doIntersections(IntersectionFinder.Intersection intersection, long intersectionId, int damage) {
 		if (intersection != null)
 			for (MapEntity trackedEntity : intersection.trackedCollisions)
-				trackedEntity.handleIntersection(dashId, damage);
+				trackedEntity.handleIntersection(intersectionId, damage);
 	}
 	
 	void gainExp(double amount) {
