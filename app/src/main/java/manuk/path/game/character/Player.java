@@ -39,7 +39,7 @@ public class Player extends Character {
 	}
 	
 	public void update(Controller controller, Map map, LList<Projectile> projectile) {
-		double[] touchXY = getTouchXY(controller, map);
+		double[] touchXYDouble = getTouchXY(controller, map);
 		
 		lifeBar.setValue(getLifePercent());
 		staminaBar.setValue(getStaminaPercent());
@@ -57,10 +57,10 @@ public class Player extends Character {
 			moveDeltaY = attackDir[1];
 			dashTime.begin();
 			dashId++;
-		} else if (dashButton.isPressed && (touchXY != null || joystick.isPressed)) {
+		} else if ((touchXYDouble != null && touchXYDouble[2] == 1) || (dashButton.isPressed && (touchXYDouble != null || joystick.isPressed))) {
 			if (beginAttack(30)) {
-				if (touchXY != null)
-					attackDir = Math3D.setMagnitude(touchXY[0] - x, touchXY[1] - y, dashSpeed);
+				if (touchXYDouble != null)
+					attackDir = Math3D.setMagnitude(touchXYDouble[0] - x, touchXYDouble[1] - y, dashSpeed);
 				else
 					attackDir = Math3D.setMagnitude(joystick.touchX - .5, joystick.touchY - .5, dashSpeed);
 			}
@@ -75,6 +75,13 @@ public class Player extends Character {
 				moveDeltaY = moveDeltaXY[1];
 			}
 			moveByDir(map, moveSpeed, layer);
+		} else if (touchXYDouble != null) {
+			goalX = touchXYDouble[0];
+			goalY = touchXYDouble[1];
+			double moveSpeed = this.moveSpeed;
+			if (sprintButton.isPressed && useStamina(.3))
+				moveSpeed *= 2;
+			moveToGoal(map, moveSpeed, layer);
 		}
 		staminaRegen();
 	}
@@ -85,10 +92,11 @@ public class Player extends Character {
 			touchId = -1;
 			return null;
 		}
-		touchId = touch.consume();
+		int isDouble = touch.isFreshDouble() ? 1 : 0;
 		double x = touch.x * Measurements.SCALED_VIEW_WIDTH + map.scrollX;
 		double y = touch.y * Measurements.SCALED_VIEW_HEIGHT + map.scrollY;
-		return new double[] {x, y};
+		touchId = touch.consume();
+		return new double[] {x, y, isDouble};
 	}
 	
 	void gainExp(double amount) {

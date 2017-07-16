@@ -74,6 +74,12 @@ abstract class Character extends MapEntity {
 		return moveByDir(map);
 	}
 	
+	IntersectionFinder.Intersection moveToGoal(Map map, double moveSpeed, int entityLayer) {
+		moveDeltaX = goalX - x;
+		moveDeltaY = goalY - y;
+		return moveByDir(map, moveSpeed, entityLayer);
+	}
+	
 	IntersectionFinder.Intersection moveByDir(Map map) {
 		if (attackTime.active())
 			return null;
