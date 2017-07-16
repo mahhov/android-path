@@ -47,6 +47,11 @@ public abstract class Enemy extends Character {
 	
 	// return true if need to be removed
 	public boolean update(Player player, Map map, LList<Projectile> projectile, LList<Item> item) {
+		if (life <= 0) {
+			die(player, map, item);
+			return true;
+		}
+		
 		if (updateAttack())
 			doAttack(player, projectile);
 		
@@ -55,13 +60,11 @@ public abstract class Enemy extends Character {
 			beginAttack(0);
 		else if (distance < ACTIVE_DISTANCE)
 			chasePlayer(player, map);
-		else if (Math3D.random() > WANDER_THRESHOLD) {
+		else if (Math3D.random() > WANDER_THRESHOLD)
 			wander(map);
-		}
-		if (life <= 0) {
-			die(player, map, item);
-			return true;
-		}
+		else
+			handleEnemyIntersection(moveToGoal(map));
+		
 		return false;
 	}
 	
@@ -80,7 +83,6 @@ public abstract class Enemy extends Character {
 	private void wander(Map map) {
 		goalX = x + Math3D.random(-WANDER_DISTANCE, WANDER_DISTANCE);
 		goalY = y + Math3D.random(-WANDER_DISTANCE, WANDER_DISTANCE);
-		handleEnemyIntersection(moveToGoal(map));
 	}
 	
 	private void die(Player player, Map map, LList<Item> item) {
