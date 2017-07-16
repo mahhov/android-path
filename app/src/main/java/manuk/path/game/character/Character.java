@@ -11,7 +11,6 @@ abstract class Character extends MapEntity {
 	double goalX, goalY;
 	double moveDeltaX, moveDeltaY;
 	
-	private long intersectionId;
 	private int[] color;
 	double moveSpeed;
 	Counter attackTime;
@@ -38,6 +37,10 @@ abstract class Character extends MapEntity {
 	
 	void takeDamage(double amount) {
 		life = Math3D.max(life - amount, 0);
+	}
+	
+	void takeHeal(double amount) {
+		life = Math3D.min(life + amount, maxLife);
 	}
 	
 	double getStaminaPercent() {
@@ -100,11 +103,8 @@ abstract class Character extends MapEntity {
 		return intersection;
 	}
 	
-	public void handleIntersection(long intersectionId, double damageAmount) {
-		if (intersectionId != this.intersectionId) {
-			this.intersectionId = intersectionId;
-			takeDamage(damageAmount);
-		}
+	public void onIntersection(double damageAmount) {
+		takeDamage(damageAmount);
 	}
 	
 	public void draw(double scrollX, double scrollY) {

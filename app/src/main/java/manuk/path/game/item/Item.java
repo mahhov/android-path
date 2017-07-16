@@ -1,6 +1,7 @@
 package manuk.path.game.item;
 
 import android.graphics.Color;
+import manuk.path.game.character.Player;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
 import manuk.path.game.painter.MapPainter;
@@ -8,19 +9,28 @@ import manuk.path.game.painter.MapPainter;
 public class Item extends MapEntity {
 	private double x, y;
 	private int[] color;
+	private boolean remove;
 	
 	public Item(double x, double y) {
-		super(ENTITY_LAYER_DROPPED_ITEM, 0);
+		super(ENTITY_LAYER_DROPPED_ITEM, 1);
 		this.x = x;
 		this.y = y;
 		color = MapPainter.createColorShade(Color.YELLOW);
 	}
 	
 	// return true if need to be removed
-	public boolean update(Map map) {
+	public boolean update(Player player, Map map) {
 		if (node == null)
 			map.moveEntity(new double[] {x, y}, this);
-		return false;
+		if (!remove)
+			return false;
+		player.giveLife(5);
+		map.removeEntity(this);
+		return true;
+	}
+	
+	public void onIntersection(double damageAmount) {
+		remove = true;
 	}
 	
 	public void draw(double scrollX, double scrollY) {

@@ -17,7 +17,10 @@ public abstract class MapEntity {
 		ENTITY_COLLISION_BLOCK[ENTITY_LAYER_FRIENDLY_PROJECTILE][ENTITY_LAYER_HOSTILE_CHARACTER] = true; // friendly projectile & hostile char
 		ENTITY_COLLISION_BLOCK[ENTITY_LAYER_FRIENDLY_CHARACTER][ENTITY_LAYER_HOSTILE_CHARACTER] = true; // friendly char & hostile char
 		ENTITY_COLLISION_BLOCK[ENTITY_LAYER_HOSTILE_CHARACTER][ENTITY_LAYER_HOSTILE_CHARACTER] = true; // hostile char & hostile char
+		
 		ENTITY_COLLISION_TRACK[ENTITY_LAYER_TRANSPARENT_FRIENDLY_CHARACTER][ENTITY_LAYER_HOSTILE_CHARACTER] = true; // transparent friendly char and hostile char
+		ENTITY_COLLISION_TRACK[ENTITY_LAYER_FRIENDLY_CHARACTER][ENTITY_LAYER_DROPPED_ITEM] = true; // friendly char and item
+		//		ENTITY_COLLISION_TRACK[ENTITY_LAYER_TRANSPARENT_FRIENDLY_CHARACTER][ENTITY_LAYER_DROPPED_ITEM] = true; // transparent friendly char and item
 		
 		for (int i = 0; i < ENTITY_LAYERS_COUNT; i++)
 			for (int j = 0; j < ENTITY_LAYERS_COUNT; j++) {
@@ -27,6 +30,7 @@ public abstract class MapEntity {
 	}
 	
 	public final long id;
+	private long intersectionId;
 	public double mapX, mapY, size;
 	public LList<MapEntity>.Node node;
 	public int layer;
@@ -39,6 +43,13 @@ public abstract class MapEntity {
 	}
 	
 	public void handleIntersection(long intersectionId, double damageAmount) {
+		if (intersectionId != this.intersectionId) {
+			this.intersectionId = intersectionId;
+			onIntersection(damageAmount);
+		}
+	}
+	
+	void onIntersection(double damageAmount) {
 	}
 	
 	public abstract void draw(double scrollX, double scrollY);

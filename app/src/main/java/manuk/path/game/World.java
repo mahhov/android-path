@@ -62,7 +62,7 @@ class World {
 		LList<Item>.Node itemNode;
 		while (itemIterator.hasNext()) {
 			itemNode = itemIterator.next();
-			if (itemNode.elem.update(map))
+			if (itemNode.elem.update(player, map))
 				item.remove(itemNode);
 		}
 	}

@@ -14,7 +14,7 @@ import static manuk.path.game.util.Math3D.setMagnitude;
 public class MeleeEnemy extends Enemy {
 	private static final double WANDER_THRESHOLD = .98, WANDER_DISTANCE = 5, ACTIVE_DISTANCE = 10, DAMAGE_RANGE = 2;
 	private static final double PATH_FIND_FRICTION = .8;
-	private static final double ITEM_DROP_RATE = .2;
+	private static final double ITEM_DROP_RATE = .5;
 	private double[] awayFromIntersection;
 	
 	public MeleeEnemy(double spawnX, double spawnY) {
