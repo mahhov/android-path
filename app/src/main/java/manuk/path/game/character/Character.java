@@ -45,7 +45,7 @@ abstract class Character extends MapEntity {
 	}
 	
 	boolean useStamina(double amount) {
-		if (stamina > amount) {
+		if (stamina >= amount) {
 			stamina -= amount;
 			staminaRegenDelayCur = staminaRegenDelay;
 			return true;
