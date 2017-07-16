@@ -32,7 +32,7 @@ class World {
 		player = new Player(mapGenerator, userInterface);
 		enemy = new LList<>();
 		for (Pos3 enemyPos : mapGenerator.enemySpawn)
-			enemy.addHead(new Enemy(enemyPos.x, enemyPos.y));
+			enemy.addHead(Enemy.create(enemyPos.x, enemyPos.y, enemyPos.z));
 		projectile = new LList<>();
 		item = new LList<>();
 	}
@@ -46,7 +46,7 @@ class World {
 		LList<Enemy>.Node enemyNode;
 		while (enemyIterator.hasNext()) {
 			enemyNode = enemyIterator.next();
-			if (enemyNode.elem.update(player, map, item))
+			if (enemyNode.elem.update(player, map, projectile, item))
 				enemy.remove(enemyNode);
 		}
 		
