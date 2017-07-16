@@ -31,7 +31,8 @@ public abstract class MapEntity {
 	}
 	
 	public final long id;
-	private static long intersectionId, intersectorId;
+	private static long INTERSECTION_COUNT;
+	private long intersectionId;
 	public double mapX, mapY, size;
 	public LList<MapEntity>.Node node;
 	public int layer;
@@ -54,7 +55,7 @@ public abstract class MapEntity {
 	}
 	
 	public long getIntersectorId() {
-		return ++intersectorId;
+		return ++INTERSECTION_COUNT;
 	}
 	
 	public abstract void draw(double scrollX, double scrollY);
