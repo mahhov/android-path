@@ -23,7 +23,7 @@ public class Player extends Character {
 	private ClickablePaintElement dashButton, sprintButton;
 	private double exp;
 	private double dashSpeed = 1;
-	private Counter dashTime;
+	private Counter dashTime, stunTime;
 	private long dashId;
 	
 	public Player(MapGenerator mapGenerator, UserInterface userInterface) {
@@ -36,14 +36,21 @@ public class Player extends Character {
 		sprintButton = userInterface.sprintButton;
 		touchId = -1;
 		dashTime = new Counter(10);
+		stunTime = new Counter(0);
 	}
 	
 	public void update(Controller controller, Map map, LList<Projectile> projectile) {
 		double[] touchXYDouble = getTouchXY(controller, map);
 		
 		lifeBar.setValue(getLifePercent());
+		staminaRegen();
 		staminaBar.setValue(getStaminaPercent());
 		expBar.setValue(exp / 100);
+		
+		if (stunTime.active()) {
+			stunTime.update();
+			return;
+		}
 		
 		if (dashTime.active()) {
 			dashTime.update();
@@ -81,7 +88,6 @@ public class Player extends Character {
 				moveSpeed *= 2;
 			doIntersections(moveToGoal(map, moveSpeed, layer), getIntersectorId(), 0);
 		}
-		staminaRegen();
 	}
 	
 	private double[] getTouchXY(Controller controller, Map map) {
@@ -114,5 +120,10 @@ public class Player extends Character {
 	void takeDamage(double amount) {
 		if (!dashTime.active())
 			super.takeDamage(amount);
+	}
+	
+	void setStun(int duration) {
+		stunTime.begin(duration);
+		dashTime.stop();
 	}
 }

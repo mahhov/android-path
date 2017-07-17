@@ -130,8 +130,19 @@ abstract class Character extends MapEntity {
 			return true;
 		}
 		
+		boolean begin(int value) {
+			if (active() && value < this.value)
+				return false;
+			this.value = value;
+			return true;
+		}
+		
 		boolean update() {
 			return active() && --value == 0;
+		}
+		
+		void stop() {
+			value = 0;
 		}
 	}
 }	

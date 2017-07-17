@@ -86,3 +86,5 @@ public class Engine implements Runnable {
 // room maps, 3 enemy types
 // refactor character counter with delay and step
 // intersectino finder redo layer system / map entity array flatten ll dimension
+// particles
+// fix crash on resume
