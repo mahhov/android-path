@@ -29,10 +29,10 @@ class World {
 		MapGenerator mapGenerator = new RoomMapGenerator();
 		mapGenerator.generate(width, length, height);
 		map = new Map(width, length, height, mapGenerator);
-		player = new Player(mapGenerator, userInterface);
+		player = new Player(mapGenerator, userInterface, map);
 		enemy = new LList<>();
 		for (Pos3 enemyPos : mapGenerator.enemySpawn)
-			enemy.addHead(Enemy.create(enemyPos.x, enemyPos.y, enemyPos.z));
+			enemy.addHead(Enemy.create(enemyPos.x, enemyPos.y, enemyPos.z, map));
 		projectile = new LList<>();
 		item = new LList<>();
 	}

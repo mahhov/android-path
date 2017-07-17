@@ -26,8 +26,8 @@ public class Player extends Character {
 	private Counter dashTime, stunTime;
 	private long dashId;
 	
-	public Player(MapGenerator mapGenerator, UserInterface userInterface) {
-		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .2, 10, 100, 100, 1, 30);
+	public Player(MapGenerator mapGenerator, UserInterface userInterface, Map map) {
+		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .2, 10, 100, 100, 1, 30, map);
 		joystick = userInterface.joystick;
 		lifeBar = userInterface.lifeBar;
 		staminaBar = userInterface.staminaBar;

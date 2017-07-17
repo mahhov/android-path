@@ -87,4 +87,3 @@ public class Engine implements Runnable {
 // refactor character counter with delay and step
 // intersectino finder redo layer system / map entity array flatten ll dimension
 // particles
-// fix invis chars on creation until move

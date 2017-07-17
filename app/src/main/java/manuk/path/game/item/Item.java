@@ -11,17 +11,16 @@ public class Item extends MapEntity {
 	private int[] color;
 	private boolean remove;
 	
-	public Item(double x, double y) {
+	public Item(double x, double y, Map map) {
 		super(ENTITY_LAYER_DROPPED_ITEM, 1);
 		this.x = x;
 		this.y = y;
 		color = MapPainter.createColorShade(Color.YELLOW);
+		map.moveEntity(new double[] {x, y}, this);
 	}
 	
 	// return true if need to be removed
 	public boolean update(Player player, Map map) {
-		if (node == null)
-			map.moveEntity(new double[] {x, y}, this);
 		if (!remove)
 			return false;
 		player.giveLife(5);

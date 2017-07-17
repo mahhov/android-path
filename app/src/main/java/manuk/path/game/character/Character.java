@@ -18,7 +18,7 @@ abstract class Character extends MapEntity {
 	double life, stamina;
 	private int staminaRegenDelay, staminaRegenDelayCur, staminaRegenRate;
 	
-	Character(int layer, double spawnX, double spawnY, int color, double moveSpeed, int attackTime, double maxLife, double maxStamina, int staminaRegenRate, int staminaRegenDelay) {
+	Character(int layer, double spawnX, double spawnY, int color, double moveSpeed, int attackTime, double maxLife, double maxStamina, int staminaRegenRate, int staminaRegenDelay, Map map) {
 		super(layer, .5);
 		goalX = x = spawnX;
 		goalY = y = spawnY;
@@ -29,6 +29,7 @@ abstract class Character extends MapEntity {
 		this.maxStamina = stamina = maxStamina;
 		this.staminaRegenRate = staminaRegenRate;
 		this.staminaRegenDelay = staminaRegenDelay;
+		map.moveEntity(new double[] {x, y}, this);
 	}
 	
 	double getLifePercent() {

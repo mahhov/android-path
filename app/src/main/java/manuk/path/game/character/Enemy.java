@@ -24,8 +24,8 @@ public abstract class Enemy extends Character {
 	
 	private double[] awayFromIntersection;
 	
-	Enemy(int layer, double spawnX, double spawnY, int color, double moveSpeed, int attackTime, double maxLife, double wanderThreshold, double wanderDistance, double activeDistance, double damageRange, double keepAwayDistance, double pathFindFriction, double itemDropRate) {
-		super(layer, spawnX, spawnY, color, moveSpeed, attackTime, maxLife, 0, 0, 0);
+	Enemy(int layer, double spawnX, double spawnY, int color, double moveSpeed, int attackTime, double maxLife, double wanderThreshold, double wanderDistance, double activeDistance, double damageRange, double keepAwayDistance, double pathFindFriction, double itemDropRate, Map map) {
+		super(layer, spawnX, spawnY, color, moveSpeed, attackTime, maxLife, 0, 0, 0, map);
 		WANDER_THRESHOLD = wanderThreshold;
 		WANDER_DISTANCE = wanderDistance;
 		ACTIVE_DISTANCE = activeDistance;
@@ -36,17 +36,17 @@ public abstract class Enemy extends Character {
 		awayFromIntersection = new double[2];
 	}
 	
-	public static Enemy create(int x, int y, int type) {
+	public static Enemy create(int x, int y, int type, Map map) {
 		switch (type) {
 			case ENEMY_TYPE_MELEE:
-				return new MeleeEnemy(x, y);
+				return new MeleeEnemy(x, y, map);
 			case ENEMY_TYPE_PROJECTILE:
-				return new ProjectileEnemy(x, y);
+				return new ProjectileEnemy(x, y, map);
 			case ENEMY_TYPE_STUN:
-				return new StunEnemy(x, y);
+				return new StunEnemy(x, y, map);
 			default:
 				System.out.println("UNRECOGNIZED ENEMY TYPE");
-				return new MeleeEnemy(x, y);
+				return new MeleeEnemy(x, y, map);
 		}
 	}
 	
@@ -103,7 +103,7 @@ public abstract class Enemy extends Character {
 	private void die(Player player, Map map, LList<Item> item) {
 		map.removeEntity(this);
 		if (Math3D.random() < ITEM_DROP_RATE)
-			item.addHead(new Item(x, y));
+			item.addHead(new Item(x, y, map));
 		player.gainExp(5);
 	}
 	

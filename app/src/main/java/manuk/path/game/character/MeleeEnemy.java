@@ -1,6 +1,7 @@
 package manuk.path.game.character;
 
 import android.graphics.Color;
+import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
 import manuk.path.game.projectile.Projectile;
 import manuk.path.game.util.LList;
@@ -19,8 +20,8 @@ class MeleeEnemy extends Enemy {
 	private static final double MOVE_SPEED = .05, MAX_LIFE = 10, ATTACK_DAMAGE = 10;
 	private static final int ATTACK_TIME = 15;
 	
-	MeleeEnemy(double spawnX, double spawnY) {
-		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, COLOR, MOVE_SPEED, ATTACK_TIME, MAX_LIFE, WANDER_THRESHOLD, WANDER_DISTANCE, ACTIVE_DISTANCE, DAMAGE_RANGE, KEEP_AWAY_DISTANCE, PATH_FIND_FRICTION, ITEM_DROP_RATE);
+	MeleeEnemy(double spawnX, double spawnY, Map map) {
+		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, COLOR, MOVE_SPEED, ATTACK_TIME, MAX_LIFE, WANDER_THRESHOLD, WANDER_DISTANCE, ACTIVE_DISTANCE, DAMAGE_RANGE, KEEP_AWAY_DISTANCE, PATH_FIND_FRICTION, ITEM_DROP_RATE, map);
 	}
 	
 	void doAttack(Player player, LList<Projectile> projectile) {
