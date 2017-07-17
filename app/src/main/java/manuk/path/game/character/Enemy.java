@@ -17,17 +17,19 @@ public abstract class Enemy extends Character {
 	private final double WANDER_DISTANCE;
 	private final double ACTIVE_DISTANCE;
 	private final double DAMAGE_RANGE;
+	private final double KEEP_AWAY_DISTANCE;
 	private final double PATH_FIND_FRICTION;
 	private final double ITEM_DROP_RATE;
 	
 	private double[] awayFromIntersection;
 	
-	Enemy(int layer, double spawnX, double spawnY, int color, double moveSpeed, int attackTime, double maxLife, double wanderThreshold, double wanderDistance, double activeDistance, double damageRange, double pathFindFriction, double itemDropRate) {
+	Enemy(int layer, double spawnX, double spawnY, int color, double moveSpeed, int attackTime, double maxLife, double wanderThreshold, double wanderDistance, double activeDistance, double damageRange, double keepAwayDistance, double pathFindFriction, double itemDropRate) {
 		super(layer, spawnX, spawnY, color, moveSpeed, attackTime, maxLife, 0, 0, 0);
 		WANDER_THRESHOLD = wanderThreshold;
 		WANDER_DISTANCE = wanderDistance;
 		ACTIVE_DISTANCE = activeDistance;
 		DAMAGE_RANGE = damageRange;
+		KEEP_AWAY_DISTANCE = keepAwayDistance;
 		PATH_FIND_FRICTION = pathFindFriction;
 		ITEM_DROP_RATE = itemDropRate;
 		awayFromIntersection = new double[2];
@@ -58,7 +60,9 @@ public abstract class Enemy extends Character {
 			doAttack(player, projectile);
 		
 		double distance = Math3D.magnitude(player.x - x, player.y - y);
-		if (distance < DAMAGE_RANGE)
+		if (distance < KEEP_AWAY_DISTANCE)
+			keepAway(player, map);
+		else if (distance < DAMAGE_RANGE)
 			beginAttack(0);
 		else if (distance < ACTIVE_DISTANCE)
 			chasePlayer(player, map);
@@ -71,6 +75,13 @@ public abstract class Enemy extends Character {
 	}
 	
 	void doAttack(Player player, LList<Projectile> projectile) {
+	}
+	
+	private void keepAway(Player player, Map map) {
+		double[] toPlayer = Math3D.setMagnitude(player.x - x, player.y - y, 1);
+		moveDeltaX = -toPlayer[0];
+		moveDeltaY = -toPlayer[1];
+		handleEnemyIntersection(moveByDir(map));
 	}
 	
 	private void chasePlayer(Player player, Map map) {

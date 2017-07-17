@@ -88,3 +88,5 @@ public class Engine implements Runnable {
 // intersectino finder redo layer system / map entity array flatten ll dimension
 // particles
 // fix crash on resume
+// enemy keep distance logic
+// fix invis chars on creation until move
