@@ -28,6 +28,7 @@ public class Engine implements Runnable {
 		painter = new Painter(mySurface, myRenderer);
 		MapPainter.setPainter(painter);
 		mySurface.setController(controller);
+		frames = new Frames();
 	}
 	
 	private void draw() {
@@ -46,8 +47,7 @@ public class Engine implements Runnable {
 	}
 	
 	public void run() {
-		frames = new Frames();
-		while (painter == null)
+		while (frames == null || !frames.running)
 			sleep(500);
 		while (frames.running) {
 			if (!world.gameOver)
@@ -87,6 +87,4 @@ public class Engine implements Runnable {
 // refactor character counter with delay and step
 // intersectino finder redo layer system / map entity array flatten ll dimension
 // particles
-// fix crash on resume
-// enemy keep distance logic
 // fix invis chars on creation until move
