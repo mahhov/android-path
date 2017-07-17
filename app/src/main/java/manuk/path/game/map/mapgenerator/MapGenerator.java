@@ -5,14 +5,12 @@ import manuk.path.game.util.LList;
 import java.util.Random;
 
 public abstract class MapGenerator {
-	private static long SEED = 29;
-	private static Random random = new Random(SEED);
+	private static Random random = new Random();
 	public int[][][] map;
 	public Pos spawn;
 	public LList<Pos3> enemySpawn;
 	
 	MapGenerator() {
-		random.setSeed(++SEED);
 		enemySpawn = new LList<>();
 	}
 
