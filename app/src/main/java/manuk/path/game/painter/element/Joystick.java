@@ -20,7 +20,7 @@ public class Joystick extends ClickablePaintElement {
 	}
 	
 	public void draw(Painter painter) {
-		painter.drawRectFrame(left , top , width, height, color);
+		painter.drawRectFrame(left, top, width, height, color);
 		if (isPressed)
 			painter.drawRect(left + touchX * width - width / 10, top + touchY * height - height / 10, width / 5, height / 5, pressedColor);
 	}

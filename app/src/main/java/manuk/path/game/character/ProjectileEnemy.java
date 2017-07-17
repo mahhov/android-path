@@ -3,6 +3,7 @@ package manuk.path.game.character;
 import android.graphics.Color;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
+import manuk.path.game.particle.Particle;
 import manuk.path.game.projectile.Projectile;
 import manuk.path.game.util.LList;
 import manuk.path.game.util.Math3D;
@@ -24,7 +25,7 @@ class ProjectileEnemy extends Enemy {
 		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, COLOR, MOVE_SPEED, ATTACK_TIME, MAX_LIFE, WANDER_THRESHOLD, WANDER_DISTANCE, ACTIVE_DISTANCE, DAMAGE_RANGE, KEEP_AWAY_DISTANCE, PATH_FIND_FRICTION, ITEM_DROP_RATE, map);
 	}
 	
-	void doAttack(Player player, LList<Projectile> projectile) {
+	void doAttack(Player player, LList<Projectile> projectile, LList<Particle> particle, Map map) {
 		double[] toPlayer = Math3D.setMagnitude(player.x - x, player.y - y, 1);
 		projectile.addHead(new Projectile(MapEntity.ENTITY_LAYER_HOSTILE_PROJECTILE, x, y, toPlayer[0], toPlayer[1], .1, ATTACK_DAMAGE, Color.RED));
 	}

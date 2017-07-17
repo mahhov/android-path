@@ -13,7 +13,7 @@ public abstract class MapGenerator {
 	MapGenerator() {
 		enemySpawn = new LList<>();
 	}
-
+	
 	public abstract int[][][] generate(int width, int length, int height);
 	
 	static int randInt(int min, int max) {

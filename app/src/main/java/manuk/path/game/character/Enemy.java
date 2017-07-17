@@ -2,6 +2,7 @@ package manuk.path.game.character;
 
 import manuk.path.game.item.Item;
 import manuk.path.game.map.Map;
+import manuk.path.game.particle.Particle;
 import manuk.path.game.projectile.Projectile;
 import manuk.path.game.util.IntersectionFinder;
 import manuk.path.game.util.LList;
@@ -51,14 +52,14 @@ public abstract class Enemy extends Character {
 	}
 	
 	// return true if need to be removed
-	public boolean update(Player player, Map map, LList<Projectile> projectile, LList<Item> item) {
+	public boolean update(Map map, Player player, LList<Projectile> projectile, LList<Item> item, LList<Particle> particle) {
 		if (life <= 0) {
 			die(player, map, item);
 			return true;
 		}
 		
 		if (updateAttack())
-			doAttack(player, projectile);
+			doAttack(player, projectile, particle, map);
 		
 		double distance = Math3D.magnitude(player.x - x, player.y - y);
 		if (distance < KEEP_AWAY_DISTANCE)
@@ -76,7 +77,7 @@ public abstract class Enemy extends Character {
 		return false;
 	}
 	
-	void doAttack(Player player, LList<Projectile> projectile) {
+	void doAttack(Player player, LList<Projectile> projectile, LList<Particle> particle, Map map) {
 	}
 	
 	private void keepAway(Player player, Map map) {

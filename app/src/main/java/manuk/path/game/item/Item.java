@@ -20,7 +20,7 @@ public class Item extends MapEntity {
 	}
 	
 	// return true if need to be removed
-	public boolean update(Player player, Map map) {
+	public boolean update(Map map, Player player) {
 		if (!remove)
 			return false;
 		player.giveLife(5);

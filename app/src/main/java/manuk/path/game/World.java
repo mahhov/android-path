@@ -10,6 +10,7 @@ import manuk.path.game.map.mapgenerator.MapGenerator;
 import manuk.path.game.map.mapgenerator.MapGenerator.Pos3;
 import manuk.path.game.map.mapgenerator.RoomMapGenerator;
 import manuk.path.game.painter.Painter;
+import manuk.path.game.particle.Particle;
 import manuk.path.game.projectile.Projectile;
 import manuk.path.game.util.LList;
 
@@ -23,6 +24,7 @@ class World {
 	private LList<Enemy> enemy;
 	private LList<Projectile> projectile;
 	private LList<Item> item;
+	private LList<Particle> particle;
 	
 	World(int width, int length, int height) {
 		userInterface = new UserInterface();
@@ -35,6 +37,7 @@ class World {
 			enemy.addHead(Enemy.create(enemyPos.x, enemyPos.y, enemyPos.z, map));
 		projectile = new LList<>();
 		item = new LList<>();
+		particle = new LList<>();
 	}
 	
 	void update(Controller controller) {
@@ -46,7 +49,7 @@ class World {
 		LList<Enemy>.Node enemyNode;
 		while (enemyIterator.hasNext()) {
 			enemyNode = enemyIterator.next();
-			if (enemyNode.elem.update(player, map, projectile, item))
+			if (enemyNode.elem.update(map, player, projectile, item, particle))
 				enemy.remove(enemyNode);
 		}
 		
@@ -62,8 +65,16 @@ class World {
 		LList<Item>.Node itemNode;
 		while (itemIterator.hasNext()) {
 			itemNode = itemIterator.next();
-			if (itemNode.elem.update(player, map))
+			if (itemNode.elem.update(map, player))
 				item.remove(itemNode);
+		}
+		
+		Iterator<LList<Particle>.Node> particleIterator = particle.nodeIterator();
+		LList<Particle>.Node particleNode;
+		while (particleIterator.hasNext()) {
+			particleNode = particleIterator.next();
+			if (particleNode.elem.update(map))
+				particle.remove(particleNode);
 		}
 	}
 	
