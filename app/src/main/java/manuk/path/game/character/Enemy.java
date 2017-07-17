@@ -13,6 +13,7 @@ public abstract class Enemy extends Character {
 	public static final int ENEMY_TYPE_COUNT = 3;
 	public static final int ENEMY_TYPE_MELEE = 0, ENEMY_TYPE_PROJECTILE = 1, ENEMY_TYPE_STUN = 2;
 	
+	private static final double SLEEP_DISTANCE = 30;
 	private final double WANDER_THRESHOLD;
 	private final double WANDER_DISTANCE;
 	private final double ACTIVE_DISTANCE;
@@ -66,10 +67,11 @@ public abstract class Enemy extends Character {
 			beginAttack(0);
 		else if (distance < ACTIVE_DISTANCE)
 			chasePlayer(player, map);
-		else if (Math3D.random() > WANDER_THRESHOLD)
-			wander(map);
-		else
+		else if (distance < SLEEP_DISTANCE) {
+			if (Math3D.random() > WANDER_THRESHOLD)
+				wander(map);
 			handleEnemyIntersection(moveToGoal(map));
+		}
 		
 		return false;
 	}
