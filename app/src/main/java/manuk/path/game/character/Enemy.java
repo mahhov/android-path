@@ -54,20 +54,20 @@ public abstract class Enemy extends Character {
 	// return true if need to be removed
 	public boolean update(Map map, Player player, LList<Projectile> projectile, LList<Item> item, LList<Particle> particle) {
 		if (life <= 0) {
-			die(player, map, item);
+			die(map, player, item);
 			return true;
 		}
 		
 		if (updateAttack())
-			doAttack(player, projectile, particle, map);
+			doAttack(map, player, projectile, particle);
 		
 		double distance = Math3D.magnitude(player.x - x, player.y - y);
 		if (distance < KEEP_AWAY_DISTANCE)
-			keepAway(player, map);
+			keepAway(map, player);
 		else if (distance < DAMAGE_RANGE)
 			beginAttack(0);
 		else if (distance < ACTIVE_DISTANCE)
-			chasePlayer(player, map);
+			chasePlayer(map, player);
 		else if (distance < SLEEP_DISTANCE) {
 			if (Math3D.random() > WANDER_THRESHOLD)
 				wander(map);
@@ -77,17 +77,17 @@ public abstract class Enemy extends Character {
 		return false;
 	}
 	
-	void doAttack(Player player, LList<Projectile> projectile, LList<Particle> particle, Map map) {
+	void doAttack(Map map, Player player, LList<Projectile> projectile, LList<Particle> particle) {
 	}
 	
-	private void keepAway(Player player, Map map) {
+	private void keepAway(Map map, Player player) {
 		double[] toPlayer = Math3D.setMagnitude(player.x - x, player.y - y, 1);
 		moveDeltaX = -toPlayer[0];
 		moveDeltaY = -toPlayer[1];
 		handleEnemyIntersection(moveByDir(map));
 	}
 	
-	private void chasePlayer(Player player, Map map) {
+	private void chasePlayer(Map map, Player player) {
 		double[] toPlayer = Math3D.setMagnitude(player.x - x, player.y - y, 1);
 		moveDeltaX = toPlayer[0] + awayFromIntersection[0];
 		moveDeltaY = toPlayer[1] + awayFromIntersection[1];
@@ -101,7 +101,7 @@ public abstract class Enemy extends Character {
 		goalY = y + Math3D.random(-WANDER_DISTANCE, WANDER_DISTANCE);
 	}
 	
-	private void die(Player player, Map map, LList<Item> item) {
+	private void die(Map map, Player player, LList<Item> item) {
 		map.removeEntity(this);
 		if (Math3D.random() < ITEM_DROP_RATE)
 			item.addHead(new Item(x, y, map));

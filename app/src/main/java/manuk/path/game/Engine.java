@@ -62,7 +62,7 @@ public class Engine implements Runnable {
 	}
 }
 
-// todo: basic combat
+// todo: better combat
 // todo: fix side darwing of character
 // todo: lighting and shadow
 // todo: textures
@@ -83,7 +83,6 @@ public class Engine implements Runnable {
 // armor / evs / es -> all others converted to 1
 // crit / attack speed -> crits increase attack speed, attacks increase crit chance, 
 
-// room maps, 3 enemy types
 // refactor character counter with delay and step
 // intersectino finder redo layer system / map entity array flatten ll dimension
-// particles
+// ui mode

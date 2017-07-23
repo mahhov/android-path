@@ -25,7 +25,7 @@ class StunEnemy extends Enemy {
 		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, COLOR, MOVE_SPEED, ATTACK_TIME, MAX_LIFE, WANDER_THRESHOLD, WANDER_DISTANCE, ACTIVE_DISTANCE, DAMAGE_RANGE, KEEP_AWAY_DISTANCE, PATH_FIND_FRICTION, ITEM_DROP_RATE, map);
 	}
 	
-	void doAttack(Player player, LList<Projectile> projectile, LList<Particle> particle, Map map) {
+	void doAttack(Map map, Player player, LList<Projectile> projectile, LList<Particle> particle) {
 		double distance = Math3D.magnitude(player.x - x, player.y - y);
 		if (distance < DAMAGE_RANGE * 2) {
 			player.takeDamage(ATTACK_DAMAGE);
