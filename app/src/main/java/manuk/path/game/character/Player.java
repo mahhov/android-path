@@ -6,7 +6,7 @@ import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
 import manuk.path.game.map.mapgenerator.MapGenerator;
 import manuk.path.game.projectile.Projectile;
-import manuk.path.game.userinterface.GameUserInterface;
+import manuk.path.game.userinterface.PlayUserInterface;
 import manuk.path.game.userinterface.element.ClickablePaintElement;
 import manuk.path.game.userinterface.element.Joystick;
 import manuk.path.game.userinterface.element.PaintBar;
@@ -26,7 +26,7 @@ public class Player extends Character {
 	private Counter dashTime, stunTime;
 	private long dashId;
 	
-	public Player(MapGenerator mapGenerator, GameUserInterface userInterface, Map map) {
+	public Player(MapGenerator mapGenerator, PlayUserInterface userInterface, Map map) {
 		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .2, 10, 100, 100, 1, 30, map);
 		joystick = userInterface.joystick;
 		lifeBar = userInterface.lifeBar;

@@ -1,12 +1,11 @@
 package manuk.path.game.userinterface;
 
 public class UserInterfaceHandler {
-	public GameUserInterface gameUserInterface;
+	public PlayUserInterface playUserInterface;
 	public PauseUserInterface pauseUserInterface;
 	
 	public UserInterfaceHandler() {
-		gameUserInterface = new GameUserInterface();
+		playUserInterface = new PlayUserInterface();
 		pauseUserInterface = new PauseUserInterface();
 	}
-	
 }

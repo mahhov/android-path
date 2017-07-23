@@ -50,8 +50,7 @@ public class Engine implements Runnable {
 		while (frames == null || !frames.running)
 			sleep(500);
 		while (frames.running) {
-			if (!world.gameOver)
-				world.update(controller);
+			world.update(controller);
 			draw();
 			frames.waitCurrentFrame();
 		}

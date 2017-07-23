@@ -18,7 +18,8 @@ import manuk.path.game.util.LList;
 import java.util.Iterator;
 
 class World {
-	boolean gameOver;
+	private final static int STATE_PLAY = 0, STATE_PAUSED = 1;
+	private int state;
 	private UserInterfaceHandler userInterfaceHandler;
 	private Map map;
 	private Player player;
@@ -32,7 +33,7 @@ class World {
 		MapGenerator mapGenerator = new RoomMapGenerator();
 		mapGenerator.generate(width, length, height);
 		map = new Map(width, length, height, mapGenerator);
-		player = new Player(mapGenerator, userInterfaceHandler.gameUserInterface, map);
+		player = new Player(mapGenerator, userInterfaceHandler.playUserInterface, map);
 		enemy = new LList<>();
 		for (Pos3 enemyPos : mapGenerator.enemySpawn)
 			enemy.addHead(Enemy.create(enemyPos.x, enemyPos.y, enemyPos.z, map));
@@ -42,7 +43,22 @@ class World {
 	}
 	
 	void update(Controller controller) {
-		userInterfaceHandler.gameUserInterface.handleInput(controller);
+		switch (state) {
+			case STATE_PLAY:
+				updatePlay(controller);
+				if (userInterfaceHandler.playUserInterface.pauseButton.isPressed)
+					state = STATE_PAUSED;
+				break;
+			case STATE_PAUSED:
+				userInterfaceHandler.pauseUserInterface.handleInput(controller);
+				if (userInterfaceHandler.pauseUserInterface.resumeButton.isPressed)
+					state = STATE_PLAY;
+				break;
+		}
+	}
+	
+	void updatePlay(Controller controller) {
+		userInterfaceHandler.playUserInterface.handleInput(controller);
 		player.update(controller, map, projectile);
 		map.scroll(player.x, player.y);
 		
@@ -80,11 +96,15 @@ class World {
 	}
 	
 	void draw(Painter painter) {
-		painter.drawRect(0, 0, 1, 1, Color.WHITE);
-		map.draw();
-//		userInterfaceHandler.gameUserInterface.draw(painter);
-		userInterfaceHandler.pauseUserInterface.draw(painter);
-		//		if (gameOver)
-		//			painter.drawText("GAME OVER :(", .5, .5, size);
+		switch (state) {
+			case STATE_PLAY:
+				painter.drawRect(0, 0, 1, 1, Color.WHITE);
+				map.draw();
+				userInterfaceHandler.playUserInterface.draw(painter);
+				break;
+			case STATE_PAUSED:
+				userInterfaceHandler.pauseUserInterface.draw(painter);
+				break;
+		}
 	}
 }	
