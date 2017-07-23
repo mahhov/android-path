@@ -66,6 +66,11 @@ public class Painter {
 		drawList.addHead(new Quad(coord, color));
 	}
 	
+	public void drawPolygon(double[] x, double[] y, int color, boolean frame) {
+		float[] coord = openglCoordXY(x, y);
+		drawList.addHead(new Quad(coord, color, frame));
+	}
+	
 	public void drawText(String text, double x, double y, float size) {
 		float[] coord = openglCoordXYWH(x, y, size / 2, size);
 		RenderElement[] r = CharGlyphTextureGroup.drawString(text, coord[0], coord[1], coord[2], coord[3]);

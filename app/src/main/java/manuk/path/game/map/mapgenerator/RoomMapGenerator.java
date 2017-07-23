@@ -4,7 +4,7 @@ import manuk.path.game.character.Enemy;
 import manuk.path.game.util.LList;
 
 public class RoomMapGenerator extends MapGenerator {
-	private static final double CREATE_CHANCE = .5, CONNECT_CHANCE = .1, MIN_DENSITY = .3;
+	private static final double CREATE_CHANCE = .5, CONNECT_CHANCE = .1, MIN_DENSITY = .3, SHRINE_PROBABILITY = .1;
 	private static final int ROOM_SIZE = 12, DOOR_OFFSET = ROOM_SIZE / 4;
 	private int ROOM_WIDTH, ROOM_LENGTH;
 	private Room[][] roomMap;
@@ -21,6 +21,7 @@ public class RoomMapGenerator extends MapGenerator {
 		translateToMap();
 		setSpawn();
 		addEnemies();
+		addShrines();
 		
 		return map;
 	}
@@ -154,25 +155,9 @@ public class RoomMapGenerator extends MapGenerator {
 	}
 	
 	private void rectMap(int left, int top, int right, int bottom, int valueLeftRight, int valueTopBottom) {
-		// inside
 		for (int xx = left; xx < right; xx++)
 			for (int yy = top; yy < bottom; yy++)
 				map[xx][yy][0] = 1;
-		//		// top & bottom
-		//		for (int xx = left; xx < right; xx++) {
-		//			map[xx][top][1] = valueTopBottom;
-		//			map[xx][bottom - 1][1] = valueTopBottom;
-		//		}
-		//		// left & right
-		//		for (int yy = top; yy < bottom; yy++) {
-		//			map[left][yy][1] = valueLeftRight;
-		//			map[right - 1][yy][1] = valueLeftRight;
-		//		}
-		//		// corners
-		//		map[left][top][1] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
-		//		map[left][bottom - 1][1] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
-		//		map[right - 1][top][1] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
-		//		map[right - 1][bottom - 1][1] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
 	}
 	
 	private void setSpawn() {
@@ -190,6 +175,17 @@ public class RoomMapGenerator extends MapGenerator {
 						Pos coord = randomRoomCoord(x, y);
 						enemySpawn.addHead(new Pos3(coord.x, coord.y, enemyType));
 					}
+				}
+			}
+	}
+	
+	private void addShrines() {
+		for (int x = 0; x < ROOM_WIDTH; x++)
+			for (int y = 0; y < ROOM_LENGTH; y++) {
+				Room room = roomMap[x][y];
+				if (room != null && !room.subBigRoom && randFlip(SHRINE_PROBABILITY)) {
+					Pos coord = centerRoomCoord(x, y);
+					shrineSpawn.addHead(new Pos(coord.x, coord.y));
 				}
 			}
 	}

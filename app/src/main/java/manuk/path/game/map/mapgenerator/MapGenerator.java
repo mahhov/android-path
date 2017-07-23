@@ -9,9 +9,11 @@ public abstract class MapGenerator {
 	public int[][][] map;
 	public Pos spawn;
 	public LList<Pos3> enemySpawn;
+	public LList<Pos> shrineSpawn;
 	
 	MapGenerator() {
 		enemySpawn = new LList<>();
+		shrineSpawn = new LList<>();
 	}
 	
 	public abstract int[][][] generate(int width, int length, int height);

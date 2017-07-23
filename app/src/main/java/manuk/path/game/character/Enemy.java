@@ -1,5 +1,6 @@
 package manuk.path.game.character;
 
+import manuk.path.game.item.HealthItem;
 import manuk.path.game.item.Item;
 import manuk.path.game.map.Map;
 import manuk.path.game.particle.Particle;
@@ -46,7 +47,7 @@ public abstract class Enemy extends Character {
 			case ENEMY_TYPE_STUN:
 				return new StunEnemy(x, y, map);
 			case ENEMY_TYPE_RAISE:
-		return new RaiseEnemy(x, y, map);
+				return new RaiseEnemy(x, y, map);
 			default:
 				System.out.println("UNRECOGNIZED ENEMY TYPE");
 				return new MeleeEnemy(x, y, map);
@@ -106,7 +107,7 @@ public abstract class Enemy extends Character {
 	private void die(Map map, Player player, LList<Item> item) {
 		map.removeEntity(this);
 		if (Math3D.random() < ITEM_DROP_RATE)
-			item.addHead(new Item(x, y, map));
+			item.addHead(new HealthItem(x, y, map));
 		player.gainExp(5);
 	}
 	

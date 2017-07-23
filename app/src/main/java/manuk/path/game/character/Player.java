@@ -21,6 +21,7 @@ public class Player extends Character {
 	private Joystick joystick;
 	private PaintBar lifeBar, staminaBar, expBar;
 	private ClickablePaintElement dashButton, sprintButton;
+	public boolean sprintButtonPressed;
 	private double exp;
 	private double dashSpeed = 1;
 	private Counter dashTime, stunTime;
@@ -40,6 +41,7 @@ public class Player extends Character {
 	}
 	
 	public void update(Controller controller, Map map, LList<Projectile> projectile) {
+		sprintButtonPressed = sprintButton.isPressed;
 		double[] touchXYDouble = getTouchXY(controller, map);
 		
 		lifeBar.setValue(getLifePercent());
@@ -73,7 +75,7 @@ public class Player extends Character {
 			moveDeltaX = (joystick.touchX - .5) * moveSpeed;
 			moveDeltaY = (joystick.touchY - .5) * moveSpeed;
 			double moveSpeed = this.moveSpeed;
-			if (sprintButton.isPressed && useStamina(.3)) {
+			if (sprintButtonPressed && useStamina(.3)) {
 				moveSpeed *= 2;
 				double[] moveDeltaXY = Math3D.setMagnitude(moveDeltaX, moveDeltaY, 1);
 				moveDeltaX = moveDeltaXY[0];
@@ -84,7 +86,7 @@ public class Player extends Character {
 			goalX = touchXYDouble[0];
 			goalY = touchXYDouble[1];
 			double moveSpeed = this.moveSpeed;
-			if (sprintButton.isPressed && useStamina(.3))
+			if (sprintButtonPressed && useStamina(.3))
 				moveSpeed *= 2;
 			doIntersections(moveToGoal(map, moveSpeed, layer), getIntersectorId(), 0);
 		}
@@ -113,7 +115,7 @@ public class Player extends Character {
 		exp = Math3D.min(exp + amount, 100);
 	}
 	
-	public void giveLife(int amount) {
+	public void giveLife(double amount) {
 		takeHeal(amount);
 	}
 	

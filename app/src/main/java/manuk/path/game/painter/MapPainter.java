@@ -43,6 +43,10 @@ public class MapPainter {
 	}
 	
 	public static void drawBlock(double x, double y, double z, double width, double length, double height, boolean[] side, int[] color) {
+		drawBlock(x, y, z, width, length, height, side, color, false);
+	}
+	
+	public static void drawBlock(double x, double y, double z, double width, double length, double height, boolean[] side, int[] color, boolean frame) {
 		bottomCoord = toPaintCoord(x, y, z, width, length);
 		topCoord = toPaintCoord(x, y, z + height, width, length);
 		
@@ -63,33 +67,33 @@ public class MapPainter {
 		if (side[LEFT]) {
 			leftX = new double[] {leftTopX, leftBottomX, leftBottomX, leftTopX};
 			sideY = new double[] {backTopY, backBottomY, frontBottomY, frontTopY};
-			painter.drawPolygon(leftX, sideY, color[LEFT]);
+			painter.drawPolygon(leftX, sideY, color[LEFT], frame);
 		}
 		
 		if (side[RIGHT]) {
 			rightX = new double[] {rightTopX, rightBottomX, rightBottomX, rightTopX};
 			if (!side[LEFT])
 				sideY = new double[] {backTopY, backBottomY, frontBottomY, frontTopY};
-			painter.drawPolygon(rightX, sideY, color[RIGHT]);
+			painter.drawPolygon(rightX, sideY, color[RIGHT], frame);
 		}
 		
 		if (side[BACK]) {
 			sideX = new double[] {leftTopX, rightTopX, rightBottomX, leftBottomX};
 			backY = new double[] {backTopY, backTopY, backBottomY, backBottomY};
-			painter.drawPolygon(sideX, backY, color[BACK]);
+			painter.drawPolygon(sideX, backY, color[BACK], frame);
 		}
 		
 		if (side[FRONT]) {
 			if (!side[BACK])
 				sideX = new double[] {leftTopX, rightTopX, rightBottomX, leftBottomX};
 			frontY = new double[] {frontTopY, frontTopY, frontBottomY, frontBottomY};
-			painter.drawPolygon(sideX, frontY, color[FRONT]);
+			painter.drawPolygon(sideX, frontY, color[FRONT], frame);
 		}
 		
 		if (side[TOP]) {
 			topX = new double[] {leftTopX, rightTopX, rightTopX, leftTopX};
 			topY = new double[] {backTopY, backTopY, frontTopY, frontTopY};
-			painter.drawPolygon(topX, topY, color[TOP]);
+			painter.drawPolygon(topX, topY, color[TOP], frame);
 		}
 	}
 	
