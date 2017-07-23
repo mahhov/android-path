@@ -4,7 +4,7 @@ import manuk.path.game.character.Enemy;
 import manuk.path.game.util.LList;
 
 public class RoomMapGenerator extends MapGenerator {
-	private static final double CREATE_CHANCE = .5, CONNECT_CHANCE = .1, MIN_DENSITY = .3, SHRINE_PROBABILITY = 1;
+	private static final double CREATE_CHANCE = .5, CONNECT_CHANCE = .1, MIN_DENSITY = .3, SHRINE_PROBABILITY = .1;
 	private static final int ROOM_SIZE = 12, DOOR_OFFSET = ROOM_SIZE / 4;
 	private int ROOM_WIDTH, ROOM_LENGTH;
 	private Room[][] roomMap;

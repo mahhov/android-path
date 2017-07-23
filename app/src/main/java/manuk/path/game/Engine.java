@@ -90,3 +90,8 @@ public class Engine implements Runnable {
 // todo: exp lvl up skills
 // todo: fix controller lock bug
 // constructor -> map last param. methods -> map first param
+
+// shrine particles
+// stun enemy attack animation
+// entity layer redo
+// simple boss fight
