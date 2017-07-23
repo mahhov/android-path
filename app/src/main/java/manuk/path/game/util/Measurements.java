@@ -32,6 +32,6 @@ public class Measurements {
 		SCALED_VIEW_HEIGHT = (int) viewHeight;
 		SCALED_BLOCK_WIDTH = 1. / viewWidth;
 		SCALED_BLOCK_HEIGHT = 1. / viewHeight;
-		VIEW_STRETCH_Z = SCALED_BLOCK_WIDTH / (20 * scale);
+		VIEW_STRETCH_Z = SCALED_BLOCK_WIDTH / (50 * scale);
 	}
 }

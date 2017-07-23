@@ -98,17 +98,7 @@ public class Map {
 	
 	// false for out of bounds
 	public boolean isMoveable(int x, int y, int z) {
-		return isInBounds(x, y, z) && map[x][y][z] == 0;
-	}
-	
-	// false for out of bounds
-	public boolean isMoveable(int x, int y, int z, int layer) {
-		if (!isMoveable(x, y, z))
-			return false;
-		for (int i = 0; i < MapEntity.ENTITY_LAYERS_COUNT; i++)
-			if (MapEntity.ENTITY_COLLISION_BLOCK[layer][i] && !entity[x][y][i].isEmpty())
-				return false;
-		return true;
+		return isInBounds(x, y, z) && map[x][y][z] == 1;
 	}
 	
 	public void draw() {

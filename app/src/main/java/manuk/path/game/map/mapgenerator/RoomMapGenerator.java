@@ -154,18 +154,25 @@ public class RoomMapGenerator extends MapGenerator {
 	}
 	
 	private void rectMap(int left, int top, int right, int bottom, int valueLeftRight, int valueTopBottom) {
-		for (int xx = left; xx < right; xx++) {
-			map[xx][top][0] = valueTopBottom;
-			map[xx][bottom - 1][0] = valueTopBottom;
-		}
-		for (int yy = top; yy < bottom; yy++) {
-			map[left][yy][0] = valueLeftRight;
-			map[right - 1][yy][0] = valueLeftRight;
-		}
-		map[left][top][0] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
-		map[left][bottom - 1][0] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
-		map[right - 1][top][0] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
-		map[right - 1][bottom - 1][0] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
+		// inside
+		for (int xx = left; xx < right; xx++)
+			for (int yy = top; yy < bottom; yy++)
+				map[xx][yy][0] = 1;
+		//		// top & bottom
+		//		for (int xx = left; xx < right; xx++) {
+		//			map[xx][top][1] = valueTopBottom;
+		//			map[xx][bottom - 1][1] = valueTopBottom;
+		//		}
+		//		// left & right
+		//		for (int yy = top; yy < bottom; yy++) {
+		//			map[left][yy][1] = valueLeftRight;
+		//			map[right - 1][yy][1] = valueLeftRight;
+		//		}
+		//		// corners
+		//		map[left][top][1] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
+		//		map[left][bottom - 1][1] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
+		//		map[right - 1][top][1] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
+		//		map[right - 1][bottom - 1][1] = valueLeftRight == 1 || valueTopBottom == 1 ? 1 : 0;
 	}
 	
 	private void setSpawn() {
