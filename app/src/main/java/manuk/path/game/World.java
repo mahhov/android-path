@@ -12,13 +12,14 @@ import manuk.path.game.map.mapgenerator.RoomMapGenerator;
 import manuk.path.game.painter.Painter;
 import manuk.path.game.particle.Particle;
 import manuk.path.game.projectile.Projectile;
+import manuk.path.game.userinterface.GameUserInterface;
 import manuk.path.game.util.LList;
 
 import java.util.Iterator;
 
 class World {
 	boolean gameOver;
-	private UserInterface userInterface;
+	private GameUserInterface userInterface;
 	private Map map;
 	private Player player;
 	private LList<Enemy> enemy;
@@ -27,7 +28,7 @@ class World {
 	private LList<Particle> particle;
 	
 	World(int width, int length, int height) {
-		userInterface = new UserInterface();
+		userInterface = new GameUserInterface();
 		MapGenerator mapGenerator = new RoomMapGenerator();
 		mapGenerator.generate(width, length, height);
 		map = new Map(width, length, height, mapGenerator);
