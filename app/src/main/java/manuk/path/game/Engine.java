@@ -61,7 +61,8 @@ public class Engine implements Runnable {
 	}
 }
 
-// todo: hold off
+// constructor -> map last param. methods -> map first param
+// ~~ hold off ~~
 // todo: better combat
 // todo: item types
 // todo: item enchanting and crafting costs
@@ -72,24 +73,27 @@ public class Engine implements Runnable {
 // armor / evs / es -> all others converted to 1
 // crit / attack speed -> crits increase attack speed, attacks increase crit chance, 
 
-
-// todo: fix side darwing of character
-// todo: lighting and shadow
-// todo: textures
-// todo: models
-// todo: better camera perspective
-// todo: better enemy path finding
+// ~~ next ~~
 // todo: level up - 10 life, 10 mana
-// todo: calculate VIEW_STRETCH_Z correctly
-// todo: shrines
-// todo: refactor character counter with delay and step
+// todo: simple boss fight
+
+// ~~ redo ~~
+// todo: entity layer redo
 // todo: intersectino finder redo layer system / map entity array flatten ll dimension
-// todo: ui mode
-// todo: map secret paths
+// todo: map painter redo
+
+// ~~ new features ~~
 // todo: traps
-// todo: exp lvl up skills
 // todo: fix controller lock bug
-// constructor -> map last param. methods -> map first param
-// map painter redo
-// entity layer redo
-// simple boss fight
+// todo: map secret paths
+
+// ~~ graphics ~~
+// todo: textures
+// todo: better camera perspective
+// todo: models
+// todo: lighting and shadow
+
+// ~~ low priority ~~
+// todo: better enemy path finding
+// todo: calculate VIEW_STRETCH_Z correctly
+// todo: refactor character counter with delay and step
