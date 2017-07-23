@@ -12,14 +12,14 @@ import manuk.path.game.map.mapgenerator.RoomMapGenerator;
 import manuk.path.game.painter.Painter;
 import manuk.path.game.particle.Particle;
 import manuk.path.game.projectile.Projectile;
-import manuk.path.game.userinterface.GameUserInterface;
+import manuk.path.game.userinterface.UserInterfaceHandler;
 import manuk.path.game.util.LList;
 
 import java.util.Iterator;
 
 class World {
 	boolean gameOver;
-	private GameUserInterface userInterface;
+	private UserInterfaceHandler userInterfaceHandler;
 	private Map map;
 	private Player player;
 	private LList<Enemy> enemy;
@@ -28,11 +28,11 @@ class World {
 	private LList<Particle> particle;
 	
 	World(int width, int length, int height) {
-		userInterface = new GameUserInterface();
+		userInterfaceHandler = new UserInterfaceHandler();
 		MapGenerator mapGenerator = new RoomMapGenerator();
 		mapGenerator.generate(width, length, height);
 		map = new Map(width, length, height, mapGenerator);
-		player = new Player(mapGenerator, userInterface, map);
+		player = new Player(mapGenerator, userInterfaceHandler.gameUserInterface, map);
 		enemy = new LList<>();
 		for (Pos3 enemyPos : mapGenerator.enemySpawn)
 			enemy.addHead(Enemy.create(enemyPos.x, enemyPos.y, enemyPos.z, map));
@@ -42,7 +42,7 @@ class World {
 	}
 	
 	void update(Controller controller) {
-		userInterface.handleInput(controller);
+		userInterfaceHandler.gameUserInterface.handleInput(controller);
 		player.update(controller, map, projectile);
 		map.scroll(player.x, player.y);
 		
@@ -82,7 +82,8 @@ class World {
 	void draw(Painter painter) {
 		painter.drawRect(0, 0, 1, 1, Color.WHITE);
 		map.draw();
-		userInterface.draw(painter);
+//		userInterfaceHandler.gameUserInterface.draw(painter);
+		userInterfaceHandler.pauseUserInterface.draw(painter);
 		//		if (gameOver)
 		//			painter.drawText("GAME OVER :(", .5, .5, size);
 	}

@@ -74,6 +74,14 @@ public class Painter {
 				drawList.addHead(elem);
 	}
 	
+	public void drawTextCentered(String text, double x, double y, float size) {
+		float[] coord = openglCoordXYWH(x - size / 4 * text.length(), y - size / 2, size / 2, size);
+		RenderElement[] r = CharGlyphTextureGroup.drawString(text, coord[0], coord[1], coord[2], coord[3]);
+		for (RenderElement elem : r)
+			if (elem != null)
+				drawList.addHead(elem);
+	}
+	
 	private static float[] openglCoordXYWH(double x, double y, double width, double height) {
 		return new float[] {
 				(float) (x * 2 - 1),
