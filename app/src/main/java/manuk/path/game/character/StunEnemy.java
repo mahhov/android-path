@@ -3,6 +3,7 @@ package manuk.path.game.character;
 import android.graphics.Color;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
+import manuk.path.game.painter.MapPainter;
 import manuk.path.game.particle.Particle;
 import manuk.path.game.projectile.Projectile;
 import manuk.path.game.util.LList;
@@ -17,7 +18,7 @@ class StunEnemy extends Enemy {
 	private static final double PATH_FIND_FRICTION = .8;
 	private static final double ITEM_DROP_RATE = .9;
 	
-	private static final int COLOR = Color.rgb(100, 100, 0);
+	private static final int COLOR = Color.rgb(50, 150, 50);
 	private static final double MOVE_SPEED = .05, MAX_LIFE = 10, ATTACK_DAMAGE = 15;
 	private static final int ATTACK_TIME = 100, STUN_DURATION = 30;
 	
@@ -32,5 +33,15 @@ class StunEnemy extends Enemy {
 			player.setStun(STUN_DURATION);
 		}
 		particle.addHead(new Particle(x, y, DAMAGE_RANGE * 2, 0, 0, Color.GREEN, STUN_DURATION, map));
+	}
+	
+	public void draw(double scrollX, double scrollY) {
+		super.draw(scrollX, scrollY);
+		if (attackTime.active()) {
+			boolean[] side = new boolean[] {true, true, true, true, true, true};
+			int[] color = MapPainter.createColorShade(Color.rgb(0, (int) (255. * attackTime.value / attackTime.maxValue), 0));
+			double size = DAMAGE_RANGE * 2;
+			MapPainter.drawBlock(x - scrollX - size, y - scrollY - size, 0, size * 2, size * 2, .5, side, color, true);
+		}
 	}
 }
