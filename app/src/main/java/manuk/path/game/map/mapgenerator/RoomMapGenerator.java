@@ -4,7 +4,7 @@ import manuk.path.game.character.Enemy;
 import manuk.path.game.util.LList;
 
 public class RoomMapGenerator extends MapGenerator {
-	private static final double CREATE_CHANCE = .5, CONNECT_CHANCE = .1, MIN_DENSITY = .3, SHRINE_PROBABILITY = .1;
+	private static final double CREATE_CHANCE = .5, CONNECT_CHANCE = .1, MIN_DENSITY = .3, SHRINE_PROBABILITY = 1;
 	private static final int ROOM_SIZE = 12, DOOR_OFFSET = ROOM_SIZE / 4;
 	private int ROOM_WIDTH, ROOM_LENGTH;
 	private Room[][] roomMap;
@@ -191,7 +191,8 @@ public class RoomMapGenerator extends MapGenerator {
 	}
 	
 	private Pos centerRoomCoord(int roomX, int roomY) {
-		int x = roomX * ROOM_SIZE * 2 + ROOM_SIZE + ROOM_SIZE / 2, y = roomY * ROOM_SIZE * 2 + ROOM_SIZE + ROOM_SIZE / 2;
+		int roomSize = roomMap[roomX][roomY].bigRoom ? ROOM_SIZE * 3 : ROOM_SIZE;
+		int x = roomX * ROOM_SIZE * 2 + ROOM_SIZE + roomSize / 2, y = roomY * ROOM_SIZE * 2 + ROOM_SIZE + roomSize / 2;
 		return new Pos(x, y);
 	}
 	
