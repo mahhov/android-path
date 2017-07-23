@@ -46,7 +46,7 @@ public abstract class Enemy extends Character {
 			case ENEMY_TYPE_STUN:
 				return new StunEnemy(x, y, map);
 			case ENEMY_TYPE_RAISE:
-				return new RaiseEnemy(x, y, map);
+		return new RaiseEnemy(x, y, map);
 			default:
 				System.out.println("UNRECOGNIZED ENEMY TYPE");
 				return new MeleeEnemy(x, y, map);

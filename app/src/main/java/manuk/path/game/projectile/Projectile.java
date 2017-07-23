@@ -7,7 +7,8 @@ import manuk.path.game.util.IntersectionFinder;
 
 public class Projectile extends MapEntity {
 	double x, y;
-	private double size, damage;
+	double size;
+	private double damage;
 	int[] color;
 	
 	public Projectile(int layer, double x, double y, double size, double damage, int color) {
@@ -36,10 +37,6 @@ public class Projectile extends MapEntity {
 	
 	public void draw(double scrollX, double scrollY) {
 		boolean[] side = new boolean[] {true, true, true, true, true, true};
-		MapPainter.drawBlock(x - scrollX - size, y - scrollY - size, 0, size * 2, size * 2, .5, side, getColor());
-	}
-	
-	int[] getColor() {
-		return color;
+		MapPainter.drawBlock(x - scrollX - size, y - scrollY - size, 0, size * 2, size * 2, .5, side, color);
 	}
 }

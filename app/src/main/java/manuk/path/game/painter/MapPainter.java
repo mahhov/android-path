@@ -32,6 +32,16 @@ public class MapPainter {
 		painter.drawRect(bottomCoord[0], bottomCoord[1], bottomCoord[2], bottomCoord[3], color);
 	}
 	
+	public static void drawFlat(double x, double y, double z, double width, double length, int color) {
+		bottomCoord = toPaintCoord(x, y, z, width, length);
+		painter.drawRect(bottomCoord[0], bottomCoord[1], bottomCoord[2], bottomCoord[3], color);
+	}
+	
+	public static void drawFlatFrame(double x, double y, double z, double width, double length, int color) {
+		bottomCoord = toPaintCoord(x, y, z, width, length);
+		painter.drawRectFrame(bottomCoord[0], bottomCoord[1], bottomCoord[2], bottomCoord[3], color);
+	}
+	
 	public static void drawBlock(double x, double y, double z, double width, double length, double height, boolean[] side, int[] color) {
 		bottomCoord = toPaintCoord(x, y, z, width, length);
 		topCoord = toPaintCoord(x, y, z + height, width, length);

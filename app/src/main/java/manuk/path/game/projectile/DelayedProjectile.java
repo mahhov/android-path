@@ -3,6 +3,7 @@ package manuk.path.game.projectile;
 import android.graphics.Color;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
+import manuk.path.game.painter.MapPainter;
 import manuk.path.game.util.IntersectionFinder;
 
 public class DelayedProjectile extends Projectile {
@@ -30,12 +31,18 @@ public class DelayedProjectile extends Projectile {
 		return true;
 	}
 	
-	int[] getColor() {
+	public void draw(double scrollX, double scrollY) {
+		if (delay > 5)
+			MapPainter.drawFlatFrame(x - scrollX - size, y - scrollY - size, 0, size * 2, size * 2, getColor());
+		else
+			MapPainter.drawFlat(x - scrollX - size, y - scrollY - size, 0, size * 2, size * 2, getColor());
+	}
+	
+	private int getColor() {
 		double delayMult = delay / maxDelay;
 		int r = (int) (colorRed * delayMult);
 		int g = (int) (colorGreen * delayMult);
 		int b = (int) (colorBlue * delayMult);
-		int delayColor = Color.rgb(r, g, b);
-		return new int[] {delayColor, delayColor, delayColor, delayColor, delayColor, delayColor};
+		return Color.rgb(r, g, b);
 	}
 }

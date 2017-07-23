@@ -20,8 +20,8 @@ class RaiseEnemy extends Enemy {
 	
 	private static final int COLOR = Color.rgb(0, 120, 150);
 	private static final double MOVE_SPEED = .1, MAX_LIFE = 5, ATTACK_DAMAGE = 15;
-	private static final int ATTACK_TIME = 100, STUN_DURATION = 30;
-	private static final double RAISE_RANGE = 2, RAISE_DELAY = 100;
+	private static final int ATTACK_TIME = 50;
+	private static final double RAISE_RANGE = 2, RAISE_DELAY = 50;
 	
 	RaiseEnemy(double spawnX, double spawnY, Map map) {
 		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, COLOR, MOVE_SPEED, ATTACK_TIME, MAX_LIFE, WANDER_THRESHOLD, WANDER_DISTANCE, ACTIVE_DISTANCE, DAMAGE_RANGE, KEEP_AWAY_DISTANCE, PATH_FIND_FRICTION, ITEM_DROP_RATE, map);
