@@ -11,8 +11,8 @@ import manuk.path.game.util.Math3D;
 import static manuk.path.game.util.Math3D.setMagnitude;
 
 public abstract class Enemy extends Character {
-	public static final int ENEMY_TYPE_COUNT = 3;
-	public static final int ENEMY_TYPE_MELEE = 0, ENEMY_TYPE_PROJECTILE = 1, ENEMY_TYPE_STUN = 2;
+	public static final int ENEMY_TYPE_COUNT = 4;
+	public static final int ENEMY_TYPE_MELEE = 0, ENEMY_TYPE_PROJECTILE = 1, ENEMY_TYPE_STUN = 2, ENEMY_TYPE_RAISE = 3;
 	
 	private static final double SLEEP_DISTANCE = 30;
 	private final double WANDER_THRESHOLD;
@@ -45,6 +45,8 @@ public abstract class Enemy extends Character {
 				return new ProjectileEnemy(x, y, map);
 			case ENEMY_TYPE_STUN:
 				return new StunEnemy(x, y, map);
+			case ENEMY_TYPE_RAISE:
+				return new RaiseEnemy(x, y, map);
 			default:
 				System.out.println("UNRECOGNIZED ENEMY TYPE");
 				return new MeleeEnemy(x, y, map);

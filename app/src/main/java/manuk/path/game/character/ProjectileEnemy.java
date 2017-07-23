@@ -4,6 +4,7 @@ import android.graphics.Color;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
 import manuk.path.game.particle.Particle;
+import manuk.path.game.projectile.MovingProjectile;
 import manuk.path.game.projectile.Projectile;
 import manuk.path.game.util.LList;
 import manuk.path.game.util.Math3D;
@@ -27,6 +28,6 @@ class ProjectileEnemy extends Enemy {
 	
 	void doAttack(Map map, Player player, LList<Projectile> projectile, LList<Particle> particle) {
 		double[] toPlayer = Math3D.setMagnitude(player.x - x, player.y - y, 1);
-		projectile.addHead(new Projectile(MapEntity.ENTITY_LAYER_HOSTILE_PROJECTILE, x, y, toPlayer[0], toPlayer[1], .1, ATTACK_DAMAGE, Color.RED));
+		projectile.addHead(new MovingProjectile(MapEntity.ENTITY_LAYER_HOSTILE_PROJECTILE, x, y, toPlayer[0], toPlayer[1], .1, ATTACK_DAMAGE, Color.RED));
 	}
 }

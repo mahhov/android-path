@@ -85,3 +85,13 @@ public class Engine implements Runnable {
 // refactor character counter with delay and step
 // intersectino finder redo layer system / map entity array flatten ll dimension
 // ui mode
+
+// no walls map graphics
+// map secret paths
+// traps
+// shrines
+// exp lvl up skills
+
+// fix controller lock bug
+
+// constructor -> map last param. methods -> map first param
