@@ -37,6 +37,10 @@ public class ClickablePaintElement extends PaintElement {
 		return touch;
 	}
 	
+	public void cleanInput() {
+		touchId = -1;
+	}
+	
 	public void draw(Painter painter) {
 		painter.drawRect(left, top, width, height, isPressed ? pressedColor : color, FRAME_COLOR);
 		if (text != null)

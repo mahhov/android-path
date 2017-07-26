@@ -17,6 +17,11 @@ abstract class UserInterface {
 			elem.handleInput(controller);
 	}
 	
+	public void cleanInput() {
+		for (PaintElement elem : elements)
+			elem.cleanInput();
+	}
+	
 	public void draw(Painter painter) {
 		for (PaintElement elem : elements)
 			elem.draw(painter);

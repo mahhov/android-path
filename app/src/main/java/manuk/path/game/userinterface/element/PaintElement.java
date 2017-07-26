@@ -22,6 +22,9 @@ public class PaintElement {
 		return null;
 	}
 	
+	public void cleanInput() {
+	}
+	
 	public void draw(Painter painter) {
 		painter.drawRect(left, top, width, height, color, FRAME_COLOR);
 	}

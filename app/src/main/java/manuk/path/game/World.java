@@ -50,14 +50,18 @@ class World {
 		switch (state) {
 			case STATE_PLAY:
 				updatePlay(controller);
-				if (userInterfaceHandler.playUserInterface.characterButton.isPressed)
+				if (userInterfaceHandler.playUserInterface.characterButton.isPressed) {
+					userInterfaceHandler.characterUserInterface.cleanInput();
 					state = STATE_PAUSED;
+				}
 				break;
 			case STATE_PAUSED:
 				updatePause();
 				userInterfaceHandler.characterUserInterface.handleInput(controller);
-				if (userInterfaceHandler.characterUserInterface.resumeButton.isPressed)
+				if (userInterfaceHandler.characterUserInterface.resumeButton.isPressed) {
+					userInterfaceHandler.playUserInterface.cleanInput();
 					state = STATE_PLAY;
+				}
 				break;
 		}
 	}
