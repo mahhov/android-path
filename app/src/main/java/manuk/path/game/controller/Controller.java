@@ -27,7 +27,7 @@ public class Controller {
 			case MotionEvent.ACTION_POINTER_UP:
 				id = event.getPointerId(event.getActionIndex());
 				if (id < 2)
-					touch[id].released = true;
+					touch[id].setReleased();
 				break;
 			case MotionEvent.ACTION_MOVE:
 				for (int i = 0; i < event.getPointerCount(); i++) {
@@ -80,12 +80,17 @@ public class Controller {
 		private void setFresh(double x, double y) {
 			this.x = x;
 			this.y = y;
+			released = false;
 			long time = System.currentTimeMillis();
 			if (time - this.time < DOUBLE_TIME)
 				state = STATE_FRESH_DOUBLE;
 			else
 				state = STATE_FRESH;
 			this.time = time;
+		}
+		
+		private void setReleased() {
+			released = true;
 		}
 		
 		private boolean isDown() {
