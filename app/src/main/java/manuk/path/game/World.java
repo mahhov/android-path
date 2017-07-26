@@ -35,7 +35,7 @@ class World {
 		MapGenerator mapGenerator = new RoomMapGenerator();
 		mapGenerator.generate(width, length, height);
 		map = new Map(width, length, height, mapGenerator);
-		player = new Player(mapGenerator, userInterfaceHandler.playUserInterface, map);
+		player = new Player(mapGenerator, userInterfaceHandler.playUserInterface, userInterfaceHandler.characterUserInterface, map);
 		enemy = new LList<>();
 		projectile = new LList<>();
 		item = new LList<>();
@@ -50,18 +50,19 @@ class World {
 		switch (state) {
 			case STATE_PLAY:
 				updatePlay(controller);
-				if (userInterfaceHandler.playUserInterface.pauseButton.isPressed)
+				if (userInterfaceHandler.playUserInterface.characterButton.isPressed)
 					state = STATE_PAUSED;
 				break;
 			case STATE_PAUSED:
-				userInterfaceHandler.pauseUserInterface.handleInput(controller);
-				if (userInterfaceHandler.pauseUserInterface.resumeButton.isPressed)
+				updatePause();
+				userInterfaceHandler.characterUserInterface.handleInput(controller);
+				if (userInterfaceHandler.characterUserInterface.resumeButton.isPressed)
 					state = STATE_PLAY;
 				break;
 		}
 	}
 	
-	void updatePlay(Controller controller) {
+	private void updatePlay(Controller controller) {
 		userInterfaceHandler.playUserInterface.handleInput(controller);
 		player.update(controller, map, projectile);
 		map.scroll(player.x, player.y);
@@ -99,6 +100,10 @@ class World {
 		}
 	}
 	
+	private void updatePause() {
+		player.updateCharacterMode();
+	}
+	
 	void draw(Painter painter) {
 		switch (state) {
 			case STATE_PLAY:
@@ -107,7 +112,7 @@ class World {
 				userInterfaceHandler.playUserInterface.draw(painter);
 				break;
 			case STATE_PAUSED:
-				userInterfaceHandler.pauseUserInterface.draw(painter);
+				userInterfaceHandler.characterUserInterface.draw(painter);
 				break;
 		}
 	}

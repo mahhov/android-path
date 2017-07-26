@@ -6,38 +6,57 @@ import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
 import manuk.path.game.map.mapgenerator.MapGenerator;
 import manuk.path.game.projectile.Projectile;
+import manuk.path.game.userinterface.CharacterUserInterface;
 import manuk.path.game.userinterface.PlayUserInterface;
 import manuk.path.game.userinterface.element.ClickablePaintElement;
 import manuk.path.game.userinterface.element.Joystick;
 import manuk.path.game.userinterface.element.PaintBar;
+import manuk.path.game.userinterface.element.TextPaintElement;
 import manuk.path.game.util.IntersectionFinder;
 import manuk.path.game.util.LList;
 import manuk.path.game.util.Math3D;
 import manuk.path.game.util.Measurements;
 
 public class Player extends Character {
+	private static final double DASH_SPEED = 1;
 	private int touchId;
 	private double[] attackDir;
+	
 	private Joystick joystick;
 	private PaintBar lifeBar, staminaBar, expBar;
-	private ClickablePaintElement dashButton, sprintButton;
+	private ClickablePaintElement dashButton, sprintButton, characterButton;
 	public boolean sprintButtonPressed;
+	
+	private int level, unspentSkill, skilledLife, skilledStamina;
+	private TextPaintElement skillPointsText;
+	private ClickablePaintElement lifeSkillButton, staminaSkillButton;
+	
 	private double exp;
-	private double dashSpeed = 1;
 	private Counter dashTime, stunTime;
 	private long dashId;
 	
-	public Player(MapGenerator mapGenerator, PlayUserInterface userInterface, Map map) {
+	public Player(MapGenerator mapGenerator, PlayUserInterface playUserInterface, CharacterUserInterface characterUserInterface, Map map) {
 		super(MapEntity.ENTITY_LAYER_FRIENDLY_CHARACTER, mapGenerator.spawn.x, mapGenerator.spawn.y, Color.BLUE, .2, 10, 100, 100, 1, 30, map);
-		joystick = userInterface.joystick;
-		lifeBar = userInterface.lifeBar;
-		staminaBar = userInterface.staminaBar;
-		expBar = userInterface.expBar;
-		dashButton = userInterface.dashButton;
-		sprintButton = userInterface.sprintButton;
+		setupInterface(playUserInterface, characterUserInterface);
 		touchId = -1;
 		dashTime = new Counter(10);
 		stunTime = new Counter(0);
+	}
+	
+	private void setupInterface(PlayUserInterface playUserInterface, CharacterUserInterface characterUserInterface) {
+		joystick = playUserInterface.joystick;
+		lifeBar = playUserInterface.lifeBar;
+		staminaBar = playUserInterface.staminaBar;
+		expBar = playUserInterface.expBar;
+		dashButton = playUserInterface.dashButton;
+		sprintButton = playUserInterface.sprintButton;
+		characterButton = playUserInterface.characterButton;
+		characterButton.setText(level + 1 + "");
+		
+		skillPointsText = characterUserInterface.skillPointsText;
+		lifeSkillButton = characterUserInterface.lifeSkillButton;
+		staminaSkillButton = characterUserInterface.staminaSkillButton;
+		updateCharacterSkillInterface();
 	}
 	
 	public void update(Controller controller, Map map, LList<Projectile> projectile) {
@@ -58,7 +77,7 @@ public class Player extends Character {
 			dashTime.update();
 			moveDeltaX = attackDir[0];
 			moveDeltaY = attackDir[1];
-			doIntersections(moveByDir(map, dashSpeed, MapEntity.ENTITY_LAYER_TRANSPARENT_FRIENDLY_CHARACTER), dashId, 5);
+			doIntersections(moveByDir(map, DASH_SPEED, MapEntity.ENTITY_LAYER_TRANSPARENT_FRIENDLY_CHARACTER), dashId, 5);
 		} else if (updateAttack()) {
 			moveDeltaX = attackDir[0];
 			moveDeltaY = attackDir[1];
@@ -67,9 +86,9 @@ public class Player extends Character {
 		} else if ((touchXYDouble != null && touchXYDouble[2] == 1) || (dashButton.isPressed && (touchXYDouble != null || joystick.isPressed))) {
 			if (beginAttack(30)) {
 				if (touchXYDouble != null)
-					attackDir = Math3D.setMagnitude(touchXYDouble[0] - x, touchXYDouble[1] - y, dashSpeed);
+					attackDir = Math3D.setMagnitude(touchXYDouble[0] - x, touchXYDouble[1] - y, DASH_SPEED);
 				else
-					attackDir = Math3D.setMagnitude(joystick.touchX - .5, joystick.touchY - .5, dashSpeed);
+					attackDir = Math3D.setMagnitude(joystick.touchX - .5, joystick.touchY - .5, DASH_SPEED);
 			}
 		} else if (joystick.isPressed) {
 			moveDeltaX = (joystick.touchX - .5) * moveSpeed;
@@ -112,7 +131,9 @@ public class Player extends Character {
 	}
 	
 	void gainExp(double amount) {
-		exp = Math3D.min(exp + amount, 100);
+		level += (exp + amount) / 100;
+		exp = (exp + amount) % 100;
+		updateCharacterSkillInterface();
 	}
 	
 	public void giveLife(double amount) {
@@ -127,5 +148,26 @@ public class Player extends Character {
 	void setStun(int duration) {
 		stunTime.begin(duration);
 		dashTime.stop();
+	}
+	
+	public void updateCharacterMode() {
+		if (unspentSkill == 0)
+			return;
+		if (lifeSkillButton.isPressed) {
+			skilledLife++;
+			updateCharacterSkillInterface();
+		}
+		if (staminaSkillButton.isPressed) {
+			skilledStamina++;
+			updateCharacterSkillInterface();
+		}
+	}
+	
+	private void updateCharacterSkillInterface() {
+		characterButton.setText(level + 1 + "");
+		unspentSkill = level - skilledLife - skilledStamina;
+		skillPointsText.setText("Skill Points Remaining: " + unspentSkill);
+		lifeSkillButton.setText("life " + skilledLife);
+		staminaSkillButton.setText("stamina " + skilledStamina);
 	}
 }
