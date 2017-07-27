@@ -74,7 +74,6 @@ public class Engine implements Runnable {
 // crit / attack speed -> crits increase attack speed, attacks increase crit chance, 
 
 // ~~ next ~~
-// todo: level up - 10 life, 10 mana
 // todo: simple boss fight
 
 // ~~ redo ~~

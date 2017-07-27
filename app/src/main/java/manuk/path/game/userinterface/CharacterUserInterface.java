@@ -8,7 +8,7 @@ public class CharacterUserInterface extends UserInterface {
 	public TextPaintElement skillPointsText;
 	public ClickablePaintElement resumeButton, lifeSkillButton, staminaSkillButton;
 	
-	public CharacterUserInterface() {
+	CharacterUserInterface() {
 		double w = .12;
 		elements.addHead(skillPointsText = new TextPaintElement(.5, .25, "", .05f));
 		elements.addHead(resumeButton = new ClickablePaintElement(.5 - w / 2, .8, w, w * 5 / 3, Color.WHITE, Color.GRAY));

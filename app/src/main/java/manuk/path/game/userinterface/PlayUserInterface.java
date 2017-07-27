@@ -12,13 +12,13 @@ public class PlayUserInterface extends UserInterface {
 	public ClickablePaintElement dashButton, sprintButton;
 	public ClickablePaintElement characterButton;
 	
-	public PlayUserInterface() {
+	PlayUserInterface() {
+		elements.addHead(characterButton = new ClickablePaintElement(.94, 0, .06, .1, Color.WHITE, Color.GRAY));
 		elements.addHead(joystick = new Joystick(1. / 12, 9. / 14, 1. / 6, 2. / 7, Color.GREEN, Color.RED));
 		elements.addHead(lifeBar = new PaintSectionBar(.05, .01, .43, .02, Color.RED));
 		elements.addHead(staminaBar = new PaintSectionBar(.52, .01, .43, .02, Color.BLUE));
 		elements.addHead(expBar = new PaintBar(.05, .04, .90, .01, Color.GREEN));
 		elements.addHead(dashButton = new ClickablePaintElement(.65, .8, .09, .15, Color.WHITE, Color.GRAY));
 		elements.addHead(sprintButton = new ClickablePaintElement(.8, .8, .09, .15, Color.WHITE, Color.GRAY));
-		elements.addHead(characterButton = new ClickablePaintElement(.88, 0, .12, .2, Color.WHITE, Color.GRAY));
 	}
 }
