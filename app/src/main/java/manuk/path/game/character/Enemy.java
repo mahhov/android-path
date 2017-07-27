@@ -108,7 +108,7 @@ public abstract class Enemy extends Character {
 		map.removeEntity(this);
 		if (Math3D.random() < ITEM_DROP_RATE)
 			item.addHead(new HealthItem(x, y, map));
-		player.gainExp(5);
+		player.gainExp(10);
 	}
 	
 	private void handleEnemyIntersection(IntersectionFinder.Intersection intersection) {

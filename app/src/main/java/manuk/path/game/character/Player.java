@@ -18,6 +18,7 @@ import manuk.path.game.util.Math3D;
 import manuk.path.game.util.Measurements;
 
 public class Player extends Character {
+	private static final int LEVEL_EXP = 100;
 	private static final double DASH_SPEED = 1;
 	private int touchId;
 	private double[] attackDir;
@@ -53,7 +54,7 @@ public class Player extends Character {
 		staminaBar.setMaxValue(maxStamina);
 		expBar = playUserInterface.expBar;
 		expBar.setValue(exp);
-		expBar.setMaxValue(100);
+		expBar.setMaxValue(LEVEL_EXP);
 		dashButton = playUserInterface.dashButton;
 		sprintButton = playUserInterface.sprintButton;
 		characterButton = playUserInterface.characterButton;
@@ -137,8 +138,8 @@ public class Player extends Character {
 	}
 	
 	void gainExp(double amount) {
-		level += (exp + amount) / 100;
-		exp = (exp + amount) % 100;
+		level += (exp + amount) / LEVEL_EXP;
+		exp = (exp + amount) % LEVEL_EXP;
 		updateCharacterSkillInterface();
 	}
 	
@@ -161,10 +162,14 @@ public class Player extends Character {
 			return;
 		if (lifeSkillButton.isPressed) {
 			skilledLife++;
+			maxLife += 25;
+			lifeBar.setMaxValue(maxLife);
 			updateCharacterSkillInterface();
 		}
 		if (staminaSkillButton.isPressed) {
 			skilledStamina++;
+			maxStamina += 25;
+			staminaBar.setMaxValue(maxStamina);
 			updateCharacterSkillInterface();
 		}
 	}
