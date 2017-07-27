@@ -46,8 +46,14 @@ public class Player extends Character {
 	private void setupInterface(PlayUserInterface playUserInterface, CharacterUserInterface characterUserInterface) {
 		joystick = playUserInterface.joystick;
 		lifeBar = playUserInterface.lifeBar;
+		lifeBar.setValue(life);
+		lifeBar.setMaxValue(maxLife);
 		staminaBar = playUserInterface.staminaBar;
+		staminaBar.setValue(stamina);
+		staminaBar.setMaxValue(maxStamina);
 		expBar = playUserInterface.expBar;
+		expBar.setValue(exp);
+		expBar.setMaxValue(100);
 		dashButton = playUserInterface.dashButton;
 		sprintButton = playUserInterface.sprintButton;
 		characterButton = playUserInterface.characterButton;
@@ -63,10 +69,10 @@ public class Player extends Character {
 		sprintButtonPressed = sprintButton.isPressed;
 		double[] touchXYDouble = getTouchXY(controller, map);
 		
-		lifeBar.setValue(getLifePercent());
 		staminaRegen();
-		staminaBar.setValue(getStaminaPercent());
-		expBar.setValue(exp / 100);
+		lifeBar.setValue(life);
+		staminaBar.setValue(stamina);
+		expBar.setValue(exp);
 		
 		if (stunTime.active()) {
 			stunTime.update();

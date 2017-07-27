@@ -14,7 +14,7 @@ abstract class Character extends MapEntity {
 	private int[] color;
 	double moveSpeed;
 	Counter attackTime;
-	private double maxLife, maxStamina;
+	double maxLife, maxStamina;
 	double life, stamina;
 	private int staminaRegenDelay, staminaRegenDelayCur, staminaRegenRate;
 	
@@ -32,20 +32,12 @@ abstract class Character extends MapEntity {
 		map.moveEntity(new double[] {x, y}, this);
 	}
 	
-	double getLifePercent() {
-		return life / maxLife;
-	}
-	
 	void takeDamage(double amount) {
 		life = Math3D.max(life - amount, 0);
 	}
 	
 	void takeHeal(double amount) {
 		life = Math3D.min(life + amount, maxLife);
-	}
-	
-	double getStaminaPercent() {
-		return stamina / maxStamina;
 	}
 	
 	boolean useStamina(double amount) {
