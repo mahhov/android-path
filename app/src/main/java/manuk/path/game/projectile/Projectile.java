@@ -8,7 +8,7 @@ import manuk.path.game.util.IntersectionFinder;
 public class Projectile extends MapEntity {
 	double x, y;
 	double size;
-	private double damage;
+	double damage;
 	int[] color;
 	
 	public Projectile(int layer, double x, double y, double size, double damage, int color) {

@@ -12,8 +12,8 @@ import manuk.path.game.util.Math3D;
 import static manuk.path.game.util.Math3D.setMagnitude;
 
 public abstract class Enemy extends Character {
-	public static final int ENEMY_TYPE_COUNT = 4;
-	public static final int ENEMY_TYPE_MELEE = 0, ENEMY_TYPE_PROJECTILE = 1, ENEMY_TYPE_STUN = 2, ENEMY_TYPE_RAISE = 3;
+	public static final int ENEMY_TYPE_COUNT = 5;
+	public static final int ENEMY_TYPE_MELEE = 0, ENEMY_TYPE_PROJECTILE = 1, ENEMY_TYPE_STUN = 2, ENEMY_TYPE_RAISE = 3, ENEMY_TYPE_BOSS = 4;
 	
 	private static final double SLEEP_DISTANCE = 30;
 	private final double WANDER_THRESHOLD;
@@ -23,10 +23,11 @@ public abstract class Enemy extends Character {
 	private final double KEEP_AWAY_DISTANCE;
 	private final double PATH_FIND_FRICTION;
 	private final double ITEM_DROP_RATE;
+	private final double DEATH_EXP;
 	
 	private double[] awayFromIntersection;
 	
-	Enemy(int layer, double spawnX, double spawnY, int color, double moveSpeed, int attackTime, double maxLife, double wanderThreshold, double wanderDistance, double activeDistance, double damageRange, double keepAwayDistance, double pathFindFriction, double itemDropRate, Map map) {
+	Enemy(int layer, double spawnX, double spawnY, int color, double moveSpeed, int attackTime, double maxLife, double wanderThreshold, double wanderDistance, double activeDistance, double damageRange, double keepAwayDistance, double pathFindFriction, double itemDropRate, double deathExp, Map map) {
 		super(layer, spawnX, spawnY, color, moveSpeed, attackTime, maxLife, 0, 0, 0, map);
 		WANDER_THRESHOLD = wanderThreshold;
 		WANDER_DISTANCE = wanderDistance;
@@ -35,6 +36,7 @@ public abstract class Enemy extends Character {
 		KEEP_AWAY_DISTANCE = keepAwayDistance;
 		PATH_FIND_FRICTION = pathFindFriction;
 		ITEM_DROP_RATE = itemDropRate;
+		DEATH_EXP = deathExp;
 		awayFromIntersection = new double[2];
 	}
 	
@@ -48,6 +50,8 @@ public abstract class Enemy extends Character {
 				return new StunEnemy(x, y, map);
 			case ENEMY_TYPE_RAISE:
 				return new RaiseEnemy(x, y, map);
+			case ENEMY_TYPE_BOSS:
+				return new BossEnemy(x, y, map);
 			default:
 				System.out.println("UNRECOGNIZED ENEMY TYPE");
 				return new MeleeEnemy(x, y, map);
@@ -108,7 +112,7 @@ public abstract class Enemy extends Character {
 		map.removeEntity(this);
 		if (Math3D.random() < ITEM_DROP_RATE)
 			item.addHead(new HealthItem(x, y, map));
-		player.gainExp(10);
+		player.gainExp(DEATH_EXP);
 	}
 	
 	private void handleEnemyIntersection(IntersectionFinder.Intersection intersection) {

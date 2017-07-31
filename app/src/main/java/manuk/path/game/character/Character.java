@@ -110,10 +110,11 @@ abstract class Character extends MapEntity {
 		
 		Counter(int maxValue) {
 			this.maxValue = maxValue;
+			value = -1;
 		}
 		
 		boolean active() {
-			return value > 0;
+			return value > -1;
 		}
 		
 		boolean begin() {
@@ -131,11 +132,11 @@ abstract class Character extends MapEntity {
 		}
 		
 		boolean update() {
-			return active() && --value == 0;
+			return active() && value-- == 0;
 		}
 		
 		void stop() {
-			value = 0;
+			value = -1;
 		}
 	}
 }	

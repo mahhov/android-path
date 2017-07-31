@@ -17,13 +17,14 @@ class StunEnemy extends Enemy {
 	private static final double KEEP_AWAY_DISTANCE = 0;
 	private static final double PATH_FIND_FRICTION = .8;
 	private static final double ITEM_DROP_RATE = .9;
+	private static final double DEATH_EXP = 10;
 	
 	private static final int COLOR = Color.rgb(50, 150, 50);
 	private static final double MOVE_SPEED = .05, MAX_LIFE = 10, ATTACK_DAMAGE = 15;
 	private static final int ATTACK_TIME = 100, STUN_DURATION = 30;
 	
 	StunEnemy(double spawnX, double spawnY, Map map) {
-		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, COLOR, MOVE_SPEED, ATTACK_TIME, MAX_LIFE, WANDER_THRESHOLD, WANDER_DISTANCE, ACTIVE_DISTANCE, DAMAGE_RANGE, KEEP_AWAY_DISTANCE, PATH_FIND_FRICTION, ITEM_DROP_RATE, map);
+		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, COLOR, MOVE_SPEED, ATTACK_TIME, MAX_LIFE, WANDER_THRESHOLD, WANDER_DISTANCE, ACTIVE_DISTANCE, DAMAGE_RANGE, KEEP_AWAY_DISTANCE, PATH_FIND_FRICTION, ITEM_DROP_RATE, DEATH_EXP, map);
 	}
 	
 	void doAttack(Map map, Player player, LList<Projectile> projectile, LList<Particle> particle) {
