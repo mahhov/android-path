@@ -24,17 +24,20 @@ class BossEnemy extends Enemy {
 	private static final double MOVE_SPEED = .05, MAX_LIFE = 30, ATTACK_DAMAGE = 5;
 	private static final int ATTACK_TIME = 0;
 	
-	private static final double WEIGHT_RAY = .2, WEIGHT_QUADRANT = .2, WEIGHT_ROCKFALL = .2;
-	private static final int STATE_NONE = 0, STATE_RAY = 1, STATE_QUADRANT = 2, STATE_ROCKFALL = 3;
-	private static final int DURATION[] = new int[] {100, 100, 100, 100};
-	private static final int INTERVAL[] = new int[] {100, 20, 25, 10};
+	private static final int STATE_NONE = 0, STATE_QUADRANT = 1, STATE_ROCKFALL = 2;
+	private static final double[] STATE_WEIGHT = new double[] {0, .2, .2};
+	private static final int[] STATE_DURATION = new int[] {100, 100, 100};
+	private static final int[] STATE_INTERVAL = new int[] {100, 25, 10};
 	
 	private int state;
 	private Counter stateDuration;
 	private Counter stateInterval;
 	
-	//	private final static double QUADRANT_SIZE = 1, 
+	private static final int[][] QUADRANT_LOCATION = new int[][] {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
+	private static final double QUADRANT_SIZE = 5;
 	private int quadrantCurrent;
+	
+	private static final double ROCKFALL_AREA = 6, ROCKFALL_SIZE = .6, ROCKFALL_DELAY = 30;
 	
 	BossEnemy(double spawnX, double spawnY, Map map) {
 		super(MapEntity.ENTITY_LAYER_HOSTILE_CHARACTER, spawnX, spawnY, COLOR, MOVE_SPEED, ATTACK_TIME, MAX_LIFE, WANDER_THRESHOLD, WANDER_DISTANCE, ACTIVE_DISTANCE, DAMAGE_RANGE, KEEP_AWAY_DISTANCE, PATH_FIND_FRICTION, ITEM_DROP_RATE, DEATH_EXP, map);
@@ -51,9 +54,6 @@ class BossEnemy extends Enemy {
 			return;
 		
 		switch (state) {
-			case STATE_RAY:
-				//				rayAttack();
-				//				break;
 			case STATE_QUADRANT:
 				quadrantAttack(map, projectile);
 				break;
@@ -62,31 +62,27 @@ class BossEnemy extends Enemy {
 				break;
 		}
 		
-		stateInterval.begin(INTERVAL[state]);
+		stateInterval.begin(STATE_INTERVAL[state]);
 	}
 	
 	private void findNewState() {
 		double newStateRand = Math3D.random();
-		if ((newStateRand -= WEIGHT_RAY) < 0)
-			state = STATE_RAY;
-		else if ((newStateRand -= WEIGHT_QUADRANT) < 0)
-			state = STATE_QUADRANT;
-		else if ((newStateRand -= WEIGHT_ROCKFALL) < 0)
-			state = STATE_ROCKFALL;
 		
-		stateDuration.begin(DURATION[state]);
+		state = STATE_NONE;
+		
+		for (int i = 1; i < STATE_WEIGHT.length; i++)
+			if ((newStateRand -= STATE_WEIGHT[i]) < 0) {
+				state = i;
+				break;
+			}
+		
+		stateDuration.begin(STATE_DURATION[state]);
 		stateInterval.begin(0);
 	}
 	
-	private void rayAttack() {
-		
-	}
-	
 	private void quadrantAttack(Map map, LList<Projectile> projectile) {
-		int[][] QUADRANT_LOCATION = new int[][] {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
-		double QUADRANT_SIZE = 5;
 		int[] quadrantLocation = QUADRANT_LOCATION[quadrantCurrent];
-		projectile.addHead(new DurationProjectile(MapEntity.ENTITY_LAYER_PARTICLE, x + quadrantLocation[0] * QUADRANT_SIZE, y + quadrantLocation[1] * QUADRANT_SIZE, QUADRANT_SIZE, .5, Color.YELLOW, INTERVAL[STATE_QUADRANT], map));
+		projectile.addHead(new DurationProjectile(MapEntity.ENTITY_LAYER_PARTICLE, x + quadrantLocation[0] * QUADRANT_SIZE, y + quadrantLocation[1] * QUADRANT_SIZE, QUADRANT_SIZE, .5, Color.YELLOW, STATE_INTERVAL[STATE_QUADRANT], map));
 		
 		quadrantCurrent++;
 		if (quadrantCurrent == 4)
@@ -94,8 +90,8 @@ class BossEnemy extends Enemy {
 	}
 	
 	private void rockfallAttack(Map map, LList<Projectile> projectile) {
-		double dx = Math3D.random(-6, 6); // make constant
-		double dy = Math3D.random(-6, 6);
-		projectile.addHead(new DelayedProjectile(MapEntity.ENTITY_LAYER_PARTICLE, x + dx, y + dy, .6, ATTACK_DAMAGE, Color.YELLOW, 30, map)); // make constants for .6 and 30
+		double dx = Math3D.random(-ROCKFALL_AREA, ROCKFALL_AREA);
+		double dy = Math3D.random(-ROCKFALL_AREA, ROCKFALL_AREA);
+		projectile.addHead(new DelayedProjectile(MapEntity.ENTITY_LAYER_PARTICLE, x + dx, y + dy, ROCKFALL_SIZE, ATTACK_DAMAGE, Color.YELLOW, ROCKFALL_DELAY, map));
 	}
 }
