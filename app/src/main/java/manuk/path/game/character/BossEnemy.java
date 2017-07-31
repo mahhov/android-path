@@ -26,8 +26,8 @@ class BossEnemy extends Enemy {
 	
 	private static final int STATE_NONE = 0, STATE_QUADRANT = 1, STATE_ROCKFALL = 2;
 	private static final double[] STATE_WEIGHT = new double[] {0, .2, .2};
-	private static final int[] STATE_DURATION = new int[] {100, 100, 100};
-	private static final int[] STATE_INTERVAL = new int[] {100, 25, 10};
+	private static final int[] STATE_DURATION = new int[] {50, 100, 100};
+	private static final int[] STATE_INTERVAL = new int[] {-1, 25, 10};
 	
 	private int state;
 	private Counter stateDuration;

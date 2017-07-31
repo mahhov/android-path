@@ -174,7 +174,7 @@ public class RoomMapGenerator extends MapGenerator {
 					Pos coord = randomRoomCoord(x, y);
 					enemySpawn.addHead(new Pos3(coord.x, coord.y, Enemy.ENEMY_TYPE_BOSS));
 				} else if (!room.subBigRoom) {
-					int enemyType = randInt(0, Enemy.ENEMY_TYPE_COUNT);
+					int enemyType = randInt(0, Enemy.ENEMY_TYPE_COUNT - 1);
 					int enemyCount = randInt(1, room.bigRoom ? 20 : 5);
 					for (int j = 0; j < enemyCount; j++) {
 						Pos coord = randomRoomCoord(x, y);
