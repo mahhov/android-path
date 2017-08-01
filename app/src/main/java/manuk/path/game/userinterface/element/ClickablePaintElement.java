@@ -37,7 +37,10 @@ public class ClickablePaintElement extends PaintElement {
 		return touch;
 	}
 	
-	public void cleanInput() {
+	public void cleanInput(Controller controller) {
+		Touch touch = controller.getTouch(touchId, left, top, left + width, top + height);
+		if (touch != null)
+			touch.reset();
 		touchId = -1;
 	}
 	

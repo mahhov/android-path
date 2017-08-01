@@ -22,7 +22,7 @@ public class PaintElement {
 		return null;
 	}
 	
-	public void cleanInput() {
+	public void cleanInput(Controller controller) {
 	}
 	
 	public void draw(Painter painter) {

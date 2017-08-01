@@ -51,7 +51,7 @@ class World {
 			case STATE_PLAY:
 				updatePlay(controller);
 				if (userInterfaceHandler.playUserInterface.characterButton.isPressed) {
-					userInterfaceHandler.characterUserInterface.cleanInput();
+					userInterfaceHandler.playUserInterface.cleanInput(controller);
 					state = STATE_PAUSED;
 				}
 				break;
@@ -59,7 +59,7 @@ class World {
 				updatePause();
 				userInterfaceHandler.characterUserInterface.handleInput(controller);
 				if (userInterfaceHandler.characterUserInterface.resumeButton.isPressed) {
-					userInterfaceHandler.playUserInterface.cleanInput();
+					userInterfaceHandler.characterUserInterface.cleanInput(controller);
 					state = STATE_PLAY;
 				}
 				break;

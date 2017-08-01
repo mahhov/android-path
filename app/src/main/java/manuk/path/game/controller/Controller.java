@@ -80,7 +80,6 @@ public class Controller {
 		private void setFresh(double x, double y) {
 			this.x = x;
 			this.y = y;
-			released = false;
 			long time = System.currentTimeMillis();
 			if (time - this.time < DOUBLE_TIME)
 				state = STATE_FRESH_DOUBLE;
@@ -90,7 +89,13 @@ public class Controller {
 		}
 		
 		private void setReleased() {
-			released = true;
+			if (isDown())
+				released = true;
+		}
+		
+		public void reset() {
+			state = STATE_NONE;
+			released = false;
 		}
 		
 		private boolean isDown() {
