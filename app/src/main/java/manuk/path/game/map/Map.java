@@ -14,7 +14,7 @@ public class Map {
 	public final int width, length, height;
 	private int[][][] map;
 	private boolean[][] shadow;
-	public LList<MapEntity>[][][] entity; // todo: see if we can refactor intersectionFinder to make this private
+	public LList<MapEntity>[][][] entity;
 	public double scrollX, scrollY;
 	private Scroll scroll;
 	private IntersectionFinder intersectionFinder;
@@ -102,14 +102,9 @@ public class Map {
 	}
 	
 	public void draw() {
-		drawShadows();
-		
-		for (int z = 0; z < height; z++) {
-			for (int y = scroll.startY; y < scroll.midY; y++)
-				drawYZ(y, z);
-			for (int y = scroll.endY - 1; y >= scroll.midY; y--)
-				drawYZ(y, z);
-		}
+//		drawShadows();
+		drawMap();
+		drawEntity();
 	}
 	
 	private void drawShadows() {
@@ -119,17 +114,26 @@ public class Map {
 					MapPainter.drawFlat(x - scrollX, y - scrollY, 0, Color.GRAY);
 	}
 	
-	private void drawYZ(int y, int z) {
-		for (int x = scroll.startX; x < scroll.midX; x++)
-			drawXYZ(x, y, z);
-		for (int x = scroll.endX - 1; x >= scroll.midX; x--)
-			drawXYZ(x, y, z);
+	private void drawMap() {
+		for (int z = 0; z < height; z++)
+			drawMapY(z);
 	}
 	
-	private void drawXYZ(int x, int y, int z) {
-		for (int layer = 0; layer < MapEntity.ENTITY_LAYERS_COUNT; layer++) // todo: only draw entity layer for 1 z-
-			for (MapEntity e : entity[x][y][layer])
-				e.draw(scrollX, scrollY);
+	private void drawMapY(int z) {
+		for (int y = scroll.startY; y < scroll.midY; y++)
+			drawMapYZ(y, z);
+		for (int y = scroll.endY - 1; y >= scroll.midY; y--)
+			drawMapYZ(y, z);
+	}
+	
+	private void drawMapYZ(int y, int z) {
+		for (int x = scroll.startX; x < scroll.midX; x++)
+			drawMapXYZ(x, y, z);
+		for (int x = scroll.endX - 1; x >= scroll.midX; x--)
+			drawMapXYZ(x, y, z);
+	}
+	
+	private void drawMapXYZ(int x, int y, int z) {
 		if (map[x][y][z] == 1) {
 			boolean side[] = new boolean[6];
 			side[MapPainter.LEFT] = x > scroll.midX && isEmpty(x - 1, y, z);
@@ -139,5 +143,25 @@ public class Map {
 			side[MapPainter.TOP] = isEmpty(x, y, z + 1);
 			MapPainter.drawBlock(x - scrollX, y - scrollY, z, 1, 1, 5, side, COLOR);
 		}
+	}
+	
+	private void drawEntity() {
+		for (int y = scroll.startY; y < scroll.midY; y++)
+			drawYEntity(y);
+		for (int y = scroll.endY - 1; y >= scroll.midY; y--)
+			drawYEntity(y);
+	}
+	
+	private void drawYEntity(int y) {
+		for (int x = scroll.startX; x < scroll.midX; x++)
+			drawXYEntity(x, y);
+		for (int x = scroll.endX - 1; x >= scroll.midX; x--)
+			drawXYEntity(x, y);
+	}
+	
+	private void drawXYEntity(int x, int y) {
+		for (int layer = 0; layer < MapEntity.ENTITY_LAYERS_COUNT; layer++)
+			for (MapEntity e : entity[x][y][layer])
+				e.draw(scrollX, scrollY);
 	}
 }
