@@ -62,7 +62,7 @@ public class IntersectionFinder {
 		inty = (int) y;
 		moved = 0;
 		this.maxMove = maxMove;
-		this.limitDistance = maxMove > 0;
+		this.limitDistance = maxMove >= 0;
 		this.dir = Math3D.setMagnitude(dir[0], dir[1], 1);
 		this.layer = layer;
 		this.size = size;

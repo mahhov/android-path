@@ -76,6 +76,7 @@ class BossEnemy extends Enemy {
 				break;
 			}
 		
+		quadrantCurrent = 0;
 		stateDuration.begin(STATE_DURATION[state]);
 		stateInterval.begin(0);
 	}

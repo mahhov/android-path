@@ -25,10 +25,6 @@ public class Projectile extends MapEntity {
 		return false;
 	}
 	
-	IntersectionFinder.Intersection findHit(Map map) {
-		return map.moveEntity(new double[] {x, y}, new double[] {0, 0}, 0, false, this);
-	}
-	
 	void expire(Map map, MapEntity entity) {
 		map.removeEntity(this);
 		if (entity != null)

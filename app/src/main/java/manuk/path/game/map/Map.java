@@ -102,10 +102,7 @@ public class Map {
 	}
 	
 	public void draw() {
-		for (int x = scroll.startX; x < scroll.endX; x++)
-			for (int y = scroll.startY; y < scroll.endY; y++)
-				if (shadow[x][y])
-					MapPainter.drawFlat(x - scrollX, y - scrollY, 0, Color.GRAY);
+		drawShadows();
 		
 		for (int z = 0; z < height; z++) {
 			for (int y = scroll.startY; y < scroll.midY; y++)
@@ -113,6 +110,13 @@ public class Map {
 			for (int y = scroll.endY - 1; y >= scroll.midY; y--)
 				drawYZ(y, z);
 		}
+	}
+	
+	private void drawShadows() {
+		for (int x = scroll.startX; x < scroll.endX; x++)
+			for (int y = scroll.startY; y < scroll.endY; y++)
+				if (shadow[x][y])
+					MapPainter.drawFlat(x - scrollX, y - scrollY, 0, Color.GRAY);
 	}
 	
 	private void drawYZ(int y, int z) {
@@ -123,7 +127,7 @@ public class Map {
 	}
 	
 	private void drawXYZ(int x, int y, int z) {
-		for (int layer = 0; layer < MapEntity.ENTITY_LAYERS_COUNT; layer++)
+		for (int layer = 0; layer < MapEntity.ENTITY_LAYERS_COUNT; layer++) // todo: only draw entity layer for 1 z-
 			for (MapEntity e : entity[x][y][layer])
 				e.draw(scrollX, scrollY);
 		if (map[x][y][z] == 1) {
