@@ -138,7 +138,6 @@ public class Player extends Character {
 	}
 	
 	void gainExp(double amount) {
-		amount *= 10;
 		level += (exp + amount) / LEVEL_EXP;
 		exp = (exp + amount) % LEVEL_EXP;
 		updateCharacterSkillInterface();

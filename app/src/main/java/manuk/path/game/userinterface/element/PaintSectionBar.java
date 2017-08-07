@@ -1,6 +1,7 @@
 package manuk.path.game.userinterface.element;
 
 import manuk.path.game.painter.Painter;
+import manuk.path.game.util.Math3D;
 
 public class PaintSectionBar extends PaintBar {
 	private static final double SECTION = 25;
@@ -11,7 +12,9 @@ public class PaintSectionBar extends PaintBar {
 	
 	public void draw(Painter painter) {
 		super.draw(painter);
-		for (double i = 0; i < value / maxValue; i += SECTION / maxValue)
-			painter.drawRectFrame(left, top, width * i, height, FRAME_COLOR);
+		int numSections = (int) ((value - Math3D.EPSILON) / SECTION);
+		double sectionWidth = width / (int) (maxValue / SECTION);
+		for (int i = 0; i <= numSections; i++)
+			painter.drawRectFrame(left, top, i * sectionWidth, height, FRAME_COLOR);
 	}
 }
