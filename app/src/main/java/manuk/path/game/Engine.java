@@ -74,16 +74,14 @@ public class Engine implements Runnable {
 // crit / attack speed -> crits increase attack speed, attacks increase crit chance, 
 
 // ~~ next ~~
-// todo: simple boss fight
+// todo: entity layer redo
+// todo: basic progression
 
 // ~~ redo ~~
-// todo: entity layer redo
-// todo: intersectino finder redo layer system / map entity array flatten ll dimension
 // todo: map painter redo
 
 // ~~ new features ~~
 // todo: traps
-// todo: fix controller lock bug
 // todo: map secret paths
 
 // ~~ graphics ~~
