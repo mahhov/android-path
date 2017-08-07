@@ -67,7 +67,7 @@ public class Player extends Character {
 	}
 	
 	public void update(Controller controller, Map map, LList<Projectile> projectile) {
-		sprintButtonPressed = sprintButton.isPressed;
+		sprintButtonPressed = sprintButton.isDown();
 		double[] touchXYDouble = getTouchXY(controller, map);
 		
 		staminaRegen();
@@ -90,14 +90,14 @@ public class Player extends Character {
 			moveDeltaY = attackDir[1];
 			dashTime.begin();
 			dashId = getIntersectorId();
-		} else if ((touchXYDouble != null && touchXYDouble[2] == 1) || (dashButton.isPressed && (touchXYDouble != null || joystick.isPressed))) {
+		} else if ((touchXYDouble != null && touchXYDouble[2] == 1) || (dashButton.isDown() && (touchXYDouble != null || joystick.isDown()))) {
 			if (beginAttack(30)) {
 				if (touchXYDouble != null)
 					attackDir = Math3D.setMagnitude(touchXYDouble[0] - x, touchXYDouble[1] - y, DASH_SPEED);
 				else
 					attackDir = Math3D.setMagnitude(joystick.touchX - .5, joystick.touchY - .5, DASH_SPEED);
 			}
-		} else if (joystick.isPressed) {
+		} else if (joystick.isDown()) {
 			moveDeltaX = (joystick.touchX - .5) * moveSpeed;
 			moveDeltaY = (joystick.touchY - .5) * moveSpeed;
 			double moveSpeed = this.moveSpeed;
@@ -138,6 +138,7 @@ public class Player extends Character {
 	}
 	
 	void gainExp(double amount) {
+		amount *= 10;
 		level += (exp + amount) / LEVEL_EXP;
 		exp = (exp + amount) % LEVEL_EXP;
 		updateCharacterSkillInterface();
@@ -160,13 +161,13 @@ public class Player extends Character {
 	public void updateCharacterMode() {
 		if (unspentSkill == 0)
 			return;
-		if (lifeSkillButton.isPressed) {
+		if (lifeSkillButton.isFirstDown()) {
 			skilledLife++;
 			maxLife += 25;
 			lifeBar.setMaxValue(maxLife);
 			updateCharacterSkillInterface();
 		}
-		if (staminaSkillButton.isPressed) {
+		if (staminaSkillButton.isFirstDown()) {
 			skilledStamina++;
 			maxStamina += 25;
 			staminaBar.setMaxValue(maxStamina);

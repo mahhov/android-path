@@ -12,7 +12,7 @@ public class Joystick extends ClickablePaintElement {
 	
 	public Controller.Touch handleInput(Controller controller) {
 		Controller.Touch touch = super.handleInput(controller);
-		if (isPressed) {
+		if (isDown()) {
 			touchX = (touch.x - left) / width;
 			touchY = (touch.y - top) / height;
 		}
@@ -21,7 +21,7 @@ public class Joystick extends ClickablePaintElement {
 	
 	public void draw(Painter painter) {
 		painter.drawRectFrame(left, top, width, height, color);
-		if (isPressed)
+		if (isDown())
 			painter.drawRect(left + touchX * width - width / 10, top + touchY * height - height / 10, width / 5, height / 5, pressedColor);
 	}
 }

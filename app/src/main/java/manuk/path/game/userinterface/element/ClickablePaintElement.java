@@ -7,7 +7,7 @@ import manuk.path.game.painter.Painter;
 public class ClickablePaintElement extends PaintElement {
 	private int touchId;
 	int pressedColor;
-	public boolean isPressed;
+	private boolean down, firstDown;
 	private String text;
 	
 	public ClickablePaintElement(double left, double top, double width, double height, int color, int pressedColor) {
@@ -28,13 +28,27 @@ public class ClickablePaintElement extends PaintElement {
 	public Touch handleInput(Controller controller) {
 		Touch touch = controller.getTouch(touchId, left, top, left + width, top + height);
 		if (touch == null) {
-			isPressed = false;
+			down = false;
 			touchId = -1;
 		} else {
-			isPressed = true;
-			touchId = touch.consume();
+			down = true;
+			int touchId = touch.consume();
+			if (this.touchId != touchId) {
+				this.touchId = touchId;
+				firstDown = true;
+			}
 		}
 		return touch;
+	}
+	
+	public boolean isDown() {
+		return down;
+	}
+	
+	public boolean isFirstDown() {
+		boolean r = firstDown;
+		firstDown = false;
+		return r;
 	}
 	
 	public void cleanInput(Controller controller) {
@@ -45,7 +59,7 @@ public class ClickablePaintElement extends PaintElement {
 	}
 	
 	public void draw(Painter painter) {
-		painter.drawRect(left, top, width, height, isPressed ? pressedColor : color, FRAME_COLOR);
+		painter.drawRect(left, top, width, height, down ? pressedColor : color, FRAME_COLOR);
 		if (text != null)
 			painter.drawTextCentered(text, left + width / 2, top + height / 2, .05f);
 	}
