@@ -24,6 +24,7 @@ abstract class UserInterface {
 	
 	public void draw(Painter painter) {
 		for (PaintElement elem : elements)
-			elem.draw(painter);
+			if (!elem.isHidden())
+				elem.draw(painter);
 	}
 }

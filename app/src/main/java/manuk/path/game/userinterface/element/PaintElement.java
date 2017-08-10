@@ -9,6 +9,7 @@ public class PaintElement {
 	
 	double left, top, width, height;
 	int color;
+	boolean hidden;
 	
 	public PaintElement(double left, double top, double width, double height, int color) {
 		this.left = left;
@@ -16,6 +17,14 @@ public class PaintElement {
 		this.width = width;
 		this.height = height;
 		this.color = color;
+	}
+	
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+	
+	public boolean isHidden() {
+		return hidden;
 	}
 	
 	public Controller.Touch handleInput(Controller controller) {

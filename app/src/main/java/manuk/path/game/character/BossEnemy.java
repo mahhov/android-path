@@ -1,6 +1,7 @@
 package manuk.path.game.character;
 
 import android.graphics.Color;
+import manuk.path.game.item.Item;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
 import manuk.path.game.particle.Particle;
@@ -44,6 +45,10 @@ class BossEnemy extends Enemy {
 		stateDuration = new Counter(0);
 		stateDuration.begin(0);
 		stateInterval = new Counter(0);
+	}
+	
+	void updateActive(Map map, Player player, LList<Projectile> projectile, LList<Item> item, LList<Particle> particle) {
+		player.setActiveTarget(this);
 	}
 	
 	void doAttack(Map map, Player player, LList<Projectile> projectile, LList<Particle> particle) {

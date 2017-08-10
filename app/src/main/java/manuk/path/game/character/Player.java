@@ -24,7 +24,7 @@ public class Player extends Character {
 	private double[] attackDir;
 	
 	private Joystick joystick;
-	private PaintBar lifeBar, staminaBar, expBar;
+	private PaintBar lifeBar, staminaBar, expBar, targetBar;
 	private ClickablePaintElement dashButton, sprintButton, characterButton;
 	public boolean sprintButtonPressed;
 	
@@ -55,6 +55,8 @@ public class Player extends Character {
 		expBar = playUserInterface.expBar;
 		expBar.setValue(exp);
 		expBar.setMaxValue(LEVEL_EXP);
+		targetBar = playUserInterface.targetBar;
+		targetBar.setHidden(true);
 		dashButton = playUserInterface.dashButton;
 		sprintButton = playUserInterface.sprintButton;
 		characterButton = playUserInterface.characterButton;
@@ -74,6 +76,7 @@ public class Player extends Character {
 		lifeBar.setValue(life);
 		staminaBar.setValue(stamina);
 		expBar.setValue(exp);
+		targetBar.setHidden(true);
 		
 		if (stunTime.active()) {
 			stunTime.update();
@@ -155,6 +158,12 @@ public class Player extends Character {
 	void setStun(int duration) {
 		stunTime.begin(duration);
 		dashTime.stop();
+	}
+	
+	void setActiveTarget(Enemy target) {
+		targetBar.setHidden(false);
+		targetBar.setMaxValue(target.maxLife);
+		targetBar.setValue(target.life);
 	}
 	
 	public void updateCharacterMode() {

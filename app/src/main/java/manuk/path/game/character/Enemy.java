@@ -68,6 +68,7 @@ public abstract class Enemy extends Character {
 		if (updateAttack())
 			doAttack(map, player, projectile, particle);
 		
+		boolean active = true;
 		double distance = Math3D.magnitude(player.x - x, player.y - y);
 		if (distance < KEEP_AWAY_DISTANCE)
 			keepAway(map, player);
@@ -76,13 +77,20 @@ public abstract class Enemy extends Character {
 		else if (distance < ACTIVE_DISTANCE)
 			chasePlayer(map, player);
 		else if (distance < SLEEP_DISTANCE) {
+			active = false;
 			if (Math3D.random() > WANDER_THRESHOLD)
 				wander(map);
 			handleEnemyIntersection(moveToGoal(map));
-		}
+		} else
+			active = false;
+		
+		if (active)
+			updateActive(map, player, projectile, item, particle);
 		
 		return false;
 	}
+	
+	void updateActive(Map map, Player player, LList<Projectile> projectile, LList<Item> item, LList<Particle> particle){}
 	
 	void doAttack(Map map, Player player, LList<Projectile> projectile, LList<Particle> particle) {
 	}

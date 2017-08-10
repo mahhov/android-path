@@ -8,7 +8,7 @@ import manuk.path.game.userinterface.element.PaintSectionBar;
 
 public class PlayUserInterface extends UserInterface {
 	public Joystick joystick;
-	public PaintBar lifeBar, staminaBar, expBar;
+	public PaintBar lifeBar, staminaBar, expBar, targetBar;
 	public ClickablePaintElement dashButton, sprintButton;
 	public ClickablePaintElement characterButton;
 	
@@ -18,6 +18,7 @@ public class PlayUserInterface extends UserInterface {
 		elements.addHead(lifeBar = new PaintSectionBar(.05, .01, .43, .02, Color.RED));
 		elements.addHead(staminaBar = new PaintSectionBar(.52, .01, .43, .02, Color.BLUE));
 		elements.addHead(expBar = new PaintBar(.05, .04, .90, .01, Color.GREEN));
+		elements.addHead(targetBar = new PaintSectionBar(.05, .055, .90, .03, Color.GREEN, 10));
 		elements.addHead(dashButton = new ClickablePaintElement(.65, .8, .09, .15, Color.WHITE, Color.GRAY));
 		elements.addHead(sprintButton = new ClickablePaintElement(.8, .8, .09, .15, Color.WHITE, Color.GRAY));
 	}
