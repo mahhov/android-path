@@ -6,19 +6,19 @@ import manuk.path.game.painter.MapPainter;
 import manuk.path.game.util.IntersectionFinder;
 import manuk.path.game.util.Math3D;
 
-abstract class Character extends MapEntity {
+public abstract class Character extends MapEntity {
 	public double x, y;
-	double goalX, goalY;
-	double moveDeltaX, moveDeltaY;
+	protected double goalX, goalY;
+	protected double moveDeltaX, moveDeltaY;
 	
 	private int[] color;
 	double moveSpeed;
-	Counter attackTime;
-	double maxLife, maxStamina;
-	double life, stamina;
+	protected Counter attackTime;
+	protected double maxLife, maxStamina;
+	protected double life, stamina;
 	private int staminaRegenDelay, staminaRegenDelayCur, staminaRegenRate;
 	
-	Character(int layer, double spawnX, double spawnY, int color, double moveSpeed, int attackTime, double maxLife, double maxStamina, int staminaRegenRate, int staminaRegenDelay, Map map) {
+	protected Character(int layer, double spawnX, double spawnY, int color, double moveSpeed, int attackTime, double maxLife, double maxStamina, int staminaRegenRate, int staminaRegenDelay, Map map) {
 		super(layer, .5);
 		goalX = x = spawnX;
 		goalY = y = spawnY;
@@ -56,15 +56,15 @@ abstract class Character extends MapEntity {
 			staminaRegenDelayCur--;
 	}
 	
-	boolean beginAttack(int staminaCost) {
+	protected boolean beginAttack(int staminaCost) {
 		return !attackTime.active() && useStamina(staminaCost) && attackTime.begin();
 	}
 	
-	boolean updateAttack() {
+	protected boolean updateAttack() {
 		return attackTime.update();
 	}
 	
-	IntersectionFinder.Intersection moveToGoal(Map map) {
+	protected IntersectionFinder.Intersection moveToGoal(Map map) {
 		moveDeltaX = goalX - x;
 		moveDeltaY = goalY - y;
 		return moveByDir(map);
@@ -76,7 +76,7 @@ abstract class Character extends MapEntity {
 		return moveByDir(map, moveSpeed, entityLayer);
 	}
 	
-	IntersectionFinder.Intersection moveByDir(Map map) {
+	protected IntersectionFinder.Intersection moveByDir(Map map) {
 		if (attackTime.active())
 			return null;
 		double dist = Math3D.min(moveSpeed, Math3D.magnitude(moveDeltaX, moveDeltaY));
@@ -105,15 +105,15 @@ abstract class Character extends MapEntity {
 		MapPainter.drawBlock(x - scrollX - .5, y - scrollY - .5, 0, 1, 1, .5, side, color);
 	}
 	
-	static class Counter {
-		int maxValue, value;
+	public static class Counter {
+		public int maxValue, value;
 		
-		Counter(int maxValue) {
+		public Counter(int maxValue) {
 			this.maxValue = maxValue;
 			value = -1;
 		}
 		
-		boolean active() {
+		public boolean active() {
 			return value > -1;
 		}
 		
@@ -124,14 +124,14 @@ abstract class Character extends MapEntity {
 			return true;
 		}
 		
-		boolean begin(int value) {
+		public boolean begin(int value) {
 			if (active() && value < this.value)
 				return false;
 			this.value = value;
 			return true;
 		}
 		
-		boolean update() {
+		public boolean update() {
 			return active() && value-- == 0;
 		}
 		

@@ -1,0 +1,18 @@
+Force
+	50% convert to fire
+	50% convert to cold
+	50% convert to earth
+	50% convert to ligtning
+	0% phys dmg, double ele dmg
+	poison
+        dmg reduced 20%, dmg over time inc 100%
+
+Style
+	cleave large cone
+	sweep 360
+	projectile
+	shrapnel
+	
+Strike
+	0% crit dmg, crits increase speed
+	50% slower attacks, 100% attack dmg

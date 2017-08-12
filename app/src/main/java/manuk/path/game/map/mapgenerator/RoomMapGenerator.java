@@ -1,6 +1,6 @@
 package manuk.path.game.map.mapgenerator;
 
-import manuk.path.game.character.Enemy;
+import manuk.path.game.character.enemy.Enemy;
 import manuk.path.game.util.LList;
 
 public class RoomMapGenerator extends MapGenerator {

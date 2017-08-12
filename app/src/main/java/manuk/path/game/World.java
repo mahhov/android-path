@@ -1,7 +1,7 @@
 package manuk.path.game;
 
 import android.graphics.Color;
-import manuk.path.game.character.Enemy;
+import manuk.path.game.character.enemy.Enemy;
 import manuk.path.game.character.Player;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.item.Item;

@@ -1,5 +1,7 @@
-package manuk.path.game.character;
+package manuk.path.game.character.enemy;
 
+import manuk.path.game.character.Character;
+import manuk.path.game.character.Player;
 import manuk.path.game.item.HealthItem;
 import manuk.path.game.item.Item;
 import manuk.path.game.map.Map;
@@ -90,7 +92,8 @@ public abstract class Enemy extends Character {
 		return false;
 	}
 	
-	void updateActive(Map map, Player player, LList<Projectile> projectile, LList<Item> item, LList<Particle> particle){}
+	void updateActive(Map map, Player player, LList<Projectile> projectile, LList<Item> item, LList<Particle> particle) {
+	}
 	
 	void doAttack(Map map, Player player, LList<Projectile> projectile, LList<Particle> particle) {
 	}

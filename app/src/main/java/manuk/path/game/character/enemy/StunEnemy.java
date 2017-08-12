@@ -1,6 +1,7 @@
-package manuk.path.game.character;
+package manuk.path.game.character.enemy;
 
 import android.graphics.Color;
+import manuk.path.game.character.Player;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
 import manuk.path.game.painter.MapPainter;

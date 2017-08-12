@@ -1,6 +1,7 @@
 package manuk.path.game.character;
 
 import android.graphics.Color;
+import manuk.path.game.character.enemy.Enemy;
 import manuk.path.game.controller.Controller;
 import manuk.path.game.map.Map;
 import manuk.path.game.map.MapEntity;
@@ -140,7 +141,7 @@ public class Player extends Character {
 				trackedEntity.handleIntersection(intersectionId, damage);
 	}
 	
-	void gainExp(double amount) {
+	public void gainExp(double amount) {
 		level += (exp + amount) / LEVEL_EXP;
 		exp = (exp + amount) % LEVEL_EXP;
 		updateCharacterSkillInterface();
@@ -150,17 +151,17 @@ public class Player extends Character {
 		takeHeal(amount);
 	}
 	
-	void takeDamage(double amount) {
+	public void takeDamage(double amount) {
 		if (!dashTime.active())
 			super.takeDamage(amount);
 	}
 	
-	void setStun(int duration) {
+	public void setStun(int duration) {
 		stunTime.begin(duration);
 		dashTime.stop();
 	}
 	
-	void setActiveTarget(Enemy target) {
+	public void setActiveTarget(Enemy target) {
 		targetBar.setHidden(false);
 		targetBar.setMaxValue(target.maxLife);
 		targetBar.setValue(target.life);
